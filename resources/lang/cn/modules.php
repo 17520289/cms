@@ -1,8 +1,8 @@
 <?php
 
-return array(
-  'dashboard' =>
-  array(
+return array (
+  'dashboard' => 
+  array (
     'totalClients' => '客户数据汇总',
     'totalEmployees' => '员工数据汇总',
     'totalProjects' => '项目数据汇总',
@@ -100,8 +100,8 @@ return array(
     'statusWiseTicket' => 'Status Wise Ticket',
     'channelWiseTicket' => 'Channel Wise Ticket',
   ),
-  'client' =>
-  array(
+  'client' => 
+  array (
     'createTitle' => 'Add Client Info',
     'companyDetails' => 'Company Details',
     'companyName' => '公司名称',
@@ -133,8 +133,8 @@ return array(
     'cell' => 'Cell',
     'officePhoneNumber' => 'Office Phone Number',
   ),
-  'credit-notes' =>
-  array(
+  'credit-notes' => 
+  array (
     'currency' => 'Currency',
     'creditNoteDate' => 'Credit Note Date',
     'isRecurringPayment' => 'Is it a recurring payments?',
@@ -167,13 +167,13 @@ return array(
     'partial' => 'Partial',
     'uploadInvoice' => 'Upload Invoice',
   ),
-  'contacts' =>
-  array(
+  'contacts' => 
+  array (
     'addContact' => 'Add Contact',
     'contactName' => 'Contact Name',
   ),
-  'employees' =>
-  array(
+  'employees' => 
+  array (
     'addNewEmployee' => 'Add New Employee',
     'createTitle' => 'Add Employee Info',
     'employeeName' => 'Employee Name',
@@ -211,8 +211,8 @@ return array(
     'status' => '状态',
     'employeeIdInfo' => 'Employee ID is the unique ID distributed to employees',
   ),
-  'projects' =>
-  array(
+  'projects' => 
+  array (
     'addNewProject' => 'Add New Project',
     'projectName' => 'Project Name',
     'projectMembers' => 'Project Members',
@@ -281,8 +281,8 @@ return array(
     'hideFinishedProjects' => 'Hide Finished Projects',
     'noClientFound' => 'No Client Found',
   ),
-  'tasks' =>
-  array(
+  'tasks' => 
+  array (
     'selectProject' => 'Select Project',
     'hideCompletedTask' => 'Hide completed task',
     'newTask' => 'New Task',
@@ -346,8 +346,8 @@ return array(
     'setTimeEstimate' => 'Set time estimate',
     'users' => 'Users',
   ),
-  'invoices' =>
-  array(
+  'invoices' => 
+  array (
     'addInvoice' => '创建发票',
     'paid' => '有薪酬的',
     'unpaid' => '未付',
@@ -399,8 +399,8 @@ return array(
     'paymentMethod' => '付款方法',
     'paidOn' => '已付',
   ),
-  'issues' =>
-  array(
+  'issues' => 
+  array (
     'pending' => 'Pending',
     'addIssue' => 'Add Issue',
     'updateIssue' => 'Update Issue',
@@ -409,8 +409,8 @@ return array(
     'markResolved' => 'Mark Resolved',
     'reportedOn' => 'Reported On',
   ),
-  'timeLogs' =>
-  array(
+  'timeLogs' => 
+  array (
     'whoLogged' => 'Who Logged',
     'startTime' => 'Start Time',
     'endTime' => 'End Time',
@@ -430,13 +430,13 @@ return array(
     'task' => 'Task',
     'whenLogged' => 'when Logged',
   ),
-  'taskCalendar' =>
-  array(
+  'taskCalendar' => 
+  array (
     'note' => 'Calendar shows the due tasks on their due dates.',
     'taskDetail' => 'Task Detail',
   ),
-  'notices' =>
-  array(
+  'notices' => 
+  array (
     'addNotice' => 'Add New Notice',
     'notice' => 'Notice',
     'noticeHeading' => 'Notice Heading',
@@ -445,37 +445,37 @@ return array(
     'toEmployee' => 'To Employees',
     'toClients' => 'To Clients',
   ),
-  'sticky' =>
-  array(
+  'sticky' => 
+  array (
     'addNote' => 'Add Note',
     'lastUpdated' => 'Updated',
     'colors' => 'Color',
   ),
-  'taskReport' =>
-  array(
+  'taskReport' => 
+  array (
     'taskToComplete' => 'Total Tasks',
     'completedTasks' => 'Completed Tasks',
     'pendingTasks' => '待处理的任务',
     'chartTitle' => 'Pie Chart',
   ),
-  'leaveReport' =>
-  array(
+  'leaveReport' => 
+  array (
     'leaveReport' => 'Leave Report',
   ),
-  'timeLogReport' =>
-  array(
+  'timeLogReport' => 
+  array (
     'chartTitle' => 'Time Log Bar Chart',
   ),
-  'financeReport' =>
-  array(
+  'financeReport' => 
+  array (
     'showAmountIn' => 'Show amount in ',
     'selectCurrency' => 'Select Currency',
     'chartTitle' => 'Earnings Bar Chart',
     'financeReport' => 'Earnings Bar Chart',
     'noteText' => 'The earnings are calculated with latest exchange rate for different currencies.',
   ),
-  'accountSettings' =>
-  array(
+  'accountSettings' => 
+  array (
     'updateTitle' => 'Update Organization Settings',
     'companyName' => '公司名称',
     'companyEmail' => 'Company Email',
@@ -508,8 +508,8 @@ return array(
     'dashboardClock' => 'Dashboard Clock',
     'showDashboardClock' => 'Show clock on dashboard page',
   ),
-  'profile' =>
-  array(
+  'profile' => 
+  array (
     'updateTitle' => 'Update Profile Info',
     'yourName' => 'Your Name',
     'yourEmail' => 'Your Email',
@@ -521,8 +521,8 @@ return array(
     'uploadPicture' => 'Upload your picture',
     'companyLogo' => 'Company Logo',
   ),
-  'emailSettings' =>
-  array(
+  'emailSettings' => 
+  array (
     'notificationTitle' => 'Set Email Notification Settings',
     'notificationSubtitle' => 'Select the events for which an email should be sent to user.',
     'configTitle' => 'Mail Configuration',
@@ -561,8 +561,8 @@ return array(
     'invoice-createupdate-notification' => 'Invoice Notifications',
     'discussion-reply' => 'Discussion Replies',
   ),
-  'moduleSettings' =>
-  array(
+  'moduleSettings' => 
+  array (
     'employeeModuleTitle' => 'Modules',
     'clientModuleTitle' => 'Client Module Title',
     'employeeSubTitle' => 'Select the modules which you want to enable.',
@@ -570,8 +570,8 @@ return array(
     'moduleSetting' => 'Module Setting',
     'section' => 'section.',
   ),
-  'currencySettings' =>
-  array(
+  'currencySettings' => 
+  array (
     'addNewCurrency' => 'Add New Currency',
     'currencyName' => 'Currency Name',
     'currencySymbol' => 'Currency Symbol',
@@ -584,8 +584,8 @@ return array(
     'usdPrice' => 'Usd Price',
     'usdPriceInfo' => 'Required to calculate earnings.',
   ),
-  'messages' =>
-  array(
+  'messages' => 
+  array (
     'startConversation' => 'Start Conversation',
     'chooseMember' => 'Choose Member',
     'message' => '消息',
@@ -599,13 +599,13 @@ return array(
     'members' => 'Project Members',
   ),
   'taskDetail' => 'Task Detail',
-  'projectCategory' =>
-  array(
+  'projectCategory' => 
+  array (
     'addProjectCategory' => 'Add Project Category',
     'categoryName' => '类别名称',
   ),
-  'themeSettings' =>
-  array(
+  'themeSettings' => 
+  array (
     'adminPanelTheme' => 'Admin Panel Theme',
     'projectAdminPanelTheme' => 'Project Admin Panel Theme',
     'employeePanelTheme' => 'Employee Panel Theme',
@@ -622,8 +622,8 @@ return array(
     'enableRoundTheme' => 'Enable rounded theme?',
     'loginLogoBackgroundColor' => 'Login Screen Logo\'s background Color',
   ),
-  'estimates' =>
-  array(
+  'estimates' => 
+  array (
     'createEstimate' => '创建估算报价',
     'validTill' => 'Valid Till',
     'waiting' => 'Waiting',
@@ -652,8 +652,8 @@ return array(
     'notes' => 'Notes',
     'sendEstimate' => 'Send Estimate',
   ),
-  'payments' =>
-  array(
+  'payments' => 
+  array (
     'addPayment' => 'Add Payment',
     'paidOn' => 'Paid On',
     'selectInvoice' => 'Select Invoice',
@@ -675,8 +675,8 @@ return array(
     'paymentLink' => 'Payment link',
     'razorpayStatus' => 'Razorpay Status',
   ),
-  'expenses' =>
-  array(
+  'expenses' => 
+  array (
     'addExpense' => 'Add Expense',
     'editExpense' => 'Edit Expense',
     'itemName' => 'Item Name',
@@ -688,8 +688,8 @@ return array(
     'attachBill' => 'Attach Bill',
     'removeBill' => 'Remove Bill',
   ),
-  'expensesRecurring' =>
-  array(
+  'expensesRecurring' => 
+  array (
     'addExpense' => 'Add Recurring Expense',
     'itemName' => 'Item Name',
     'purchaseDate' => 'Purchase Date',
@@ -701,8 +701,8 @@ return array(
     'dayOfMonth' => 'Day Of Month',
     'lastPaymentDate' => 'Last Payment Date',
   ),
-  'invoiceSettings' =>
-  array(
+  'invoiceSettings' => 
+  array (
     'invoicePrefix' => 'Invoice Prefix',
     'template' => 'Template',
     'dueAfter' => 'Due after',
@@ -718,14 +718,14 @@ return array(
     'credit_noteLookLike' => 'Credit Note Number Sample',
     'logo' => 'Invoice Logo',
   ),
-  'mobile' =>
-  array(
+  'mobile' => 
+  array (
     'camera' => 'Camera',
     'gallery' => 'Gallery',
     'maximumFileSize' => 'Maximum File Size',
   ),
-  'slackSettings' =>
-  array(
+  'slackSettings' => 
+  array (
     'updateTitle' => 'Update Slack Settings',
     'uploadSlackLogo' => 'Upload Notification Logo',
     'notificationTitle' => 'Set Notification Settings',
@@ -734,8 +734,8 @@ return array(
     'slackWebhook' => 'Slack Webhook',
     'slackNotificationLogo' => 'Notification Logo',
   ),
-  'update' =>
-  array(
+  'update' => 
+  array (
     'systemDetails' => 'System Details',
     'updateTitle' => 'Update To New Version',
     'updateDatabase' => 'Update Database',
@@ -750,14 +750,14 @@ return array(
     'downloadUpdateFile' => 'Download Update File',
     'moduleFile' => 'Module zip file',
   ),
-  'incomeVsExpenseReport' =>
-  array(
+  'incomeVsExpenseReport' => 
+  array (
     'totalIncome' => 'Total Income',
     'totalExpense' => 'Total Expense',
     'chartTitle' => 'Bar Chart',
   ),
-  'tickets' =>
-  array(
+  'tickets' => 
+  array (
     'ticketDetail' => 'Ticket Detail',
     'agents' => 'Agents',
     'notAssigned' => 'Not assigned',
@@ -816,8 +816,8 @@ return array(
     'submitResolved' => 'Submit as Resolved',
     'submitClosed' => 'Submit as Closed',
   ),
-  'attendance' =>
-  array(
+  'attendance' => 
+  array (
     'officeStartTime' => 'Office Start Time',
     'officeEndTime' => 'Office End Time',
     'halfDayMarkTime' => 'HalfDay Mark Time',
@@ -859,14 +859,14 @@ return array(
     'hoursClocked' => 'Hours Clocked',
     'notClockOut' => 'Did not clock out',
   ),
-  'customFields' =>
-  array(
+  'customFields' => 
+  array (
     'label' => 'Label',
     'addField' => 'Add Field',
     'editField' => 'Edit Field',
   ),
-  'events' =>
-  array(
+  'events' => 
+  array (
     'addEvent' => 'Add Event',
     'eventName' => 'Event Name',
     'startOn' => 'Starts On',
@@ -882,20 +882,20 @@ return array(
     'attendees' => 'Attendees',
     'remindBefore' => 'Remind before',
   ),
-  'payroll' =>
-  array(
+  'payroll' => 
+  array (
     'addPayroll' => 'Add Payroll',
     'amountPaid' => 'Amount Paid',
     'updatePayroll' => 'Update Payroll',
     'projectPayrollReport' => 'Project Payroll Report',
     'totalEarning' => 'Total Earning',
   ),
-  'roles' =>
-  array(
+  'roles' => 
+  array (
     'addRole' => 'Manage Role',
   ),
-  'permission' =>
-  array(
+  'permission' => 
+  array (
     'projectNote' => 'User can view the basic details of projects assigned to him even without any permission.',
     'attendanceNote' => 'User can view his own attendance even without any permission.',
     'taskNote' => 'User can view the tasks assigned to him even without any permission.',
@@ -907,8 +907,8 @@ return array(
     'addMembers' => 'Add Members',
     'roleName' => 'Role Name',
   ),
-  'leaves' =>
-  array(
+  'leaves' => 
+  array (
     'assignLeave' => 'Assign Leave',
     'addLeaveType' => 'Add Leave Type',
     'addLeave' => 'Add Leave',
@@ -938,8 +938,8 @@ return array(
     'leaveRequest' => 'Leave Request',
   ),
   'low' => 'Low',
-  'lead' =>
-  array(
+  'lead' => 
+  array (
     'createTitle' => 'Add Lead Info',
     'companyDetails' => 'Company Details',
     'companyName' => '公司名称',
@@ -986,8 +986,8 @@ return array(
     'iframeSnippet' => 'Iframe Code Snippet',
     'leadCategory' => 'Lead Category',
   ),
-  'proposal' =>
-  array(
+  'proposal' => 
+  array (
     'createTitle' => 'Add Proposal Info',
     'updateTitle' => 'Update Proposal Info',
     'addNewLead' => 'Add New Proposal',
@@ -1007,8 +1007,8 @@ return array(
     'delete' => 'Delete',
     'download' => 'Download',
   ),
-  'followup' =>
-  array(
+  'followup' => 
+  array (
     'newFollowUp' => 'New Follow Up',
     'updateFollow' => 'Update Follow Up',
     'addNewLead' => 'Add New Proposal',
@@ -1025,8 +1025,8 @@ return array(
     'followUpNotFound' => 'No follow up found',
     'followUpNote' => 'Follow up add and edit functionality will work when lead <b>next follow up</b> is set to <b>YES</b>.',
   ),
-  'holiday' =>
-  array(
+  'holiday' => 
+  array (
     'title' => 'Holiday',
     'addNewHoliday' => 'Add Holiday',
     'viewDetails' => 'View Details',
@@ -1042,8 +1042,8 @@ return array(
     'markHoliday' => 'Mark Holiday',
     'officeHolidayMarkDays' => 'Mark day for Holiday',
   ),
-  'offlinePayment' =>
-  array(
+  'offlinePayment' => 
+  array (
     'title' => 'Offline Payment Method',
     'method' => 'Method',
     'description' => 'Description',
@@ -1051,8 +1051,8 @@ return array(
     'active' => 'Active',
     'inActive' => 'Inactive',
   ),
-  'projectTemplate' =>
-  array(
+  'projectTemplate' => 
+  array (
     'addNewTemplate' => 'Add New Template',
     'projectName' => 'Template Name',
     'projectMembers' => 'Template Members',
@@ -1088,8 +1088,8 @@ return array(
     'clientTaskNotification' => 'Send task notification to client?',
     'manualTimelog' => 'Allow manual time logs?',
   ),
-  'templateTasks' =>
-  array(
+  'templateTasks' => 
+  array (
     'newTask' => 'New Template Task',
     'lastCreated' => 'Last Created',
     'dueSoon' => 'Due Soon',
@@ -1110,30 +1110,30 @@ return array(
     'subTask' => 'Sub Template Task',
     'comment' => 'Comment',
   ),
-  'logTimeSetting' =>
-  array(
+  'logTimeSetting' => 
+  array (
     'title' => 'Log Time Setting',
     'project' => 'Project',
     'task' => 'Task',
     'autoStopTimerAfterOfficeTime' => 'Stop timer automatically after office time.',
     'approvalRequired' => 'Timelog will require approval',
   ),
-  'taskCategory' =>
-  array(
+  'taskCategory' => 
+  array (
     'addTaskCategory' => 'Task Category',
     'categoryName' => '类别名称',
     'manageTaskCategory' => 'Manage Task Category',
     'taskCategory' => 'Task Category',
   ),
-  'pushSettings' =>
-  array(
+  'pushSettings' => 
+  array (
     'updateTitle' => 'Update Push Notification Settings',
     'oneSignalAppId' => 'One Signal App ID',
     'oneSignalRestApiKey' => 'One Signal Rest API Key',
   ),
   'timelogAlreadyExist' => 'Time-log already exist for this user.',
-  'module' =>
-  array(
+  'module' => 
+  array (
     'clients' => 'Clients',
     'employees' => 'Employees',
     'projects' => 'Projects',
@@ -1162,13 +1162,13 @@ return array(
     'gitlab' => 'GITLAB',
     'Zoom' => 'Zoom',
   ),
-  'projectSettings' =>
-  array(
+  'projectSettings' => 
+  array (
     'sendNotificationsTo' => 'Send Reminder To',
   ),
   'loginAgain' => 'You will have to login again to see the changes.',
-  'gdpr' =>
-  array(
+  'gdpr' => 
+  array (
     'gdpr' => 'GDPR',
     'customers' => 'Customers',
     'purpose' => 'Purpose',
@@ -1183,8 +1183,8 @@ return array(
     'dataRemovalDescription' => 'Briefly describe the purpose of removal of data',
     'removalRequestSuccess' => 'Removal request has been sent to the admin. You will informed once it is approved',
   ),
-  'contracts' =>
-  array(
+  'contracts' => 
+  array (
     'createContract' => 'Create Contract',
     'createContractType' => 'Create Contract Type',
     'contractType' => 'Contract Type',
@@ -1220,18 +1220,18 @@ return array(
     'streetAddress1' => 'Street Address 1',
     'streetAddress2' => 'Street Address 2',
   ),
-  'burndown' =>
-  array(
+  'burndown' => 
+  array (
     'actual' => 'Actual',
     'ideal' => 'Ideal',
   ),
-  'clients' =>
-  array(
+  'clients' => 
+  array (
     'addShippingAddress' => 'Add Shipping Address',
     'shippingAddress' => 'Shipping Address',
   ),
-  'discussions' =>
-  array(
+  'discussions' => 
+  array (
     'lastCreated' => 'Last Created',
     'lastModified' => 'Last Modified',
     'discussionCategory' => 'Discussion Category',
@@ -1241,8 +1241,8 @@ return array(
     'removeBestReply' => 'Remove as Best Reply',
     'goBestReply' => 'Go To Best Reply',
   ),
-  'stripeCustomerAddress' =>
-  array(
+  'stripeCustomerAddress' => 
+  array (
     'details' => 'Address Details',
     'name' => 'Name',
     'line1' => 'Line 1',
@@ -1251,21 +1251,21 @@ return array(
     'state' => 'State',
     'country' => 'Country',
   ),
-  'taskLabel' =>
-  array(
+  'taskLabel' => 
+  array (
     'createLabel' => 'Create Label',
   ),
-  'recurringInvoice' =>
-  array(
+  'recurringInvoice' => 
+  array (
     'allowToClient' => 'Client can stop recurring.',
   ),
-  'expenseCategory' =>
-  array(
+  'expenseCategory' => 
+  array (
     'addExpenseCategory' => 'Add Expense Category',
     'categoryName' => '类别名称',
   ),
-  'productCategory' =>
-  array(
+  'productCategory' => 
+  array (
     'subCategory' => 'Sub Category',
     'subCategoryName' => '子类别名称',
     'category' => 'Category',

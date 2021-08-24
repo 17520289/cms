@@ -344,8 +344,19 @@
         padding-bottom: 0px;
         }
     </style>
-
-
+{{-- Style for create new employee, view employee --}}
+<style>
+    .info-person{
+        background-color: rgb(246, 247, 249);
+        padding: 0px 15px;
+        border-radius: 5px;
+        margin-bottom: 60px;
+        border: 1px solid LightGray;
+    }
+    .info-person .panel-heading{
+        text-align: center;
+    }
+</style>
 </head>
 <body class="fix-sidebar @if($rtl == 1) rtl @endif">
 <!-- Preloader -->
@@ -557,6 +568,7 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/js/bootstrap-select.min.js'></script>
+
 
 <!-- Sidebar menu plugin JavaScript -->
 <script src="{{ asset('plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js') }}"></script>
