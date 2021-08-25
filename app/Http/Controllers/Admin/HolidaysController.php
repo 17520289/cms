@@ -235,7 +235,17 @@ class HolidaysController extends AdminBaseController
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function holidayCalendar($year = null){
-        $this->pageTitle = 'Holiday Calendar';
+       
+       //Dich sang ngon ngu tieng viet
+        if(null !==  __('app.holidayCalendar'))
+        {
+            $this->pageTitle = __('app.holidayCalendar');
+        }
+        else
+        {
+            $this->pageTitle = "Holiday Calendar";
+        }
+        //$this->pageTitle = 'Holiday Calendar';
         $this->year = Carbon::now()->format('Y');
         if($year){
             $this->year = $year;

@@ -31,7 +31,6 @@
 
     <div class="row">
         <div class="col-xs-12">
-
             <div class="panel panel-inverse">
                 <div class="panel-heading"> @lang('modules.employees.createTitle')</div>
                 <div class="panel-wrapper collapse in" aria-expanded="true">
@@ -39,156 +38,242 @@
                         {!! Form::open(['id'=>'createEmployee','class'=>'ajax-form','method'=>'POST']) !!}
                             <div class="form-body">
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="required">@lang('modules.employees.employeeId')</label>
-                                            <a class="mytooltip" href="javascript:void(0)">
-                                                <i class="fa fa-info-circle"></i><span class="tooltip-content5"><span class="tooltip-text3"><span
-                                                                class="tooltip-inner2">@lang('modules.employees.employeeIdInfo')</span></span></span></a>
-                                            <input type="text" name="employee_id" id="employee_id" class="form-control"
-                                                   autocomplete="nope">
+                                    <div class="info-person">
+                                        <div class="row">
+                                            <div class="panel-heading"> @lang('modules.employees.personalInfo')</div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="required">@lang('modules.employees.employeeName')</label>
-                                            <input type="text" name="name" id="name" class="form-control" autocomplete="nope">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="required">@lang('modules.employees.employeeId')</label>
+                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                        <i class="fa fa-info-circle"></i><span class="tooltip-content5"><span class="tooltip-text3"><span
+                                                                        class="tooltip-inner2">@lang('modules.employees.employeeIdInfo')</span></span></span></a>
+                                                    <input type="text" name="employee_id" id="employee_id" class="form-control"
+                                                           autocomplete="nope">
+                                                </div>
+                                            </div>
+        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="required">@lang('modules.employees.employeeName')</label>
+                                                    <input type="text" name="name" id="name" class="form-control" autocomplete="nope">
+                                                </div>
+                                            </div>
+        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="required">@lang('modules.employees.employeeEmail')</label>
+                                                    <input type="email" name="email" id="email" class="form-control" autocomplete="nope">
+                                                    <span class="help-block">@lang('modules.employees.emailNote')</span>
+                                                </div>
+                                            </div>
+        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="required">@lang('modules.employees.employeePassword')</label>
+                                                    <input type="password" style="display: none">
+                                                    <input type="password" name="password" id="password" class="form-control" autocomplete="nope">
+                                                    <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                                    <span class="help-block"> @lang('modules.employees.passwordNote') </span>
+                                                    <div class="checkbox checkbox-info">
+                                                        <input id="random_password" name="random_password" value="true" type="checkbox">
+                                                        <label for="random_password">@lang('modules.client.generateRandomPassword')</label>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="required">@lang('modules.employees.employeeEmail')</label>
-                                            <input type="email" name="email" id="email" class="form-control" autocomplete="nope">
-                                            <span class="help-block">@lang('modules.employees.emailNote')</span>
+                                        <!--/span-->
+                                        
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label>@lang('app.mobile')</label>
+                                                <div class="form-group">
+                                                    <select class="select2 phone_country_code form-control" name="phone_code">
+                                                        @foreach ($countries as $item)
+                                                            <option value="{{ $item->id }}">+{{ $item->phonecode.' ('.$item->iso.')' }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <input type="tel" name="mobile" id="mobile" class="mobile" autocomplete="nope">
+                                                </div>
+                                            </div>
+        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label >@lang('modules.employees.date_of_birth')</label>
+                                                    <input type="text" autocomplete="off"  name="date_of_birth" id="date_of_birth" class="form-control">
+                                                </div>
+                                            </div>
+        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>@lang('modules.employees.gender')</label>
+                                                    <select name="gender" id="gender" class="form-control">
+                                                        <option value="male">@lang('app.male')</option>
+                                                        <option value="female">@lang('app.female')</option>
+                                                        <option value="others">@lang('app.others')</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="required">@lang('modules.employees.employeePassword')</label>
-                                            <input type="password" style="display: none">
-                                            <input type="password" name="password" id="password" class="form-control" autocomplete="nope">
-                                            <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
-                                            <span class="help-block"> @lang('modules.employees.passwordNote') </span>
-                                            <div class="checkbox checkbox-info">
-                                                <input id="random_password" name="random_password" value="true" type="checkbox">
-                                                <label for="random_password">@lang('modules.client.generateRandomPassword')</label>
+                                        <!--/span-->
+                                        
+                                        <!--/row-->
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>@lang('modules.employees.perAddress')</label>  {{-- Permanent address --}}
+                                                     <input autocomplete="nope" type="text" id="permanent_address" name="permanent_address" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>@lang('modules.employees.temResAddress')</label> {{-- Temporary Residence Address --}}
+                                                    <input autocomplete="nope" type="text" id="temporary_address" name="temporary_address" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                      
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>@lang('modules.employees.identityCardNumber')</label>
+                                                        <input autocomplete="nope" type="text" id="id_no" name="id_no" class="form-control">
+                                                </div>
+                                            </div>
+                                            <!--/span-->           
+        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>@lang('modules.employees.issueDate')</label>
+                                                    <input type="text" autocomplete="off"  name="issue_date" id="issue_date" class="form-control">
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>@lang('modules.employees.placeOfIssue')</label>
+                                                    <input type="text" autocomplete="off" name="place_of_issue" id="place_of_issue" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                         <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label"><i class="fa fa-slack"></i> @lang('modules.employees.slackUsername')</label>
+                                                    <div class="input-group"> <span class="input-group-addon">@</span>
+                                                        <input autocomplete="nope" type="text" id="slack_username" name="slack_username" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="required">@lang('modules.employees.joiningDate')</label>
+                                                    <input type="text" autocomplete="off"  name="joining_date" id="joining_date" class="form-control">
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>@lang('modules.employees.lastDate')</label>
+                                                    <input type="text" autocomplete="off" name="last_date" id="end_date" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/row-->
+        
+                                     
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <label>@lang('app.skills')</label>
+                                                    <input  name='tags' placeholder='@lang('app.skills')' value=''>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 ">
+                                                <div class="form-group">
+                                                    <label class="required">@lang('app.designation') <a href="javascript:;" id="designation-setting" ><i class="ti-settings text-info"></i></a></label>
+                                                    <select name="designation" id="designation" class="form-control">
+                                                        <option value="">--</option>
+                                                        @forelse($designations as $designation)
+                                                            <option value="{{ $designation->id }}">{{ $designation->name }}</option>
+                                                        @empty
+                                                            <option value="">@lang('messages.noRecordFound')</option>
+                                                        @endforelse()
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 ">
+                                                <div class="form-group">
+                                                    <label class="required">@lang('app.department') <a href="javascript:;" id="department-setting" ><i class="ti-settings text-info"></i></a></label>
+                                                    <select name="department" id="department" class="form-control">
+                                                        <option value="">--</option>
+                                                        @foreach($teams as $team)
+                                                            <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label >@lang('modules.employees.probationnarySalary')  ({{ $global->currency->currency_code }})</label>
+                                                    <input type="text" name="prob_salary" id="prob_salary" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label >@lang('modules.employees.officePaidSalary')  ({{ $global->currency->currency_code }})</label>
+                                                    <input type="text" name="office_salary" id="office_salary" class="form-control">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!--/span-->
-
-                                    <!--/span-->
                                 </div>
-
-                                <!--/row-->
-
-                                <div class="row">
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="control-label"><i class="fa fa-slack"></i> @lang('modules.employees.slackUsername')</label>
-                                            <div class="input-group"> <span class="input-group-addon">@</span>
-                                                <input autocomplete="nope" type="text" id="slack_username" name="slack_username" class="form-control">
+                              <div class="row">
+                                <div class="info-person">
+                                    <div class="panel-heading"> @lang('modules.employees.bankAccountInfomation') </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label >@lang('modules.employees.accountOwner')  </label>
+                                                <input type="text" name="account_owner" id="account_owner" class="form-control">
                                             </div>
                                         </div>
-                                    </div>
-                                    <!--/span-->
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="required">@lang('modules.employees.joiningDate')</label>
-                                            <input type="text" autocomplete="off"  name="joining_date" id="joining_date" class="form-control">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label >@lang('modules.employees.accountNumber')  </label>
+                                                <input type="text" name="account_number" id="account_number" class="form-control">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!--/span-->
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>@lang('modules.employees.lastDate')</label>
-                                            <input type="text" autocomplete="off" name="last_date" id="end_date" class="form-control">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label >@lang('modules.employees.bankName')  </label>
+                                                <input type="text" name="bank_name" id="bank_name" class="form-control">
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>@lang('modules.employees.gender')</label>
-                                            <select name="gender" id="gender" class="form-control">
-                                                <option value="male">@lang('app.male')</option>
-                                                <option value="female">@lang('app.female')</option>
-                                                <option value="others">@lang('app.others')</option>
-                                            </select>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label >@lang('modules.employees.branch') </label>
+                                                <input type="text" name="branch" id="branch" class="form-control">
+                                            </div>
                                         </div>
-                                    </div>
-
-                                </div>
-                                <!--/row-->
-
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="form-group">
-                                            <label class="control-label">@lang('app.address')</label>
-                                            <textarea name="address"  id="address"  rows="5" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-
+                                       
+                                    </div> 
                                 </div>
 
+                              </div>
                                 <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="form-group">
-                                            <label>@lang('app.skills')</label>
-                                            <input name='tags' placeholder='@lang('app.skills')' value='' >
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 ">
-                                        <div class="form-group">
-                                            <label class="required">@lang('app.designation') <a href="javascript:;" id="designation-setting" ><i class="ti-settings text-info"></i></a></label>
-                                            <select name="designation" id="designation" class="form-control">
-                                                <option value="">--</option>
-                                                @forelse($designations as $designation)
-                                                    <option value="{{ $designation->id }}">{{ $designation->name }}</option>
-                                                @empty
-                                                    <option value="">@lang('messages.noRecordFound')</option>
-                                                @endforelse()
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <div class="form-group">
-                                            <label class="required">@lang('app.department') <a href="javascript:;" id="department-setting" ><i class="ti-settings text-info"></i></a></label>
-                                            <select name="department" id="department" class="form-control">
-                                                <option value="">--</option>
-                                                @foreach($teams as $team)
-                                                    <option value="{{ $team->id }}">{{ $team->team_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-
-                                    <div class="col-md-3">
-                                        <label>@lang('app.mobile')</label>
-                                        <div class="form-group">
-                                            <select class="select2 phone_country_code form-control" name="phone_code">
-                                                @foreach ($countries as $item)
-                                                    <option value="{{ $item->id }}">+{{ $item->phonecode.' ('.$item->iso.')' }}</option>
-                                                @endforeach
-                                            </select>
-                                            <input type="tel" name="mobile" id="mobile" class="mobile" autocomplete="nope">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>@lang('modules.employees.hourlyRate')  ({{ $global->currency->currency_code }})</label>
-                                            <input type="text" name="hourly_rate" id="hourly_rate" class="form-control">
-                                        </div>
-                                    </div>
                                     <!--/span-->
                                     <div class="col-md-3">
                                         <div class="form-group">
@@ -219,21 +304,21 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
+                                    
                                     <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="address">@lang('modules.accountSettings.changeLanguage')</label>
-                                                <select name="locale" id="locale" class="form-control select2">
-                                                <option @if($global->locale == "en") selected @endif value="en">English
-                                                    </option>
-                                                    @foreach($languageSettings as $language)
-                                                        <option value="{{ $language->language_code }}" >{{ $language->language_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="address">@lang('modules.accountSettings.changeLanguage')</label>
+                                            <select name="locale" id="locale" class="form-control select2">
+                                            <option @if($global->locale == "en") selected @endif value="en">English
+                                                </option>
+                                                @foreach($languageSettings as $language)
+                                                    <option value="{{ $language->language_code }}" >{{ $language->language_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                 </div>
+                                </div>
+                               
 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -246,10 +331,10 @@
                                                 <div class="fileinput-preview fileinput-exists thumbnail"
                                                      style="max-width: 200px; max-height: 150px;"></div>
                                                 <div>
-                                <span class="btn btn-info btn-file">
-                                    <span class="fileinput-new"> @lang('app.selectImage') </span>
-                                    <span class="fileinput-exists"> @lang('app.change') </span>
-                                    <input type="file" id="image" name="image"> </span>
+                                                <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new"> @lang('app.selectImage') </span>
+                                                <span class="fileinput-exists"> @lang('app.change') </span>
+                                                <input type="file" id="image" name="image"> </span>
                                                     <a href="javascript:;" class="btn btn-danger fileinput-exists"
                                                        data-dismiss="fileinput"> @lang('app.remove') </a>
                                                 </div>
@@ -432,7 +517,7 @@
 
 <script>
 
-    $("#joining_date, #end_date, .date-picker").datepicker({
+    $("#joining_date, #date_of_birth,#issue_date, #end_date, .date-picker").datepicker({
         todayHighlight: true,
         autoclose: true,
         weekStart:'{{ $global->week_start }}',

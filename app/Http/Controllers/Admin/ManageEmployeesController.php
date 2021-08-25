@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use App\BankAccount;
 
 class ManageEmployeesController extends AdminBaseController
 {
@@ -112,7 +113,6 @@ class ManageEmployeesController extends AdminBaseController
      */
     public function store(StoreRequest $request)
     {
-
         $company = company();
 
         if (!is_null($company->employees) && $company->employees->count() >= $company->package->max_employees) {
@@ -141,15 +141,26 @@ class ManageEmployeesController extends AdminBaseController
 
             $user->employeeDetail()->create([
                 'employee_id' => $request->employee_id,
-                'address' => $request->address,
-                'hourly_rate' => $request->hourly_rate,
                 'slack_username' => $request->slack_username,
                 'joining_date' => Carbon::createFromFormat($this->global->date_format, $request->joining_date)->format('Y-m-d'),
                 'last_date' => ($request->last_date != '') ? Carbon::createFromFormat($this->global->date_format, $request->last_date)->format('Y-m-d') : null,
                 'department_id' => $request->department,
                 'designation_id' => $request->designation,
+                'permanent_address' => $request->permanent_address,
+                'temporary_address'=> $request->temporary_address,
+                'id_no'=> $request->id_no,
+                'issue_date'=> $request-> Carbon::createFromFormat($this->global->date_format, $request->issue_date)->format('Y-m-d'),
+                'date_of_birth'=> $request-> Carbon::createFromFormat($this->global->date_format, $request->date_of_birth)->format('Y-m-d'),
+                'place_of_issue'=> $request->place_of_issue,
+                'prob_salary'=> $request->prob_salary,
+                'office_salary'=> $request->office_salary,
             ]);
-
+            $user->bankAccount()->create([
+                'account_owner' => $request->account_owner,
+                'account_number' => $request->account_number,
+                'bank_name' => $request->bank_name,
+                'branch' => $request->branch,
+            ]);
             $tags = json_decode($request->tags);
             if (!empty($tags)) {
                 foreach ($tags as $tag) {
@@ -248,11 +259,14 @@ class ManageEmployeesController extends AdminBaseController
      *
      * @param int $id
      * @return \Illuminate\Http\Response
+     * 
+     * edit : add row this->bankAccount
      */
     public function edit($id)
     {
         $this->userDetail = User::withoutGlobalScope('active')->findOrFail($id);
         $this->employeeDetail = EmployeeDetails::where('user_id', '=', $this->userDetail->id)->first();
+        $this->bankAccount = BankAccount::where('user_id', '=', $this->userDetail->id)->first();
         $this->skills = Skill::all()->pluck('name')->toArray();
         $this->teams = Team::all();
         $this->designations = Designation::all();
@@ -266,9 +280,13 @@ class ManageEmployeesController extends AdminBaseController
     }
 
     /**
+     * edit function to upate employee
+     * 
      * @param UpdateRequest $request
      * @param $id
      * @return array
+     *
+     * edric - 24/8/2021
      */
     public function update(UpdateRequest $request, $id)
     {
@@ -307,7 +325,7 @@ class ManageEmployeesController extends AdminBaseController
             }
         }
 
-
+        //update employee detail
         $employee = EmployeeDetails::where('user_id', '=', $user->id)->first();
         if (empty($employee)) {
             $employee = new EmployeeDetails();
@@ -318,15 +336,25 @@ class ManageEmployeesController extends AdminBaseController
         $employee->hourly_rate = $request->hourly_rate;
         $employee->slack_username = $request->slack_username;
         $employee->joining_date = Carbon::createFromFormat($this->global->date_format, $request->joining_date)->format('Y-m-d');
-
+      
         $employee->last_date = null;
 
         if ($request->last_date != '') {
             $employee->last_date = Carbon::createFromFormat($this->global->date_format, $request->last_date)->format('Y-m-d');
         }
 
+        // Edric - [#41] update employee_details
         $employee->department_id = $request->department;
         $employee->designation_id = $request->designation;
+        $employee->date_of_birth=  Carbon::createFromFormat($this->global->date_format, $request->date_of_birth)->format('Y-m-d');
+        $employee->permanent_address= $request->permanent_address;
+        $employee->temporary_address= $request->temporary_address;
+        $employee->id_no= $request->id_no;
+        $employee->issue_date= Carbon::createFromFormat($this->global->date_format, $request->issue_date)->format('Y-m-d'); 
+        $employee->place_of_issue= $request->place_of_issue;
+        $employee->office_salary= $request->office_salary;
+        $employee->prob_salary= $request->prob_salary;
+
         $employee->save();
 
         // To add custom fields data
@@ -334,6 +362,14 @@ class ManageEmployeesController extends AdminBaseController
             $employee->updateCustomFieldData($request->get('custom_fields_data'));
         }
 
+        //update bank account 
+        $bankAccount = BankAccount::where('user_id', '=', $user->id)->first();
+        $bankAccount->account_owner= $request->account_owner;
+        $bankAccount->account_number= $request->account_number;
+        $bankAccount->bank_name= $request->bank_name;
+        $bankAccount->branch= $request->branch;
+        $bankAccount->save();
+       
         session()->forget('user');
 
         return Reply::redirect(route('admin.employees.index'), __('messages.employeeUpdated'));

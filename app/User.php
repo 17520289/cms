@@ -184,6 +184,12 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
     {
         return $this->hasOne(EmployeeDetails::class, 'user_id');
     }
+    
+    public function bankAccount()
+    {
+        return $this->hasOne(BankAccount::class, 'user_id');
+    }
+
 
     public function projects()
     {
