@@ -26,6 +26,7 @@ class UpdateRequest extends CoreRequest
      */
     public function rules()
     {
+        
         $detailID = EmployeeDetails::where('user_id', $this->route('employee'))->first();
         return [
 //            'employee_id' => 'required|unique:employee_details,employee_id,'.$detailID->id,

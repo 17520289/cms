@@ -139,7 +139,7 @@ return array (
     'settings' => 'Cài Đặt',
     'chooseTheme' => 'Choose Front Theme',
     'accountSettings' => 'Company Settings',
-    'profileSettings' => 'Profile Settings',
+    'profileSettings' => 'Cài Đặt Hồ Sơ',
     'emailSettings' => 'Email Settings',
     'moduleSettings' => 'Module Settings',
     'currencySettings' => 'Currency Settings',

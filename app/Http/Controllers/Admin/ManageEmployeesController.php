@@ -208,14 +208,18 @@ class ManageEmployeesController extends AdminBaseController
 
     /**
      * Display the specified resource.
+     * Edit function to show profile including employee's bank account
      *
      * @param int $id
      * @return \Illuminate\Http\Response
+     * 
+     * edric - 25/8/2021
      */
     public function show($id)
     {
         $this->employee = User::with(['employeeDetail', 'employeeDetail.designation', 'employeeDetail.department', 'leaveTypes'])->withoutGlobalScope('active')->findOrFail($id);
         $this->employeeDetail = EmployeeDetails::where('user_id', '=', $this->employee->id)->first();
+        $this->bankAccount = BankAccount::where('user_id', '=', $this->employee->id)->first();
         $this->employeeDocs = EmployeeDocs::where('user_id', '=', $this->employee->id)->get();
         if (!is_null($this->employeeDetail)) {
             $this->employeeDetail = $this->employeeDetail->withCustomFields();
