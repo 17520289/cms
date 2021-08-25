@@ -594,11 +594,11 @@ return array(
         ),
     'profile' =>
         array(
-            'updateTitle' => 'Update Profile Info',
+            'updateTitle' => 'Cập Nhật Hồ Sơ',
             'yourName' => 'Your Name',
             'yourEmail' => 'Your Email',
             'yourPassword' => 'Your Password',
-            'passwordNote' => 'Leave blank to keep your current password.',
+            'passwordNote' => 'Để trống để giữ mật khẩu hiện tại của bạn.',
             'yourMobileNumber' => 'Your Mobile Number',
             'yourAddress' => 'Your Address',
             'profilePicture' => 'Hình Đại Diện',

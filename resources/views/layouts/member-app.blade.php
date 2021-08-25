@@ -336,6 +336,20 @@
             position: relative !important;
         }
     </style>
+    {{-- Style for blade edit profile settings --}}
+    <style>
+        .info-person{
+            background-color: rgb(246, 247, 249);
+            padding: 0px 15px;
+            border-radius: 5px;
+            margin-bottom: 60px;
+            border: 1px solid LightGray;
+        }
+        .info-person .panel-heading{
+            text-align: center;
+        }
+        
+    </style>
 </head>
 <body class="fix-sidebar @if($rtl == 1) rtl @endif">
 <!-- Preloader -->
