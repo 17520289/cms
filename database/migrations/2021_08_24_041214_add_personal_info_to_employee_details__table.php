@@ -15,7 +15,7 @@ class AddPersonalInfoToEmployeeDetailsTable extends Migration
     {
         Schema::table('employee_details', function (Blueprint $table) {
             $table -> string('permanent_address')->after('designation_id')->nullable() ; // địa chỉ thường chú
-            $table -> string('tempcreorary_address')->after('permanent_address')->nullable(); // địa chỉ tạm chú
+            $table -> string('temporary_address')->after('permanent_address')->nullable(); // địa chỉ tạm chú
             $table -> string('id_no') ->after('temporary_address') ->nullable(); //số chứng minh
             $table -> string('issue_date') ->after('id_no') ->nullable();
             $table -> string('place_of_issue') ->after('issue_date') ->nullable();
