@@ -119,104 +119,111 @@
                         @endforelse
                     </div>
                 </div>
-                <div class="tab-pane" id="profile">
-                    <div class="row">
-                        <div class="col-xs-6 col-md-4  b-r"> <strong>@lang('modules.employees.employeeId')</strong> <br>
-                            <p class="text-muted">{{ ucwords($employee->employeeDetail->employee_id) }}</p>
+                <div class="tab-pane " id="profile">
+                    <div class="info-person">
+                        <div class="row">
+                            <div class="col-xs-6 col-md-4  b-r"> <strong>@lang('modules.employees.employeeId')</strong> <br>
+                              <p >{{ ucwords($employee->employeeDetail->employee_id) }}</p>
+                            </div>
+                            <div class="col-xs-6 col-md-4 b-r"> <strong>@lang('modules.employees.fullName')</strong> <br>
+                                <p>{{ ucwords($employee->name) }}</p>
+                            </div>
+                            <div class="col-xs-6 col-md-4"> <strong>@lang('app.mobile')</strong> <br>
+                                <p class="">{{ $employee->mobile ?? '-'}}</p>
+                            </div>
                         </div>
-                        <div class="col-xs-6 col-md-4 b-r"> <strong>@lang('modules.employees.fullName')</strong> <br>
-                            <p class="text-muted">{{ ucwords($employee->name) }}</p>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('app.email')</strong> <br>
+                                <p class="">{{ $employee->email }}</p>
+                            </div>
+                            <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('modules.employees.date_of_birth')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->date_of_birth)) ? ucwords($employee->employeeDetail->date_of_birth) : '-' }}</p>
+                            </div>
+                            <div class="col-md-4 col-xs-6 "> <strong>@lang('modules.employees.gender')</strong> <br>
+                                <p class="">{{ $employee->gender ?? '-'}}</p>
+                            </div>
                         </div>
-                        <div class="col-xs-6 col-md-4"> <strong>@lang('app.mobile')</strong> <br>
-                            <p class="text-muted">{{ $employee->mobile ?? '-'}}</p>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('modules.employees.identityCardNumber')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->id_no)) ? ucwords($employee->employeeDetail->id_no) : '-' }}</p>
+    
+                            </div>
+                            <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('modules.employees.issueDate')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->issue_date)) ? ucwords($employee->employeeDetail->issue_date) : '-' }}</p>
+                            </div>
+                            <div class="col-md-4 col-xs-6 "> <strong>@lang('modules.employees.placeOfIssue')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->place_of_issue)) ? ucwords($employee->employeeDetail->place_of_issue) : '-' }}</p>
+                            </div>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('app.email')</strong> <br>
-                            <p class="text-muted">{{ $employee->email }}</p>
-                        </div>
-                        <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('modules.employees.slackUsername')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail)) ? '@'.$employee->employeeDetail->slack_username : '-' }}</p>
-                        </div>
-                        <div class="col-md-4 col-xs-6"> <strong>@lang('modules.employees.joiningDate')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail)) ? $employee->employeeDetail->joining_date->format($global->date_format) : '-' }}</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('modules.employees.identityCardNumber')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->id_no)) ? ucwords($employee->employeeDetail->id_no) : '-' }}</p>
-
-                        </div>
-                        <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('modules.employees.issueDate')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->issue_date)) ? ucwords($employee->employeeDetail->issue_date) : '-' }}</p>
-                        </div>
-                        <div class="col-md-4 col-xs-6 "> <strong>@lang('modules.employees.placeOfIssue')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->place_of_issue)) ? ucwords($employee->employeeDetail->place_of_issue) : '-' }}</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('modules.employees.date_of_birth')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->date_of_birth)) ? ucwords($employee->employeeDetail->date_of_birth) : '-' }}</p>
-
-                        </div>
-                        <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('modules.employees.gender')</strong> <br>
-                            <p class="text-muted">{{ $employee->gender ?? '-'}}</p>
-                        </div>
-                        <div class="col-md-4 col-xs-6"> <strong>@lang('app.skills')</strong> <br>
-                            {{implode(', ', $employee->skills()) }}
-
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 col-xs-6 b-r"> <strong>@lang('modules.employees.perAddress')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->permanent_address)) ? ucwords($employee->employeeDetail->permanent_address) : '-' }}</p>
+                            </div>
+                            <div class="col-md-4 col-xs-6 "> <strong>@lang('modules.employees.temResAddress')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->temporary_address)) ? ucwords($employee->employeeDetail->temporary_address) : '-' }}</p>
+                            </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6 col-xs-6 b-r"> <strong>@lang('app.designation')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->designation)) ? ucwords($employee->employeeDetail->designation->name) : '-' }}</p>
+                    <hr class="space">
+                    <div class="info-person">
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6 b-r"> <strong>@lang('modules.employees.slackUsername')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail)) ? '@'.$employee->employeeDetail->slack_username : '-' }}</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6"> <strong>@lang('modules.employees.joiningDate')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail)) ? $employee->employeeDetail->joining_date->format($global->date_format) : '-' }}</p>
+                            </div>
                         </div>
-                        <div class="col-md-6 col-xs-6"> <strong>@lang('app.department')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->department)) ? ucwords($employee->employeeDetail->department->team_name) : '-' }}</p>
-
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6 b-r"> <strong>@lang('app.designation')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->designation)) ? ucwords($employee->employeeDetail->designation->name) : '-' }}</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6"> <strong>@lang('app.department')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->department)) ? ucwords($employee->employeeDetail->department->team_name) : '-' }}</p>
+    
+                            </div>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6 col-xs-6 b-r"> <strong>@lang('modules.employees.perAddress')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->permanent_address)) ? ucwords($employee->employeeDetail->permanent_address) : '-' }}</p>
-                        </div>
-                        <div class="col-md-6 col-xs-6 "> <strong>@lang('modules.employees.temResAddress')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->temporary_address)) ? ucwords($employee->employeeDetail->temporary_address) : '-' }}</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6 col-xs-6 b-r"> <strong>@lang('modules.employees.probationnarySalary')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->prob_salary)) ? ucwords($employee->employeeDetail->prob_salary) : '-' }}</p>
-                        </div>
-                        <div class="col-md-6 col-xs-6"> <strong>@lang('modules.employees.officePaidSalary')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->office_salary)) ? ucwords($employee->employeeDetail->office_salary) : '-' }}</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6 col-xs-6 b-r"> <strong>@lang('modules.employees.accountOwner')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->bankAccount) && !is_null($employee->bankAccount->account_owner)) ? ucwords($employee->bankAccount->account_owner) : '-' }}</p>
-                        </div>
-                        <div class="col-md-6 col-xs-6"> <strong>@lang('modules.employees.accountNumber')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->bankAccount) && !is_null($employee->bankAccount->account_number)) ? ucwords($employee->bankAccount->account_number) : '-' }}</p>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 col-xs-6"> <strong>@lang('app.skills')</strong> <br>
+                                {{implode(', ', $employee->skills()) }}
+                            </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6 col-xs-6 b-r"> <strong>@lang('modules.employees.bankName')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->bankAccount) && !is_null($employee->bankAccount->bank_name)) ? ucwords($employee->bankAccount->bank_name) : '-' }}</p>
+                    <hr class="space">
+                    <div class="info-person">
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6 b-r"> <strong>@lang('modules.employees.probationnarySalary')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->prob_salary)) ? ucwords($employee->employeeDetail->prob_salary) : '-' }}</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6"> <strong>@lang('modules.employees.officePaidSalary')</strong> <br>
+                                <p class="">{{ (!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->office_salary)) ? ucwords($employee->employeeDetail->office_salary) : '-' }}</p>
+                            </div>
                         </div>
-                        <div class="col-md-6 col-xs-6"> <strong>@lang('modules.employees.branch')</strong> <br>
-                            <p class="text-muted">{{ (!is_null($employee->bankAccount) && !is_null($employee->bankAccount->branch)) ? ucwords($employee->bankAccount->branch) : '-' }}</p>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6 b-r"> <strong>@lang('modules.employees.accountOwner')</strong> <br>
+                                <p class="">{{ (!is_null($employee->bankAccount) && !is_null($employee->bankAccount->account_owner)) ? ucwords($employee->bankAccount->account_owner) : '-' }}</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6"> <strong>@lang('modules.employees.accountNumber')</strong> <br>
+                                <p class="">{{ (!is_null($employee->bankAccount) && !is_null($employee->bankAccount->account_number)) ? ucwords($employee->bankAccount->account_number) : '-' }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6 b-r"> <strong>@lang('modules.employees.bankName')</strong> <br>
+                                <p class="">{{ (!is_null($employee->bankAccount) && !is_null($employee->bankAccount->bank_name)) ? ucwords($employee->bankAccount->bank_name) : '-' }}</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6"> <strong>@lang('modules.employees.branch')</strong> <br>
+                                <p class="">{{ (!is_null($employee->bankAccount) && !is_null($employee->bankAccount->branch)) ? ucwords($employee->bankAccount->branch) : '-' }}</p>
+                            </div>
                         </div>
                     </div>
-                    <hr>
+                   
              
                     {{--Custom fields data--}}
                         @if(isset($fields))

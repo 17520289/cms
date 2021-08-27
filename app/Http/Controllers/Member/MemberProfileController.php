@@ -64,7 +64,7 @@ class MemberProfileController extends MemberBaseController
      */
     public function update(UpdateProfile $request, $id)
     {
-      
+
         config(['filesystems.default' => 'local']);
         $user = User::withoutGlobalScope('active')->findOrFail($id);
         $user->name = $request->input('name');
@@ -105,29 +105,29 @@ class MemberProfileController extends MemberBaseController
             $employee = new EmployeeDetails();
             $employee->user_id = $user->id;
         }
-        $employee->	date_of_birth = $request->date_of_birth;
-        $employee->	permanent_address = $request->permanent_address;
-        $employee->	slack_username = $request->slack_username;
-        $employee->	id_no = $request->id_no;
-        $employee->	issue_date = $request->issue_date;
-        $employee->	place_of_issue = $request->place_of_issue;
-        $employee->	temporary_address = $request->temporary_address;
-       
+        
+        $employee->date_of_birth = $request->date_of_birth;
+        $employee->permanent_address = $request->permanent_address;
+        $employee->slack_username = $request->slack_username;
+        $employee->id_no = $request->id_no;
+        $employee->issue_date = $request->issue_date;
+        $employee->place_of_issue = $request->place_of_issue;
+        $employee->temporary_address = $request->temporary_address;
+
         $employee->save();
 
-
-         //update bank account 
-         $bankAccount = BankAccount::where('user_id', '=', $user->id)->first();
-         if (empty($bankAccount)) {
+        //update bank account 
+        $bankAccount = BankAccount::where('user_id', '=', $user->id)->first();
+        if (empty($bankAccount)) {
             $bankAccount = new BankAccount();
             $bankAccount->user_id = $user->id;
         }
-         $bankAccount->account_owner= $request->account_owner;
-         $bankAccount->account_number= $request->account_number;
-         $bankAccount->bank_name= $request->bank_name;
-         $bankAccount->branch= $request->branch;
+        $bankAccount->account_owner = $request->account_owner;
+        $bankAccount->account_number = $request->account_number;
+        $bankAccount->bank_name = $request->bank_name;
+        $bankAccount->branch = $request->branch;
 
-         $bankAccount->save();
+        $bankAccount->save();
         session()->forget('user');
 
 
@@ -142,7 +142,8 @@ class MemberProfileController extends MemberBaseController
         $user->save();
     }
 
-    public function changeLanguage(Request $request) {
+    public function changeLanguage(Request $request)
+    {
         $setting = User::findOrFail($this->user->id);
         $setting->locale = $request->input('lang');
         $setting->save();
