@@ -356,6 +356,11 @@
     .info-person .panel-heading{
         text-align: center;
     }
+    .space{
+        margin-top: 50px;
+        margin-bottom: 50px;
+        
+    }
 </style>
 </head>
 <body class="fix-sidebar @if($rtl == 1) rtl @endif">

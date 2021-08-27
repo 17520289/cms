@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'salary' => 'salary',
   'loginAsEmployee' => 'Login As Employee',
   'ogImage' => 'Og Image',
   'loginAsAdmin' => 'Login As Admin',
@@ -112,6 +113,8 @@ return array (
   ),
   'menu' => 
   array (
+    'bankAccount' => "Bank Account",
+    'bankAccountList' => "Bank Account List",
     'holidaylistof'=> 'Holiday List Of ',
     'home' => 'Home',
     'dashboard' => 'Dashboard',

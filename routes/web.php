@@ -433,6 +433,9 @@ Route::group(['middleware' => 'auth'], function () {
                         Route::resource('employee-docs', 'EmployeeDocsController');
                     }
                 );
+                
+                //Bank Account
+                Route::get('bankaccounts', 'BankAccountController@index')->name('bankaccounts.index');
 
                 Route::post('projects/gantt-task-update/{id}', ['uses' => 'ManageProjectsController@updateTaskDuration'])->name('projects.gantt-task-update');
                 Route::get('projects/ajaxCreate/{columnId?}', ['uses' => 'ManageProjectsController@ajaxCreate'])->name('projects.ajaxCreate');

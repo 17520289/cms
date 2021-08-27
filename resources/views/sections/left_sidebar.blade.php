@@ -179,6 +179,7 @@
                     <ul class="nav nav-second-level {{ request()->is('admin/leave*') ? 'collapse in' : '' }}">
                         @if(in_array('employees',$modules))
                             <li><a href="{{ route('admin.employees.index') }}">@lang('app.menu.employeeList')</a></li>
+                            <li><a href="{{ route('admin.bankaccounts.index') }}">@lang('app.menu.bankAccount')</a></li>
                             <li><a href="{{ route('admin.teams.index') }}">@lang('app.department')</a></li>
                             <li><a href="{{ route('admin.designations.index') }}">@lang('app.menu.designation')</a></li>
                         @endif

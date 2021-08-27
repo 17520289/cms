@@ -213,7 +213,7 @@ return array (
   ),
   'employees' => 
   array (
-
+    'selectBankName' => 'Select Bank Name',
     'addNewEmployee' => 'Add New Employee',
     'editEmployee' => 'Edit Employee',
     'createTitle' => 'Add Employee Info',

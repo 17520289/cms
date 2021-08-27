@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'salary' => 'Lương',
   'loginAsEmployee' => 'Login As Employee',
   'ogImage' => 'Og Image',
   'loginAsAdmin' => 'Login As Admin',
@@ -112,6 +113,8 @@ return array (
   ),
   'menu' => 
   array (
+    'bankAccount' => 'Tài Khoản Ngân Hàng',
+    'bankAccountList' => 'Danh Sách Tài Khoản Ngân Hàng',
     'holidaylistof' => 'Danh Sách Ngày Lễ Năm',
     'home' => 'Trang Chủ',
     'dashboard' => 'Bảng Điều Khiển',
