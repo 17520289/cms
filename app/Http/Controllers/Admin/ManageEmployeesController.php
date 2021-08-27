@@ -122,6 +122,7 @@ class ManageEmployeesController extends AdminBaseController
         if (!is_null($company->employees) && $company->package->max_employees < $company->employees->count()) {
             return Reply::error(__('messages.downGradePackageForAddEmployees', ['employeeCount' => company()->employees->count(), 'maxEmployees' => $company->package->max_employees]));
         }
+
         DB::beginTransaction();
         try {
             $data = $request->all();
@@ -142,18 +143,18 @@ class ManageEmployeesController extends AdminBaseController
             $user->employeeDetail()->create([
                 'employee_id' => $request->employee_id,
                 'slack_username' => $request->slack_username,
-                'joining_date' => Carbon::createFromFormat($this->global->date_format, $request->joining_date)->format('Y-m-d'),
+                'joining_date' => $this->checkInputDate($request->joining_date),
                 'last_date' => ($request->last_date != '') ? Carbon::createFromFormat($this->global->date_format, $request->last_date)->format('Y-m-d') : null,
                 'department_id' => $request->department,
                 'designation_id' => $request->designation,
                 'permanent_address' => $request->permanent_address,
-                'temporary_address'=> $request->temporary_address,
-                'id_no'=> $request->id_no,
-                'issue_date'=> $request-> Carbon::createFromFormat($this->global->date_format, $request->issue_date)->format('Y-m-d'),
-                'date_of_birth'=> $request-> Carbon::createFromFormat($this->global->date_format, $request->date_of_birth)->format('Y-m-d'),
-                'place_of_issue'=> $request->place_of_issue,
-                'prob_salary'=> $request->prob_salary,
-                'office_salary'=> $request->office_salary,
+                'temporary_address' => $request->temporary_address,
+                'id_no' => $request->id_no,
+                'issue_date' => $this->checkInputDate($request->issue_date),
+                'date_of_birth' => $this->checkInputDate($request->date_of_birth),
+                'place_of_issue' => $request->place_of_issue,
+                'prob_salary' => $request->prob_salary,
+                'office_salary' => $request->office_salary,
             ]);
             $user->bankAccount()->create([
                 'account_owner' => $request->account_owner,
@@ -187,7 +188,6 @@ class ManageEmployeesController extends AdminBaseController
             return Reply::error('Please configure SMTP details to add employee. Visit Settings -> Email setting to set SMTP', 'smtp_error');
         } catch (\Exception $e) {
             DB::rollback();
-
             return Reply::error('Some error occured when inserting the data. Please try again or contact support');
         }
         $this->logSearchEntry($user->id, $user->name, 'admin.employees.show', 'employee');
@@ -213,7 +213,7 @@ class ManageEmployeesController extends AdminBaseController
      * @param int $id
      * @return \Illuminate\Http\Response
      * 
-     * edric - 25/8/2021
+     * Edric - 25/8/2021
      */
     public function show($id)
     {
@@ -329,54 +329,64 @@ class ManageEmployeesController extends AdminBaseController
             }
         }
 
-        //update employee detail
+        // //update employee detail
         $employee = EmployeeDetails::where('user_id', '=', $user->id)->first();
         if (empty($employee)) {
             $employee = new EmployeeDetails();
             $employee->user_id = $user->id;
         }
         $employee->employee_id = $request->employee_id;
-        $employee->address = $request->address;
-        $employee->hourly_rate = $request->hourly_rate;
         $employee->slack_username = $request->slack_username;
         $employee->joining_date = Carbon::createFromFormat($this->global->date_format, $request->joining_date)->format('Y-m-d');
-      
-        $employee->last_date = null;
-
-        if ($request->last_date != '') {
-            $employee->last_date = Carbon::createFromFormat($this->global->date_format, $request->last_date)->format('Y-m-d');
-        }
+        $employee->last_date = $this->checkInputDate($request->last_date);
 
         // Edric - [#41] update employee_details
         $employee->department_id = $request->department;
         $employee->designation_id = $request->designation;
-        $employee->date_of_birth=  Carbon::createFromFormat($this->global->date_format, $request->date_of_birth)->format('Y-m-d');
-        $employee->permanent_address= $request->permanent_address;
-        $employee->temporary_address= $request->temporary_address;
-        $employee->id_no= $request->id_no;
-        $employee->issue_date= Carbon::createFromFormat($this->global->date_format, $request->issue_date)->format('Y-m-d'); 
-        $employee->place_of_issue= $request->place_of_issue;
-        $employee->office_salary= $request->office_salary;
-        $employee->prob_salary= $request->prob_salary;
+        $employee->date_of_birth = $this->checkInputDate($employee->date_of_birth); 
+        $employee->permanent_address = $request->permanent_address;
+        $employee->temporary_address = $request->temporary_address;
+        $employee->id_no = $request->id_no;
+        $employee->issue_date = $this->checkInputDate($request->issue_date);
+        $employee->place_of_issue = $request->place_of_issue;
+        $employee->office_salary = $request->office_salary;
+        $employee->prob_salary = $request->prob_salary;
 
         $employee->save();
 
-        // To add custom fields data
+        //To add custom fields data
         if ($request->get('custom_fields_data')) {
             $employee->updateCustomFieldData($request->get('custom_fields_data'));
         }
 
         //update bank account 
-        $bankAccount = BankAccount::where('user_id', '=', $user->id)->first();
-        $bankAccount->account_owner= $request->account_owner;
-        $bankAccount->account_number= $request->account_number;
-        $bankAccount->bank_name= $request->bank_name;
-        $bankAccount->branch= $request->branch;
+        $bankAccount = BankAccount::where('user_id',  $user->id)->first();
+        if (empty($bankAccount)) {
+            $bankAccount = new BankAccount();
+            $bankAccount->user_id = $user->id;
+        }
+        $bankAccount->account_owner = $request->account_owner;
+        $bankAccount->account_number = $request->account_number;
+        $bankAccount->bank_name = $request->bank_name;
+        $bankAccount->branch = $request->branch;
+
         $bankAccount->save();
-       
+
         session()->forget('user');
 
         return Reply::redirect(route('admin.employees.index'), __('messages.employeeUpdated'));
+    }
+
+    /**
+     * check input date to store.
+     *
+     * @param string $intputDate
+     * @return $inputDate or null
+     * 
+     * Edric - 27/8/2021
+     */
+    public function checkInputDate($inputDate){
+        return $inputDate !='' ? Carbon::createFromFormat($this->global->date_format, $inputDate)->format('Y-m-d') : null;
     }
 
     /**
@@ -450,7 +460,6 @@ class ManageEmployeesController extends AdminBaseController
                     }
                     return '<span class="text-success">' . $row->due_date->format($this->global->date_format) . '</span>';
                 }
-
             })
             ->editColumn('heading', function ($row) {
                 $name = '<a href="javascript:;" data-task-id="' . $row->id . '" class="show-task-detail">' . ucfirst($row->heading) . '</a>';

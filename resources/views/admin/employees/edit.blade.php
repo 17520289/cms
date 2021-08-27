@@ -157,7 +157,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>@lang('modules.employees.issueDate')</label>
-                                            <input type="text" autocomplete="off"  name="issue_date" id="issue_date" class="form-control" @if($employeeDetail) value="{{ $employeeDetail->issue_date}}"
+                                            <input type="text" autocomplete="off"  name="issue_date" id="issue_date" class="form-control" @if($employeeDetail) @if($employeeDetail->issue_date) value="{{ $employeeDetail->issue_date}}" @endif
                                             @endif>
                                         </div>
                                     </div>
@@ -186,7 +186,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="required">@lang('modules.employees.joiningDate')</label>
-                                            <input type="text" autocomplete="off"  name="joining_date" id="joining_date" class="form-control" @if($employeeDetail) value="{{ $employeeDetail->joining_date->format($global->date_format) }}"
+                                            <input type="text" autocomplete="off"  name="joining_date" id="joining_date" class="form-control" @if($employeeDetail) @if($employeeDetail->joining_date)  value="{{ $employeeDetail->joining_date->format($global->date_format) }}"  @endif
                                             @endif>
                                         </div>
                                     </div>
@@ -596,7 +596,7 @@
         })()
 </script>
 <script>
-    $("#joining_date, #date_of_birth,#issue_date, #end_date, .date-picker").datepicker({
+    $("#joining_date,  #date_of_birth ,#issue_date , #end_date, .date-picker").datepicker({
             todayHighlight: true,
             autoclose: true,
             weekStart:'{{ $global->week_start }}',
@@ -612,6 +612,7 @@
                 file: (document.getElementById("image").files.length == 0) ? false : true,
                 data: $('#updateEmployee').serialize()
             })
+
         });
 
         $('#department-setting').on('click', function (event) {

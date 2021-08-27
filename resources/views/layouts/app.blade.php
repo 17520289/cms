@@ -348,7 +348,7 @@
 <style>
     .info-person{
         background-color: rgb(246, 247, 249);
-        padding: 0px 15px;
+        padding: 5px 15px;
         border-radius: 5px;
         margin-bottom: 60px;
         border: 1px solid LightGray;
@@ -359,7 +359,6 @@
     .space{
         margin-top: 50px;
         margin-bottom: 50px;
-        
     }
 </style>
 </head>

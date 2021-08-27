@@ -43,6 +43,7 @@ class UpdateRequest extends CoreRequest
             'hourly_rate' => 'nullable|numeric',
             'department' => 'required',
             'designation' => 'required',
+            'joining_date' => 'required',
         ];
     }
 }
