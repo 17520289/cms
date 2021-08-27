@@ -214,6 +214,7 @@ return array(
         ),
     'employees' =>
         array(
+            'selectBankName' => 'Chọn Tên Ngân Hàng',
             'addNewEmployee' => 'Thêm Mới Nhân Viên',
             'editEmployee' => 'Sửa Nhân Viên',
             'createTitle' => 'Thêm Thông Tin Nhân Viên',
