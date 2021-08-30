@@ -337,13 +337,13 @@ class ManageEmployeesController extends AdminBaseController
         }
         $employee->employee_id = $request->employee_id;
         $employee->slack_username = $request->slack_username;
-        $employee->joining_date = Carbon::createFromFormat($this->global->date_format, $request->joining_date)->format('Y-m-d');
+        $employee->joining_date =  $this->checkInputDate($request->joining_date);
         $employee->last_date = $this->checkInputDate($request->last_date);
 
         // Edric - [#41] update employee_details
         $employee->department_id = $request->department;
         $employee->designation_id = $request->designation;
-        $employee->date_of_birth = $this->checkInputDate($employee->date_of_birth); 
+        $employee->date_of_birth = $this->checkInputDate($request->date_of_birth); 
         $employee->permanent_address = $request->permanent_address;
         $employee->temporary_address = $request->temporary_address;
         $employee->id_no = $request->id_no;
