@@ -82,7 +82,7 @@
                         <div class="form-group">
                             <label class="control-label" >@lang('modules.attendance.late')</label>
                             <div class="switchery-demo">
-                                <input type="checkbox" class="js-switch change-module-setting" data-color="#ed4040" id="late"  />
+                                <input type="checkbox" name="late" class="js-switch change-module-setting" data-color="#ed4040" id="late"  />
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                         <div class="form-group">
                             <label class="control-label" >@lang('modules.attendance.halfDay')</label>
                             <div class="switchery-demo">
-                                <input type="checkbox" class="js-switch change-module-setting" data-color="#ed4040" id="halfday"  />
+                                <input type="checkbox" name="half_day" class="js-switch change-module-setting" data-color="#ed4040" id="half_day"  />
                             </div>
                         </div>
                     </div>
