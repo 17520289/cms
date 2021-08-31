@@ -93,7 +93,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label" >@lang('modules.attendance.halfDay')</label>
                                                     <div class="switchery-demo">
-                                                        <input type="checkbox" name="halfday"  @if($row->half_day == "yes") checked @endif class="js-switch change-module-setting" data-color="#ed4040" id="halfday"  />
+                                                        <input type="checkbox" name="half_day"  @if($row->half_day == "yes") checked @endif class="js-switch change-module-setting" data-color="#ed4040" id="half_day"  />
                                                     </div>
                                                 </div>
                                             </div>
