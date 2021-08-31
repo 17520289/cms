@@ -213,10 +213,14 @@ return array (
   ),
   'employees' => 
   array (
+    'errEmail' => "Please enter an email address.",
+    'errMobile' => 'Not a valid 9 -digit phone number.',
+    'errIdNo' => 'Must have at least 9 numbers to at most 12.',
+    'errPass' => 'Not contain space and Vietnamese characters.',
     'selectBankName' => 'Select Bank Name',
     'addNewEmployee' => 'Add New Employee',
     'editEmployee' => 'Edit Employee',
-    'createTitle' => 'Add Employee Info',
+    'cre  ateTitle' => 'Add Employee Info',
     'employeeName' => 'Employee Name',
     'employeeEmail' => 'Employee Email',
     'emailNote' => 'Employee will login using this email.',

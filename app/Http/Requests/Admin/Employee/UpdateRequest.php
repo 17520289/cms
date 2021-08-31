@@ -44,6 +44,8 @@ class UpdateRequest extends CoreRequest
             'department' => 'required',
             'designation' => 'required',
             'joining_date' => 'required',
+            'mobile' => 'nullable|size:9',
+            'id_no' => 'nullable|min:9|max:12',
         ];
     }
 }
