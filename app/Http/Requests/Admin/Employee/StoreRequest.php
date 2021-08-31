@@ -28,12 +28,15 @@ class StoreRequest extends CoreRequest
             "employee_id" => "required|unique:employee_details",
             "name" => "required",
             "email" => "required|email|unique:users",
-            "password" => "required|min:6",
+            'password' => 'required|min:8',
             'slack_username' => 'nullable|unique:employee_details,slack_username',
             'hourly_rate' => 'nullable|numeric',
             'joining_date' => 'required',
             'department' => 'required',
             'designation' => 'required',
+            'mobile' => 'nullable|size:9',
+            'id_no' => 'nullable|min:9|max:12',
+            'password' => 'regex:/^[\w(!@#$%^&*()_+\-={};,.<>?)][^\s(àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ)]{7,32}$/'
         ];
 
         if (request()->get('custom_fields_data')) {

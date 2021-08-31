@@ -61,6 +61,7 @@
                                             <div class="form-group">
                                                 <label class="required">@lang('modules.employees.employeeEmail')</label>
                                                 <input type="email" name="email" id="email" class="form-control"  value="{{ $userDetail->email }}" autocomplete="nope" >
+                                                <span style="display:none; color:red" id="errEmail"> @lang('modules.employees.errEmail') </span>
                                                 <span class="help-block">@lang('modules.employees.emailNote')</span>
                                             </div>
                                         </div>
@@ -71,6 +72,7 @@
                                                 <input type="password" style="display: none">
                                                 <input type="password" name="password" id="password" class="form-control" autocomplete="nope">
                                                 <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                                <span style="display:none; color:red" id="errPass"> @lang('modules.employees.errPass') </span>
                                                 <span class="help-block"> @lang('modules.profile.passwordNote') </span>
                                             </div>
                                         </div>
@@ -81,7 +83,8 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>@lang('app.mobile')</label>
-                                                <input type="tel" name="mobile" id="mobile" class="form-control" autocomplete="nope"  value="{{ $userDetail->mobile }}" >
+                                                <input type="tel" name="mobile" id="mobile" onkeypress='validate(event)' class="form-control" autocomplete="nope"  value="{{ $userDetail->mobile }}" >
+                                                <span style="display:none; color:red" id="errMobile"> @lang('modules.employees.errMobile') </span>
                                             </div>
                                         </div>
     
@@ -133,8 +136,9 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>@lang('modules.employees.identityCardNumber')</label>
-                                                    <input autocomplete="nope" type="text" id="id_no" name="id_no" class="form-control" @if($employeeDetail) value="{{ $employeeDetail->id_no}}"
+                                                    <input autocomplete="nope" type="text" id="id_no" onkeypress='validate(event)' name="id_no" class="form-control" @if($employeeDetail) value="{{ $employeeDetail->id_no}}"
                                                     @endif>
+                                                    <span style="display:none; color:red" id="errIdNo"> @lang('modules.employees.errIdNo') </span>
                                             </div>
                                         </div>
                                         <!--/span-->           
@@ -216,14 +220,14 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label >@lang('modules.employees.probationnarySalary')  ({{ $global->currency->currency_code }})</label>
-                                                <input type="text" name="prob_salary" id="prob_salary" class="form-control" readonly @if($employeeDetail) value="{{ $employeeDetail->prob_salary}}"
+                                                <input type="text" name="prob_salary" id="prob_salary" onkeypress='validate(event)' class="form-control" readonly @if($employeeDetail) value="{{ $employeeDetail->prob_salary}}"
                                                 @endif>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label >@lang('modules.employees.officePaidSalary')  ({{ $global->currency->currency_code }})</label>
-                                                <input type="text" name="office_salary" id="office_salary" class="form-control" readonly @if($employeeDetail) value="{{ $employeeDetail->office_salary}}"
+                                                <input type="text" name="office_salary" id="office_salary" onkeypress='validate(event)' class="form-control" readonly @if($employeeDetail) value="{{ $employeeDetail->office_salary}}"
                                                 @endif>
                                             </div>
                                         </div>
@@ -395,6 +399,7 @@
     <script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
     <script src="{{ asset('plugins/bower_components/custom-select/custom-select.min.js') }}"></script>
     <script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('plugins/validate/validate-employee.js') }}"></script>
 <script>
     var input = document.querySelector('input[name=tags]'),
                 // init Tagify script on the above inputs

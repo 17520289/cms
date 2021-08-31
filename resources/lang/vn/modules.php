@@ -214,6 +214,10 @@ return array(
         ),
     'employees' =>
         array(
+            'errEmail' => "Hãy nhập đúng định dạng email.",
+            'errMobile' => 'Hãy nhập 9 số.',
+            'errIdNo' => 'Hãy nhập ít nhất 9, nhiều nhất 12.',
+            'errPass' => 'Ít nhất 8 kí tự, không khoảng trắng và ký tự Việt.',
             'selectBankName' => 'Chọn Tên Ngân Hàng',
             'addNewEmployee' => 'Thêm Mới Nhân Viên',
             'editEmployee' => 'Sửa Nhân Viên',
