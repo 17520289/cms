@@ -70,36 +70,48 @@
         <div class="col-xs-12">
             <div class="white-box">
                 <div class="row">
-                    <div class="col-md-4">
+                    {{-- <div class="col-md-4">
                         <label class="control-label">@lang('app.selectDateRange')</label>
 
                         <div class="form-group">
                             <input class="form-control input-daterange-datepicker" type="text" name="daterange"
                                    value="{{ $startDate->format($global->date_format).' - '.$endDate->format($global->date_format) }}"/>
                         </div>
+                    </div> --}}
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">@lang('app.select') @lang('app.month')</label>
+                            <select class="select2 form-control" data-placeholder="" id="month">
+                                <option @if($month == '01') selected @endif value="01">@lang('app.january')</option>
+                                <option @if($month == '02') selected @endif value="02">@lang('app.february')</option>
+                                <option @if($month == '03') selected @endif value="03">@lang('app.march')</option>
+                                <option @if($month == '04') selected @endif value="04">@lang('app.april')</option>
+                                <option @if($month == '05') selected @endif value="05">@lang('app.may')</option>
+                                <option @if($month == '06') selected @endif value="06">@lang('app.june')</option>
+                                <option @if($month == '07') selected @endif value="07">@lang('app.july')</option>
+                                <option @if($month == '08') selected @endif value="08">@lang('app.august')</option>
+                                <option @if($month == '09') selected @endif value="09">@lang('app.september')</option>
+                                <option @if($month == '10') selected @endif value="10">@lang('app.october')</option>
+                                <option @if($month == '11') selected @endif value="11">@lang('app.november')</option>
+                                <option @if($month == '12') selected @endif value="12">@lang('app.december')</option>
+                            </select>
+                        </div>
                     </div>
-
-                    @if($user->cans('view_attendance'))
-                        <div class="col-md-4">
-
-                            <div class="form-group">
-                                <label class="control-label">@lang('modules.timeLogs.employeeName')</label>
-                                <select class="select2 form-control" data-placeholder="Choose Employee" id="user_id" name="user_id">
-                                    @foreach($employees as $employee)
-                                        <option @if($userId == $employee->id) selected @endif value="{{ $employee->id }}">{{ ucwords($employee->name) }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">@lang('app.select') @lang('app.year')</label>
+                            <select class="select2 form-control" data-placeholder="" id="year">
+                                @for($i = $year; $i >= ($year-4); $i--)
+                                    <option @if($i == $year) selected @endif value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
                         </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group m-t-25">
-                                <button type="button" id="apply-filter" class="btn btn-success btn-sm">@lang('app.apply')</button>
-                            </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group m-t-20">
+                            <button type="button" id="apply-filter" class="btn btn-info btn-block">@lang('app.apply')</button>
                         </div>
-                    @endif
-
+                    </div>
 
                 </div>
 
@@ -133,7 +145,10 @@
 
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-xs-12" id="attendance-data"></div>
+        </div>
+       
         <div class="col-xs-12">
             <div class="white-box">
 
@@ -178,8 +193,8 @@
 <script src="{{ asset('plugins/bower_components/counterup/jquery.counterup.min.js') }}"></script>
 
 <script>
-    var startDate = '{{ $startDate->format('Y-m-d') }}';
-    var endDate = '{{ $endDate->format('Y-m-d') }}';
+    // var startDate = '{{ $startDate->format('Y-m-d') }}';
+    // var endDate = '{{ $endDate->format('Y-m-d') }}';
 
     $('.input-daterange-datepicker').daterangepicker({
         buttonClasses: ['btn', 'btn-sm'],
@@ -232,22 +247,64 @@
 
     var table;
 
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+    
     function showTable() {
-
-
 
         var userId = $('#user_id').val();
         if (typeof userId === 'undefined') {
             userId = '{{ $userId}}';
         }
-
+        
+        var year = $('#year').val();
+        var month = $('#month').val();
+        var  startDate = formatDate(new Date(year, month-1, 1));
+        var endDate = formatDate(new Date(year, month , 0));
 
         //refresh counts
+        var urlAtten = '{!!  route('member.attendances.attendanceData') !!}';
+
+        var token = "{{ csrf_token() }}";
+        $.easyAjax({
+            type: 'POST',
+            data: {
+                '_token': token,
+                year: year,
+                month: month,
+                startDate: startDate,
+                endDate: endDate
+                
+            },
+            url: urlAtten,
+            success: function (response) {
+               $('#attendance-data').html(response.data);
+            }
+        });
+
+        //refresh counts
+        // var startDate = '{{ $startDate->format('Y-m-d') }}';
+        // var endDate = '{{ $endDate->format('Y-m-d') }}';
+
+       
+        console.log(startDate);
+
         var url = '{!!  route('member.attendances.refreshCount', [':startDate', ':endDate', ':userId']) !!}';
         url = url.replace(':startDate', startDate);
         url = url.replace(':endDate', endDate);
         url = url.replace(':userId', userId);
-
+       
         $.easyAjax({
             type: 'GET',
             url: url,
@@ -323,7 +380,40 @@
     }
 
     showTable();
+    $('#attendance-data').on('click', '.view-attendance',function () {
+        var attendanceID = $(this).data('attendance-id');
+        var url = '{!! route('member.attendances.info', ':attendanceID') !!}';
+        url = url.replace(':attendanceID', attendanceID);
 
+        $('#modelHeading').html('{{__("app.menu.attendance") }}');
+        $.ajaxModal('#projectTimerModal', url);
+    });
+
+    $('#attendance-data').on('click', '.edit-attendance',function (event) {
+        var attendanceDate = $(this).data('attendance-date');
+        var userData       = $(this).closest('tr').children('td:first');
+        var userID         = userData[0]['firstChild']['nextSibling']['dataset']['employeeId'];
+        var year           = $('#year').val();
+        var month          = $('#month').val();
+
+        var url = '{!! route('admin.attendances.mark', [':userid',':day',':month',':year',]) !!}';
+        url = url.replace(':userid', userID);
+        url = url.replace(':day', attendanceDate);
+        url = url.replace(':month', month);
+        url = url.replace(':year', year);
+
+        $('#modelHeading').html('{{__("app.menu.attendance") }}');
+        $.ajaxModal('#projectTimerModal', url);
+    });
+    function editAttendance (id) {
+        $('#projectTimerModal').modal('hide');
+
+        var url = '{!! route('member.attendances.edit', [':id']) !!}';
+        url = url.replace(':id', id);
+        console.log('sri ram');
+        $('#modelHeading').html('{{__("app.menu.attendance") }}');
+        $.ajaxModal('#attendanceModal', url);
+    }
 </script>
 <script>
     $('#clock-in').click(function () {
@@ -365,6 +455,8 @@
         })
     })
     @endif
+
+
 
 </script>
 
