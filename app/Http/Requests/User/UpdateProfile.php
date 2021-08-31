@@ -31,11 +31,11 @@ class UpdateProfile extends CoreRequest
         return [
             'email' => 'required|unique:users,email,'.$this->route('profile'),
             'name'  => 'required',
-            'password'  => 'nullable|min:6',
+            'password'  => 'nullable|min:8',
             'image' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'slack_username' => 'nullable|unique:employee_details,slack_username,'.$detailID->id,
-            'mobile' => 'numeric|min:10',
-            'id_no' => 'nullable|numeric|min:9',
+            'mobile' => 'nullable|min:9',
+            'id_no' => 'nullable|min:9',
             'account_number' => 'nullable|numeric',
         ];
     }

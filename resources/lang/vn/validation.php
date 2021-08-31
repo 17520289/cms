@@ -12,7 +12,7 @@ return array (
   'before' => 'The :attribute must be a date before :date.',
     'invalidEmail' => 'Please enter a valid email address.',
     'invalidEmailPassword' => 'Email and password combination is not correct.',
-    'givenDataInvalid' => 'The given data was invalid.',
+    'givenDataInvalid' => 'Dữ liệu đã cho không hợp lệ.',
   'before_or_equal' => 'The :attribute must be a date before or equal to :date.',
   'between' => 
   array (
@@ -44,7 +44,7 @@ return array (
   array (
     'numeric' => 'The :attribute may not be greater than :max.',
     'file' => 'The :attribute may not be greater than :max kilobytes.',
-    'string' => 'The :attribute may not be greater than :max characters.',
+    'string' => ':attribute có nhiều nhất :max số.',
     'array' => 'The :attribute may not have more than :max items.',
   ),
   'mimes' => 'The :attribute must be a file of type: :values.',
@@ -53,14 +53,14 @@ return array (
   array (
     'numeric' => 'The :attribute must be at least :min.',
     'file' => 'The :attribute must be at least :min kilobytes.',
-    'string' => 'The :attribute must be at least :min characters.',
+    'string' => ':attribute phải có ít nhất :min số.',
     'array' => 'The :attribute must have at least :min items.',
   ),
   'not_in' => 'The selected :attribute is invalid.',
   'numeric' => 'The :attribute must be a number.',
   'present' => 'The :attribute field must be present.',
-  'regex' => 'The :attribute format is invalid.',
-  'required' => 'The :attribute field is required.',
+  'regex' => ':attribute không đúng định dạng. ',
+  'required' => 'Bắt buộc nhập :attribute',
   'required_if' => 'The :attribute field is required when :other is :value.',
   'required_unless' => 'The :attribute field is required unless :other is in :values.',
   'required_with' => 'The :attribute field is required when :values is present.',

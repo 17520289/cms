@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 use App\BankAccount;
-
+use Illuminate\Support\Facades\Validator;
 class ManageEmployeesController extends AdminBaseController
 {
 
@@ -299,7 +299,14 @@ class ManageEmployeesController extends AdminBaseController
         $user->email = $request->input('email');
         $user->locale = $request->input('locale');
         if ($request->password != '') {
-            $user->password = Hash::make($request->input('password'));
+            $validator = Validator::make($request->all(), [
+                'password' => 'regex:/^[\w(!@#$%^&*()_+\-={};,.<>?)][^\s(àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ)]{7,32}$/',
+            ]);
+            if ($validator->fails()) {
+                return Reply::error(__('validation.givenDataInvalid'));
+            }else{
+                $user->password = Hash::make($request->input('password'));
+            }
         }
         $user->mobile = $request->input('mobile');
         $user->country_id = $request->input('phone_code');
