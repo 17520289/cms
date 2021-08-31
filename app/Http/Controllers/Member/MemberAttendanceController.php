@@ -43,12 +43,16 @@ class MemberAttendanceController extends MemberBaseController
      */
     public function index()
     {
+        $now = Carbon::now();
+        $this->year = $now->format('Y');
+        $this->month = $now->format('m');
+
         $openDays = json_decode($this->attendanceSettings->office_open_days);
         $this->startDate = Carbon::today()->timezone($this->global->timezone)->startOfMonth();
         $this->endDate = Carbon::today()->timezone($this->global->timezone);
         $this->employees = User::allEmployees();
         $this->userId = $this->user->id;
-
+        $this->attendances = Attendance::userAttendanceByDate($this->startDate,  $this->endDate, $this->userId); // Getting Attendance Data
         $this->totalWorkingDays = $this->startDate->diffInDaysFiltered(function (Carbon $date) use ($openDays) {
             foreach ($openDays as $day) {
                 if ($date->dayOfWeek == $day) {
@@ -73,6 +77,89 @@ class MemberAttendanceController extends MemberBaseController
         return view('member.attendance.index', $this->data);
     }
 
+
+      /**
+     * Display attendance summary and total attendance of a employee
+     * 
+     * @param Request $rerquest
+     * @return \Illuminate\Http\Response
+     * 
+     * Edric - 31/8/2021
+     */
+    public function attendanceData(Request $request)
+    {
+        $this->month = $request->month;
+        $this->year = $request->year;
+        $this->userId = $this->user->id;
+        $this->startDate = $request->startDate;
+        $this->endDate = $request->endDate;
+        $this->holidays = Holiday::whereRaw('MONTH(holidays.date) = ?', [$request->month])->whereRaw('YEAR(holidays.date) = ?', [$request->year])->get();
+        $this->daysInMonth = Carbon::parse('01-' .$request->month . '-' . $request->year)->daysInMonth;
+        $attendances = Attendance::userAttendanceByDate($this->startDate,  $this->endDate, $this->userId);
+        $month = Carbon::parse('01-' .$request->month . '-' . $request->year)->lastOfMonth();
+        $now = Carbon::now()->timezone($this->global->timezone);
+        $requestedDate = Carbon::parse(Carbon::parse('01-' . $request->month . '-' . $request->year))->endOfMonth();
+        if ($requestedDate->isPast()) {
+            $dataTillToday = array_fill(1, $this->daysInMonth, 'Absent');
+        } else {
+            $dataTillToday = array_fill(1, $now->copy()->format('d'), 'Absent');
+        }
+        $dataFromTomorrow = [];
+        if (($now->copy()->addDay()->format('d') != $this->daysInMonth) && !$requestedDate->isPast()) {
+            $dataFromTomorrow = array_fill($now->copy()->addDay()->format('d'), ($this->daysInMonth - $now->copy()->format('d')), '-');
+        } else {
+            if ($this->daysInMonth < $now->copy()->format('d')) {
+                $dataFromTomorrow = array_fill($month->copy()->addDay()->format('d'), (0), 'Absent');
+            } else {
+                $dataFromTomorrow = array_fill($month->copy()->addDay()->format('d'), ($this->daysInMonth - $now->copy()->format('d')), 'Absent');
+            }
+        }
+
+        $final = array_replace($dataTillToday, $dataFromTomorrow);
+        $totalAbsent = 0.0;
+
+        foreach($attendances as $attendance){
+
+            $d = Carbon::createFromFormat('Y-m-d H:i:s', $attendance->clock_in_time)->day;
+            $jd = gregoriantojd($this->month, $d , $this->year);
+
+            if ($attendance->half_day == 'no' || $attendance->half_day == '') {
+                $totalAbsent += 1;
+            }else{
+                $totalAbsent += 0.5;
+            }
+            if($attendance->clock_in_time->isToday()){
+                $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="Today" class="fa fa-circle text-danger" aria-hidden="true"></i>';
+            }else{
+                if(jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday'){
+                    if($attendance->half_day == 'yes'){
+                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i class="fa fa-times text-warning"></i>';
+                    }else{
+                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i class="fa fa-times text-success"></i>';
+                    }
+                    
+                }else{
+                    if($attendance->half_day == 'yes') {
+                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i class="fa fa-star-half-o  text-warning" aria-hidden="true"></i>';
+                    } else {
+                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i class="fa fa-star text-success" aria-hidden="true"></i>';
+                    }
+                }
+            }
+            
+        }
+
+        foreach ($this->holidays as $holiday) {
+            if ($final[$holiday->date->day] == 'Absent') {
+                $final[$holiday->date->day] = 'Holiday';
+            }
+        }
+        
+        $this->attendencesData = $final;
+        $this->totalAbsent = $totalAbsent;
+        $view = view('member.attendance.attendance_data', $this->data)->render();
+        return Reply::dataOnly(['status' => 'success', 'data' => $view]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -80,7 +167,7 @@ class MemberAttendanceController extends MemberBaseController
      */
     public function create()
     {
-       abort_if(!$this->user->cans('add_attendance'),403);
+        abort_if(!$this->user->cans('add_attendance'), 403);
         return view('member.attendance.create', $this->data);
     }
 
@@ -649,7 +736,7 @@ class MemberAttendanceController extends MemberBaseController
 
     public function mark(Request $request, $userid, $day, $month, $year)
     {
-       abort_if(!$this->user->cans('add_attendance'),403);
+        abort_if(!$this->user->cans('add_attendance'), 403);
 
         $this->date = Carbon::createFromFormat('d-m-Y', $day . '-' . $month . '-' . $year)->format('Y-m-d');
         $this->row = Attendance::attendanceByUserDate($userid, $this->date);
@@ -665,7 +752,7 @@ class MemberAttendanceController extends MemberBaseController
 
     public function storeMark(StoreAttendance $request)
     {
-       abort_if(!$this->user->cans('add_attendance'),403);
+        abort_if(!$this->user->cans('add_attendance'), 403);
 
         $date = Carbon::createFromFormat($this->global->date_format, $request->attendance_date)->format('Y-m-d');
 
