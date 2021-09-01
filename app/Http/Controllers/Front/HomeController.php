@@ -87,72 +87,73 @@ class HomeController extends FrontBaseController
      */
     public function index($slug = null)
     {
-        if ($this->global->setup_homepage == "custom") {
-            return response(file_get_contents($this->global->custom_homepage_url));
-        }
+        return redirect()->route('login');
+        // if ($this->global->setup_homepage == "custom") {
+        //     return response(file_get_contents($this->global->custom_homepage_url));
+        // }
 
-        if ($this->global->setup_homepage == "signup") {
-            return $this->loadSignUpPage();
-        }
+        // if ($this->global->setup_homepage == "signup") {
+        //     return $this->loadSignUpPage();
+        // }
 
-        if ($this->global->setup_homepage == "login") {
-            return $this->loadLoginPage();
-        }
+        // if ($this->global->setup_homepage == "login") {
+        //     return $this->loadLoginPage();
+        // }
 
-        $this->seoDetail = SeoDetail::where('page_name', 'home')->first();
+        // $this->seoDetail = SeoDetail::where('page_name', 'home')->first();
 
-        $this->pageTitle = $this->seoDetail ? $this->seoDetail->seo_title : __('app.menu.home');
-        $this->packages = Package::where('default', 'no')->where('is_private', 0)->orderBy('sort', 'ASC')->get();
+        // $this->pageTitle = $this->seoDetail ? $this->seoDetail->seo_title : __('app.menu.home');
+        // $this->packages = Package::where('default', 'no')->where('is_private', 0)->orderBy('sort', 'ASC')->get();
 
-        $imageFeaturesCount = Feature::select('id', 'language_setting_id', 'type')->where(['language_setting_id' => $this->localeLanguage ? $this->localeLanguage->id : null, 'type' => 'image'])->count();
-        $iconFeaturesCount = Feature::select('id', 'language_setting_id', 'type')->where(['language_setting_id' => $this->localeLanguage ? $this->localeLanguage->id : null, 'type' => 'icon'])->count();
-        $frontClientsCount = FrontClients::select('id', 'language_setting_id')->where('language_setting_id', $this->localeLanguage ? $this->localeLanguage->id : null)->count();
-        $testimonialsCount = Testimonials::select('id', 'language_setting_id')->where('language_setting_id', $this->localeLanguage ? $this->localeLanguage->id : null)->count();
+        // $imageFeaturesCount = Feature::select('id', 'language_setting_id', 'type')->where(['language_setting_id' => $this->localeLanguage ? $this->localeLanguage->id : null, 'type' => 'image'])->count();
+        // $iconFeaturesCount = Feature::select('id', 'language_setting_id', 'type')->where(['language_setting_id' => $this->localeLanguage ? $this->localeLanguage->id : null, 'type' => 'icon'])->count();
+        // $frontClientsCount = FrontClients::select('id', 'language_setting_id')->where('language_setting_id', $this->localeLanguage ? $this->localeLanguage->id : null)->count();
+        // $testimonialsCount = Testimonials::select('id', 'language_setting_id')->where('language_setting_id', $this->localeLanguage ? $this->localeLanguage->id : null)->count();
 
-        $this->featureWithImages = Feature::where([
-            'language_setting_id' => $imageFeaturesCount > 0 ? ($this->localeLanguage ? $this->localeLanguage->id : null) : null,
-            'type' => 'image'
-        ])->whereNull('front_feature_id')->get();
+        // $this->featureWithImages = Feature::where([
+        //     'language_setting_id' => $imageFeaturesCount > 0 ? ($this->localeLanguage ? $this->localeLanguage->id : null) : null,
+        //     'type' => 'image'
+        // ])->whereNull('front_feature_id')->get();
 
-        $this->featureWithIcons = Feature::where([
-            'language_setting_id' => $iconFeaturesCount > 0 ? ($this->localeLanguage ? $this->localeLanguage->id : null) : null,
-            'type' => 'icon'
-        ])->whereNull('front_feature_id')->get();
+        // $this->featureWithIcons = Feature::where([
+        //     'language_setting_id' => $iconFeaturesCount > 0 ? ($this->localeLanguage ? $this->localeLanguage->id : null) : null,
+        //     'type' => 'icon'
+        // ])->whereNull('front_feature_id')->get();
 
-        $this->frontClients = FrontClients::where('language_setting_id', $frontClientsCount > 0 ? ($this->localeLanguage ? $this->localeLanguage->id : null) : null)->get();
-        $this->testimonials = Testimonials::where('language_setting_id', $testimonialsCount > 0 ? ($this->localeLanguage ? $this->localeLanguage->id : null) : null)->get();
+        // $this->frontClients = FrontClients::where('language_setting_id', $frontClientsCount > 0 ? ($this->localeLanguage ? $this->localeLanguage->id : null) : null)->get();
+        // $this->testimonials = Testimonials::where('language_setting_id', $testimonialsCount > 0 ? ($this->localeLanguage ? $this->localeLanguage->id : null) : null)->get();
 
-        $this->packageFeaturesModuleData = Module::get();
+        // $this->packageFeaturesModuleData = Module::get();
 
-        $this->packageFeatures   = $this->packageFeaturesModuleData->pluck('module_name')->toArray();
-        $this->packageModuleData = $this->packageFeaturesModuleData->pluck('module_name', 'id')->all();
+        // $this->packageFeatures   = $this->packageFeaturesModuleData->pluck('module_name')->toArray();
+        // $this->packageModuleData = $this->packageFeaturesModuleData->pluck('module_name', 'id')->all();
 
-        $moduleActive = [];
-        foreach ($this->packageFeatures as $key => $moduleData) {
-            foreach ($this->packages as $packageData) {
-                $packageModules = (array)json_decode($packageData->module_in_package);
+        // $moduleActive = [];
+        // foreach ($this->packageFeatures as $key => $moduleData) {
+        //     foreach ($this->packages as $packageData) {
+        //         $packageModules = (array)json_decode($packageData->module_in_package);
 
-                if (in_array($moduleData, $packageModules)) {
-                    $moduleActive[$key] = $moduleData;
-                }
-            }
-        }
+        //         if (in_array($moduleData, $packageModules)) {
+        //             $moduleActive[$key] = $moduleData;
+        //         }
+        //     }
+        // }
 
-        $this->activeModule = $moduleActive;
-        // Check if trail is active
-        $this->packageSetting = PackageSetting::where('status', 'active')->first();
-        $this->trialPackage = Package::where('default', 'trial')->first();
+        // $this->activeModule = $moduleActive;
+        // // Check if trail is active
+        // $this->packageSetting = PackageSetting::where('status', 'active')->first();
+        // $this->trialPackage = Package::where('default', 'trial')->first();
 
 
-        if ($slug) {
-            $this->slugData = FooterMenu::where('slug', $slug)->first();
-            $this->pageTitle = ucwords($this->slugData->name);
-            return view('saas.footer-page', $this->data);
-        }
-        if ($this->setting->front_design == 1) {
-            return view('saas.home', $this->data);
-        }
-        return view('front.home', $this->data);
+        // if ($slug) {
+        //     $this->slugData = FooterMenu::where('slug', $slug)->first();
+        //     $this->pageTitle = ucwords($this->slugData->name);
+        //     return view('saas.footer-page', $this->data);
+        // }
+        // if ($this->setting->front_design == 1) {
+        //     return view('saas.home', $this->data);
+        // }
+        // return view('front.home', $this->data);
     }
 
     public function feature()
