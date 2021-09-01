@@ -150,19 +150,19 @@
                             </a>
                         </li>
                     @endif
-                    @if(in_array("tickets", $modules))                        <li>
+                    {{-- @if(in_array("tickets", $modules))                        <li>
                             <a href="{{ route('admin.ticketDashboard') }}" class="waves-effect">
                                 @lang('app.menu.ticketDashboard')
                             </a>
                         </li>
-                    @endif
-                    @if((in_array("estimates", $modules)  || in_array("invoices", $modules)  || in_array("payments", $modules) || in_array("expenses", $modules)  ))
+                    @endif --}}
+                    {{-- @if((in_array("estimates", $modules)  || in_array("invoices", $modules)  || in_array("payments", $modules) || in_array("expenses", $modules)  ))
                         <li>
                             <a href="{{ route('admin.financeDashboard') }}" class="waves-effect">
                                 @lang('app.menu.financeDashboard')
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
                 </ul>
             </li>
             @if(in_array('leads',$modules))
@@ -219,7 +219,7 @@
                 </li>
             @endif
 
-            @if((in_array("estimates", $modules)  || in_array("invoices", $modules)  || in_array("payments", $modules) || in_array("expenses", $modules)  ))
+            {{-- @if((in_array("estimates", $modules)  || in_array("invoices", $modules)  || in_array("payments", $modules) || in_array("expenses", $modules)  ))
                 <li><a href="{{ route('admin.finance.index') }}" class="waves-effect"><i class="fa fa-money fa-fw"></i> <span class="hide-menu"> @lang('app.menu.finance') @if($unreadExpenseCount > 0) <div class="notify notification-color"><span class="heartbit"></span><span class="point"></span></div>@endif <span class="fa arrow"></span> </span></a>
                     <ul class="nav nav-second-level">
                         @if(in_array("estimates", $modules))
@@ -246,21 +246,21 @@
                         @endif
                     </ul>
                 </li>
-            @endif
+            @endif --}}
 
 
-            @if(in_array("products", $modules))
+            {{-- @if(in_array("products", $modules))
                 <li><a href="{{ route('admin.products.index') }}" class="waves-effect"><i class="icon-basket fa-fw"></i> <span class="hide-menu">@lang('app.menu.products') </span></a> </li>
-            @endif
+            @endif --}}
 
-            @if(in_array("tickets", $modules))
+            {{-- @if(in_array("tickets", $modules))
                 <li><a href="{{ route('admin.tickets.index') }}" class="waves-effect"><i class="ti-ticket fa-fw"></i> <span class="hide-menu">@lang('app.menu.tickets')</span> @if($unreadTicketCount > 0) <div class="notify notification-color"><span class="heartbit"></span><span class="point"></span></div>@endif</a> </li>
-            @endif
+            @endif --}}
 
 
-            @if(in_array("messages", $modules))
+            {{-- @if(in_array("messages", $modules))
                 <li><a href="{{ route('admin.user-chat.index') }}" class="waves-effect"><i class="icon-envelope fa-fw"></i> <span class="hide-menu">@lang('app.menu.messages') @if($unreadMessageCount > 0)<span class="label label-rouded label-custom pull-right">{{ $unreadMessageCount }}</span> @endif</span></a> </li>
-            @endif
+            @endif --}}
 
             @if(in_array("events", $modules))
                 <li><a href="{{ route('admin.events.index') }}" class="waves-effect"><i class="icon-calender fa-fw"></i> <span class="hide-menu">@lang('app.menu.Events')</span></a> </li>
@@ -280,10 +280,10 @@
                         <li><a href="{{ route('admin.time-log-report.index') }}">@lang('app.menu.timeLogReport')</a></li>
                     @endif
 
-                    @if((in_array("estimates", $modules)  || in_array("invoices", $modules)  || in_array("payments", $modules) || in_array("expenses", $modules)  ))
+                    {{-- @if((in_array("estimates", $modules)  || in_array("invoices", $modules)  || in_array("payments", $modules) || in_array("expenses", $modules)  ))
                         <li><a href="{{ route('admin.finance-report.index') }}">@lang('app.menu.financeReport')</a></li>
                         <li><a href="{{ route('admin.income-expense-report.index') }}">@lang('app.menu.incomeVsExpenseReport')</a></li>
-                    @endif
+                    @endif --}}
 
                     @if(in_array('leaves',$modules))
                         <li><a href="{{ route('admin.leave-report.index') }}">@lang('app.menu.leaveReport')</a></li>
@@ -297,8 +297,8 @@
             @endif
 
             @role('admin')
-            <li><a href="{{ route('admin.billing') }}" class="waves-effect"><i class="icon-book-open fa-fw"></i> <span class="hide-menu"> @lang('app.menu.billing')</span></a>
-            </li>
+            {{-- <li><a href="{{ route('admin.billing') }}" class="waves-effect"><i class="icon-book-open fa-fw"></i> <span class="hide-menu"> @lang('app.menu.billing')</span></a>
+            </li> --}}
             @endrole
 
             @foreach ($worksuitePlugins as $item)
@@ -308,14 +308,14 @@
                     @endif
                 @endif
             @endforeach
-                <li><a href="{{ route('admin.employee-faq.index') }}" class="waves-effect
+                {{-- <li><a href="{{ route('admin.employee-faq.index') }}" class="waves-effect
                     {{ request()->is('admin/employee-faq*') ? 'active' : '' }}"><i class="icon-docs fa-fw"></i> <span class="hide-menu"> @lang('app.faq') <span class="fa arrow"></span> </span></a>
                     <ul class="nav nav-second-level {{ request()->is('admin/employee-faq*') ? 'collapse in' : '' }}">
                         <li><a href="{{ route('admin.faqs.index') }}" class="waves-effect"><i class="icon-docs fa-fw"></i> <span class="hide-menu"> @lang('app.myFaq')</span></a></li>
                         <li><a href="{{ route('admin.employee-faq.index') }}" class="waves-effect"><i class="icon-docs fa-fw"></i> <span class="hide-menu"> @lang('app.menu.employeeFaq')</span></a></li>
 
                     </ul>
-                </li>
+                </li> --}}
             <li><a href="{{ route('admin.settings.index') }}" class="waves-effect"><i class="ti-settings fa-fw"></i> <span class="hide-menu"> @lang('app.menu.settings')</span></a>
             </li>
 
