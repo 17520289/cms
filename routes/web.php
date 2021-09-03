@@ -731,8 +731,8 @@ Route::group(['middleware' => 'auth'], function () {
                         Route::post('task-report/export', ['uses' => 'TaskReportController@export'])->name('task-report.export');
                         Route::resource('task-report', 'TaskReportController');
                         Route::resource('time-log-report', 'TimeLogReportController');
-                        Route::resource('finance-report', 'FinanceReportController');
-                        Route::resource('income-expense-report', 'IncomeVsExpenseReportController');
+                        //Route::resource('finance-report', 'FinanceReportController');
+                       // Route::resource('income-expense-report', 'IncomeVsExpenseReportController');
                         //region Leave Report routes
                         Route::post('leave-report/data', ['uses' => 'LeaveReportController@data'])->name('leave-report.data');
                         Route::post('leave-report/export', 'LeaveReportController@export')->name('leave-report.export');
@@ -861,8 +861,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('support-ticket-files/download/{id}', ['uses' => 'SupportTicketFilesController@download'])->name('support-ticket-files.download');
                 Route::resource('support-ticket-files', 'SupportTicketFilesController');
 
-                Route::get('user-chat-files/download/{id}', ['uses' => 'UserChatFilesController@download'])->name('user-chat-files.download');
-                Route::resource('user-chat-files', 'UserChatFilesController');
+                //Route::get('user-chat-files/download/{id}', ['uses' => 'UserChatFilesController@download'])->name('user-chat-files.download');
+                //Route::resource('user-chat-files', 'UserChatFilesController');
 
                 // User message
                 Route::post('message-submit', ['as' => 'user-chat.message-submit', 'uses' => 'AdminChatController@postChatMessage']);
@@ -916,7 +916,6 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('leaves/pending', ['as' => 'leaves.pending', 'uses' => 'ManageLeavesController@pendingLeaves']);
 
                 Route::resource('leaves', 'ManageLeavesController');
-
                 Route::resource('leaveType', 'ManageLeaveTypesController');
 
                 //sub task routes
