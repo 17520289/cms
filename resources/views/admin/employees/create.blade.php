@@ -225,7 +225,7 @@
                                         <div class="col-xs-12">
                                             <div class="form-group">
                                                 <label>@lang('app.skills')</label>
-                                                <input name='tags' placeholder='@lang(' app.skills')' value=''>
+                                                <input name='tags' placeholder='@lang('app.skills')' value=''>
                                             </div>
                                         </div>
                                     </div>

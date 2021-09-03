@@ -1036,6 +1036,7 @@ return array (
     'single' => 'Single',
     'multiple' => 'Multiple',
     'halfDay' => 'Half Day',
+    'dateRange' => 'Date Range',
     'hours' => 'Hours',
     'selectDates' => 'Select Dates',
     'reason' => 'Reason for absence',
