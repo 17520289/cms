@@ -23,7 +23,7 @@ class MemberLeavesController extends MemberBaseController
         $this->pageTitle = 'app.menu.leaves';
         $this->pageIcon = 'icon-logout';
         $this->middleware(function ($request, $next) {
-            abort_if(!in_array('leaves', $this->user->modules),403);
+            abort_if(!in_array('leaves', $this->user->modules), 403);
             return $next($request);
         });
     }
@@ -45,6 +45,8 @@ class MemberLeavesController extends MemberBaseController
 
     public function create()
     {
+        $this->startDate = Carbon::today()->timezone($this->global->timezone)->startOfMonth();
+        $this->endDate = Carbon::today()->timezone($this->global->timezone)->endOfMonth();
         $this->leaveTypes = EmployeeLeaveQuota::with('leaveType')
             ->where('no_of_leaves', '>', 0)
             ->where('user_id', $this->user->id)
@@ -59,36 +61,74 @@ class MemberLeavesController extends MemberBaseController
         return view('member.leaves.create', $this->data);
     }
 
+
+    /**
+     * Edit function to store new Leave in a date range
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     * 
+     * Edric - 9/1/2020
+     */
     public function store(StoreLeave $request)
     {
-        if ($request->duration == 'multiple') {
-            session(['leaves_duration' => 'multiple']);
-            $dates = explode(',', $request->multi_date);
+        if ($request->duration == 'multiple' || $request->duration == 'date_range') {
+            if ($request->duration == 'multiple'){
+                //session(['leaves_duration' => 'multiple']);
+                $dates = explode(',', $request->multi_date);
+            }else{
+                //session(['leaves_duration' => 'date_range']);
+                $t=str_replace(' ', '',$request->date_range);
+                $d = explode('-', $t);
+                $startDate = Carbon::createFromFormat('m/d/Y', $d[0]);
+                $endDate = Carbon::createFromFormat('m/d/Y', $d[1]);
+                $dates = $this->getDatesFromRange($startDate, $endDate);
+            }
             foreach ($dates as $date) {
-                $leave = new Leave();
-                $leave->user_id = $request->user_id;
-                $leave->leave_type_id = $request->leave_type_id;
-                $leave->duration = $request->duration;
-                $leave->leave_date = Carbon::parse($date)->format('Y-m-d');
-                $leave->reason = $request->reason;
-                $leave->status = $request->status;
-                $leave->save();
-                session()->forget('leaves_duration');
+                $this->storeLeave($request, $date);
+                //session()->forget('leaves_duration');
             }
         } else {
-            $leave = new Leave();
-            $leave->user_id = $request->user_id;
-            $leave->leave_type_id = $request->leave_type_id;
-            $leave->duration = $request->duration;
-            $leave->leave_date = Carbon::createFromFormat($this->global->date_format, $request->leave_date)->format('Y-m-d');
-            $leave->reason = $request->reason;
-            $leave->status = $request->status;
-            $leave->save();
+            $this->storeLeave($request, $request->leave_date);
         }
-
         return Reply::redirect(route('member.leaves.index'), __('messages.leaveAssignSuccess'));
     }
 
+    public function storeLeave($request, $date)
+    {
+        $leave = new Leave();
+        $leave->user_id = $request->user_id;
+        $leave->leave_type_id = $request->leave_type_id;
+        $leave->duration = $request->duration;
+        $leave->leave_date = Carbon::createFromFormat($this->global->date_format, $date)->format('Y-m-d');
+        $leave->reason = $request->reason;
+        $leave->status = $request->status;
+        $leave->save();
+    }
+    
+    /**
+     * Get all date between $date1 and $date2
+     *
+     * @param  $date1, $date2
+     * @return array()
+     * 
+     * Edric - 9/1/2020
+     */
+    public function getDatesFromRange($date1, $date2, $format = 'Y-m-d')
+    {
+        $dates = array();
+        $current = strtotime($date1);
+        $date2 = strtotime($date2);
+        $stepVal = '+1 day';
+        $i = 0;
+        while ($current <= $date2) {
+            $dates[$i] = date($format, $current);
+            $current = strtotime($stepVal, $current);
+            $i++;
+        }
+        return $dates;
+    }
     public function show($id)
     {
         $this->leave = Leave::findOrFail($id);
