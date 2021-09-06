@@ -300,7 +300,7 @@ class ManageEmployeesController extends AdminBaseController
         $user->locale = $request->input('locale');
         if ($request->password != '') {
             $validator = Validator::make($request->all(), [
-                'password' => 'regex:/^[\w(!@#$%^&*()_+\-={};,.<>?)][^\s(àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ)]{7,32}$/',
+                'password' => 'regex:/^[\w(!@#$%^&*()_+\-={};,.<>?)][^\s(àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ)]{7,}$/',
             ]);
             if ($validator->fails()) {
                 return Reply::error(__('validation.givenDataInvalid'));
