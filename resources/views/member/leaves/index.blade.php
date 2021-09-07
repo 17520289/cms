@@ -87,8 +87,17 @@
                     <div class="panel-body">
                         <ul class="list-task list-group" data-role="tasklist">
                             @forelse($pendingLeaves as $key=>$pendingLeave)
+                                @php
+                                    $startDate =  $pendingLeave->leave_date->format($global->date_format) ;
+                                @endphp
                                 <li class="list-group-item" data-role="task">
-                                    {{ ($key+1) }}. <strong>{{ ucwords($pendingLeave->user->name) }}</strong> for {{ $pendingLeave->leave_date->format($global->date_format) }}
+                                    @if ($pendingLeave->duration == 'date_range')
+                                    {{ ($key+1) }}. <strong>{{ ucwords($pendingLeave->user->name) }}</strong> for {{ $startDate }} >> {{ $pendingLeave->endDate->format($global->date_format) }}
+                                    @elseif ($pendingLeave->duration == 'half day')
+                                    {{ ($key+1) }}. <strong>{{ ucwords($pendingLeave->user->name) }}</strong> for {{  $startDate }} <div class="label-inverse label"> @lang('modules.leaves.halfDay') </div>
+                                    @else
+                                    {{ ($key+1) }}. <strong>{{ ucwords($pendingLeave->user->name) }}</strong> for {{  $startDate  }}
+                                    @endif
                                     <br>
                                     <div class="m-t-10"></div>
 

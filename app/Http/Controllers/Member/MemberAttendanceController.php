@@ -128,21 +128,25 @@ class MemberAttendanceController extends MemberBaseController
             }else{
                 $totalAbsent += 0.5;
             }
+            
+            $clockInTime= $attendance->clock_in_time->timezone($this->global->timezone)->format($this->global->time_format);
+            $clockOutTime= $attendance->clock_out_time == null ? '' :  $attendance->clock_out_time->timezone($this->global->timezone)->format($this->global->time_format) ;
+            
             if($attendance->clock_in_time->isToday()){
                 $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="Today" class="fa fa-circle text-danger" aria-hidden="true"></i>';
             }else{
                 if(jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday'){
                     if($attendance->half_day == 'yes'){
-                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i class="fa fa-times text-warning"></i>';
+                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="'.$clockInTime.'~'.$clockOutTime.'" class="fa fa-times text-warning"></i>';
                     }else{
-                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i class="fa fa-times text-success"></i>';
+                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="'.$clockInTime.'~'.$clockOutTime.'" class="fa fa-times text-success"></i>';
                     }
                     
                 }else{
                     if($attendance->half_day == 'yes') {
-                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i class="fa fa-star-half-o  text-warning" aria-hidden="true"></i>';
+                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="'.$clockInTime.'~'.$clockOutTime.'" class="fa fa-star-half-o  text-warning" aria-hidden="true"></i>';
                     } else {
-                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i class="fa fa-star text-success" aria-hidden="true"></i>';
+                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i  title="'.$clockInTime.'~'.$clockOutTime.'" class="fa fa-star text-success" aria-hidden="true"></i>';
                     }
                 }
             }

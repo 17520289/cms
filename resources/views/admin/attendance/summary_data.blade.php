@@ -1,6 +1,6 @@
 <div class="white-box">
     <div class="table-responsive tableFixHead">
-        
+
         <table class="table table-nowrap mb-0">
             <thead>
                 <tr>
@@ -12,15 +12,15 @@
                 </tr>
             </thead>
             <tbody>
-            
+
                 @foreach ($employeeAttendence as $key => $attendance)
                     <tr>
-                        
+
                         <td> {!! end($attendance) !!} </td>
 
                         @foreach ($attendance as $key2 => $day)
-                        
-                            @if ($key2 +1 <= count($attendance))
+
+                            @if ($key2 + 1 <= count($attendance))
                                 <td class="text-center">
                                     @if ($day == 'Absent')
                                         @php
@@ -28,17 +28,17 @@
                                         @endphp
                                         @if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday')
                                             <a href="javascript:;" class="edit-attendance"
-                                                data-attendance-date="{{ $key2 }}"><i
+                                                data-attendance-date="{{ $key2 }}"><i title="weekend"
                                                     class="fa fa-times text-danger"></i></a>
                                         @else
                                             <a href="javascript:;" class="edit-attendance"
-                                                data-attendance-date="{{ $key2 }}"><i
+                                                data-attendance-date="{{ $key2 }}"><i title="Absent"
                                                     class="fa fa-smile-o text-primary" aria-hidden="true"></i></a>
                                         @endif
                                     @elseif($day == 'Holiday')
-                                        <a href="javascript:;" title="holiday"
-                                            class="edit-attendance" data-attendance-date="{{ $key2 }}"><i
-                                                class="fa fa-flag-o text-warning" ></i></a>
+                                        <a href="javascript:;" title="holiday" class="edit-attendance"
+                                            data-attendance-date="{{ $key2 }}"><i
+                                                class="fa fa-flag-o text-warning"></i></a>
                                     @else
                                         {!! $day !!}
                                     @endif
