@@ -217,19 +217,6 @@
         loadTable();
     })
 
-    function exportData(){
-
-        var employee = $('#employee').val();
-        var status   = $('#status').val();
-        var role     = $('#role').val();
-
-        var url = '{{ route('admin.employees.export', [':status' ,':employee', ':role']) }}';
-        url = url.replace(':role', role);
-        url = url.replace(':status', status);
-        url = url.replace(':employee', employee);
-
-        window.location.href = url;
-    }
 
 </script>
 @endpush

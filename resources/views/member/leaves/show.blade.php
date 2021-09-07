@@ -23,7 +23,11 @@
                 <div class="col-xs-12 ">
                     <div class="form-group">
                         <label>@lang('app.date')</label>
-                        <p>{{ $leave->leave_date->format($global->date_format) }} <label class="label label-{{ $leave->type->color }}">{{ ucwords($leave->type->type_name) }}</label>
+                        <p>{{ $leave->leave_date->format($global->date_format) }} 
+                            @if ($leave->duration == 'date_range')
+                                >>{{ $endDate->format($global->date_format) }}
+                            @endif
+                            <label class="label label-{{ $leave->type->color }}">{{ ucwords($leave->type->type_name) }}</label>
                             @if($leave->duration == 'half day')
                                 <label class="label label-info">{{ ucwords($leave->duration) }}</label>
                             @endif

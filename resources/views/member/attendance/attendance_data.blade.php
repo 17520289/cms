@@ -10,7 +10,7 @@
                 </tr>
             </thead>
             <tbody>
-              {{ $endDate }}
+             
                 <tr>
                     @foreach ($attendencesData as $key => $att)
                         @if ($key  <= $daysInMonth)
@@ -20,9 +20,9 @@
                                         $jd = gregoriantojd($month, $key, $year);
                                     @endphp
                                     @if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday')
-                                       <i class="fa fa-times text-danger"></i>
+                                       <i title="weekend" class="fa fa-times text-danger"></i>
                                     @else
-                                        <i class="fa fa-smile-o text-danger" aria-hidden="true"></i> 
+                                        <i class="fa fa-smile-o text-danger" title="Absent" aria-hidden="true"></i> 
                                     @endif
                                 @elseif($att == 'Holiday')
                                         <i title="holiday"  class="fa fa-flag-o text-warning" ></i></a>

@@ -910,12 +910,10 @@ Route::group(['middleware' => 'auth'], function () {
 
                 //Leaves
                 Route::post('leaves/leaveAction', ['as' => 'leaves.leaveAction', 'uses' => 'ManageLeavesController@leaveAction']);
-                Route::post('leaves/leaveActionPending', ['as' => 'leaves.leaveActionPending', 'uses' => 'ManageLeavesController@leaveActionPending']);
                 Route::get('leaves/show-reject-modal', ['as' => 'leaves.show-reject-modal', 'uses' => 'ManageLeavesController@rejectModal']);
                 Route::post('leave/data/{employeeId?}', ['uses' => 'ManageLeavesController@data'])->name('leave.data');
                 Route::get('leave/all-leaves', ['uses' => 'ManageLeavesController@allLeave'])->name('leave.all-leaves');
                 Route::get('leaves/pending', ['as' => 'leaves.pending', 'uses' => 'ManageLeavesController@pendingLeaves']);
-
                 Route::resource('leaves', 'ManageLeavesController');
                 Route::resource('leaveType', 'ManageLeaveTypesController');
 
@@ -1112,8 +1110,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('task-label', 'TaskLabelController');
 
             // FAQ
-            Route::get('faqs/{id}', ['uses' => 'FaqController@details'])->name('faqs.details');
-            Route::get('faqs', ['uses' => 'FaqController@index'])->name('faqs.index');
+            // Route::get('faqs/{id}', ['uses' => 'FaqController@details'])->name('faqs.details');
+            // Route::get('faqs', ['uses' => 'FaqController@index'])->name('faqs.index');
 
             //Pinned route
             Route::resource('pinned', 'MemberPinnedController', ['only' => ['store', 'destroy']]);
@@ -1204,7 +1202,7 @@ Route::group(['middleware' => 'auth'], function () {
                 }
             );
 
-            Route::resource('finance', 'MemberExpensesController', ['only' => ['edit', 'update', 'index']]); // hack to make left admin menu item active
+           // Route::resource('finance', 'MemberExpensesController', ['only' => ['edit', 'update', 'index']]); // hack to make left admin menu item active
             Route::group(
                 ['prefix' => 'finance'],
                 function () {
@@ -1547,10 +1545,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('ticket-files', 'TicketFilesController');
 
             //Tickets routes
-            Route::get('tickets/data', ['uses' => 'ClientTicketsController@data'])->name('tickets.data');
-            Route::post('tickets/close-ticket/{id}', ['uses' => 'ClientTicketsController@closeTicket'])->name('tickets.closeTicket');
-            Route::post('tickets/open-ticket/{id}', ['uses' => 'ClientTicketsController@reopenTicket'])->name('tickets.reopenTicket');
-            Route::resource('tickets', 'ClientTicketsController');
+            // Route::get('tickets/data', ['uses' => 'ClientTicketsController@data'])->name('tickets.data');
+            // Route::post('tickets/close-ticket/{id}', ['uses' => 'ClientTicketsController@closeTicket'])->name('tickets.closeTicket');
+            // Route::post('tickets/open-ticket/{id}', ['uses' => 'ClientTicketsController@reopenTicket'])->name('tickets.reopenTicket');
+            // Route::resource('tickets', 'ClientTicketsController');
 
             Route::resource('events', 'ClientEventController');
 
@@ -1563,9 +1561,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('gdpr', 'ClientGdprController');
 
             // User message
-            Route::post('message-submit', ['as' => 'user-chat.message-submit', 'uses' => 'ClientChatController@postChatMessage']);
-            Route::get('user-search', ['as' => 'user-chat.user-search', 'uses' => 'ClientChatController@getUserSearch']);
-            Route::resource('user-chat', 'ClientChatController');
+            // Route::post('message-submit', ['as' => 'user-chat.message-submit', 'uses' => 'ClientChatController@postChatMessage']);
+            // Route::get('user-search', ['as' => 'user-chat.user-search', 'uses' => 'ClientChatController@getUserSearch']);
+            // Route::resource('user-chat', 'ClientChatController');
 
             Route::get('user-chat-files/download/{id}', ['uses' => 'ClientChatFilesController@download'])->name('user-chat-files.download');
             Route::resource('user-chat-files', 'ClientChatFilesController');

@@ -5,7 +5,7 @@
         <h4 class="modal-title"><i class="ti-eye"></i> @lang('app.menu.leaves') @lang('app.details') </h4>
     </div>
     <div class="modal-body">
-        {!! Form::open(['id'=>'updateEvent','class'=>'ajax-form','method'=>'GET']) !!}
+        {!! Form::open(['id' => 'updateEvent', 'class' => 'ajax-form', 'method' => 'GET']) !!}
         <div class="form-body">
             <div class="row">
                 <div class="col-md-12 ">
@@ -24,9 +24,13 @@
                     <div class="form-group">
                         <label>@lang('app.date')</label>
                         <p>{{ $leave->leave_date->format($global->date_format) }}
-                            <label class="label label-{{ $leave->type->color }}">{{ ucwords($leave->type->type_name) }}</label>
-                            @if($leave->duration == 'half day')
-                             <label class="label label-info">{{ ucwords($leave->duration) }}</label>
+                            {{-- @if ($leave->duration == 'date_range')
+                            >> {{ Carbon\Carbon::parse($leave->leave_date)->add($count - 1,'day')->format($global->date_format) }}
+                            @endif --}}
+                            <label
+                                class="label label-{{ $leave->type->color }}">{{ ucwords($leave->type->type_name) }}</label>
+                            @if ($leave->duration == 'half day')
+                                <label class="label label-info">{{ ucwords($leave->duration) }}</label>
                             @endif
                         </p>
                     </div>
@@ -43,7 +47,7 @@
                     <div class="form-group">
                         <label>@lang('app.status')</label>
                         <p>
-                            @if($leave->status == 'approved')
+                            @if ($leave->status == 'approved')
                                 <strong class="text-success">@lang('app.approved')</strong>
                             @elseif($leave->status == 'pending')
                                 <strong class="text-warning">@lang('app.pending')</strong>
@@ -62,30 +66,31 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">@lang('app.close')</button>
-        <button type="button" class="btn btn-danger btn-outline delete-event waves-effect waves-light"><i class="fa fa-times"></i> @lang('app.delete')</button>
-        <button type="button" class="btn btn-info save-event waves-effect waves-light"><i class="fa fa-edit"></i> @lang('app.edit')
+        <button type="button" class="btn btn-danger btn-outline delete-event waves-effect waves-light"><i
+                class="fa fa-times"></i> @lang('app.delete')</button>
+        <button type="button" class="btn btn-info save-event waves-effect waves-light"><i class="fa fa-edit"></i>
+            @lang('app.edit')
         </button>
     </div>
 
 </div>
 
 <script>
-
-    $('.save-event').click(function () {
+    $('.save-event').click(function() {
         $.easyAjax({
-            url: '{{route('admin.leaves.edit', $leave->id)}}',
+            url: '{{ route('admin.leaves.edit', $leave->id) }}',
             container: '#updateEvent',
             type: "GET",
             data: $('#updateEvent').serialize(),
-            success: function (response) {
-                if(response.status == 'success'){
+            success: function(response) {
+                if (response.status == 'success') {
                     $('#event-detail').html(response.view);
                 }
             }
         })
     })
 
-    $('.delete-event').click(function(){
+    $('.delete-event').click(function() {
         swal({
             title: "@lang('messages.sweetAlertTitle')",
             text: "@lang('messages.confirmation.recoverLeaveApplication')",
@@ -96,7 +101,7 @@
             cancelButtonText: "@lang('messages.confirmNoArchive')",
             closeOnConfirm: true,
             closeOnCancel: true
-        }, function(isConfirm){
+        }, function(isConfirm) {
             if (isConfirm) {
 
                 var url = "{{ route('admin.leaves.destroy', $leave->id) }}";
@@ -105,9 +110,12 @@
 
                 $.easyAjax({
                     type: 'POST',
-                            url: url,
-                            data: {'_token': token, '_method': 'DELETE'},
-                    success: function (response) {
+                    url: url,
+                    data: {
+                        '_token': token,
+                        '_method': 'DELETE'
+                    },
+                    success: function(response) {
                         if (response.status == "success") {
                             window.location.reload();
                         }
@@ -116,6 +124,4 @@
             }
         });
     });
-
-
 </script>
