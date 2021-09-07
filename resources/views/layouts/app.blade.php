@@ -344,23 +344,6 @@
         padding-bottom: 0px;
         }
     </style>
-{{-- Style for create new employee, view employee --}}
-<style>
-    .info-person{
-        background-color: rgb(246, 247, 249);
-        padding: 5px 15px;
-        border-radius: 5px;
-        margin-bottom: 60px;
-        border: 1px solid LightGray;
-    }
-    .info-person .panel-heading{
-        text-align: center;
-    }
-    .space{
-        margin-top: 50px;
-        margin-bottom: 50px;
-    }
-</style>
 </head>
 <body class="fix-sidebar @if($rtl == 1) rtl @endif">
 <!-- Preloader -->

@@ -1,0 +1,54 @@
+/*New custom hls dev css*/
+
+.info-person {
+    background-color: rgb(246, 247, 249);
+    padding: 20px 15px;
+    /* border-radius: 5px; */
+    margin: 0 5px 20px 0;
+    /* border: 1px solid LightGray; */
+}
+.info-person .panel-heading {
+    text-align: center;
+}
+.space {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.profile-picture {
+    width: 100%;
+    height: 250px;
+}
+
+.profile-picture .img-thumb {
+    width: 70%;
+    height: 250px;
+    border-radius: none !important;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-picture .img-thumb>img {
+    height: 100%;
+}
+
+.btn-img .btn-file{
+    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.info-person .phone_country_code {
+    width: 40%;
+    margin-top: -4px;
+}
+
+.info-person .mobile {
+    width: 60%;
+}
+
+.info-person .tagify {
+    background-color: white;
+}
