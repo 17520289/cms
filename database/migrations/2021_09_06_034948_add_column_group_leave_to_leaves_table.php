@@ -14,8 +14,8 @@ class AddColumnGroupLeaveToLeavesTable extends Migration
     public function up()
     {
         Schema::table('leaves', function (Blueprint $table) {
-            $table->integer('group_id')->unsigned()->after('leave_type_id');
-            $table->foreign('group_id')->references('id')->on('group_id_leaves')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('group_leave_id')->unsigned()->after('leave_type_id');
+            $table->foreign('group_leave_id')->references('id')->on('group_leaves')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -28,6 +28,7 @@ class AddColumnGroupLeaveToLeavesTable extends Migration
     {
         Schema::table('leaves', function (Blueprint $table) {
             //
+            $table->dropColumn('group_leave_id');
         });
     }
 }
