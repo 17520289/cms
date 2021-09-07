@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="{{ asset('plugins/bower_components/custom-select/custom-select.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}">
 @endpush
 
 @section('content')
@@ -75,6 +76,12 @@
                                                     <label for="duration_half_day">@lang('modules.leaves.halfDay')</label>
                                                 </div>
                                             </label>
+                                            <label class="radio-inline">
+                                                <div class="radio radio-info">
+                                                    <input type="radio" name="duration" id="duration_date_range" value="date_range">
+                                                    <label for="duration_date_range">@lang('modules.leaves.dateRange')</label>
+                                                </div>
+                                            </label>
 
                                         </div>
 
@@ -96,6 +103,14 @@
                                     <label>@lang('modules.leaves.selectDates') <h6>(@lang('messages.selectMultipleDates'))</h6></label>
                                     <div class="form-group">
                                         <input type="text" class="form-control" name="multi_date" id="multi_date" value="{{ Carbon\Carbon::today()->format($global->date_format) }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" id="date-range" style="display: none">
+                                    <label class="control-label">@lang('app.selectDateRange')</label>
+                                    <div class="form-group">
+                                        <input class="form-control input-daterange-datepicker" type="text" name="date_range"  id="date_range"
+                                               value="{{ $startDate->format('m-d-Y').' - '.$endDate->format('m-d-Y') }}"/>
                                     </div>
                                 </div>
 
@@ -157,8 +172,47 @@
 <script src="{{ asset('plugins/bower_components/custom-select/custom-select.min.js') }}"></script>
 <script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
 <script src="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('plugins/bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script>
+     
+     $('.input-daterange-datepicker').daterangepicker({
+        buttonClasses: ['btn', 'btn-sm'],
+        cancelClass: 'btn-inverse',
+        "locale": {
+            "applyLabel": "{{ __('app.apply') }}",
+            "cancelLabel": "{{ __('app.cancel') }}",
+            "daysOfWeek": [
+                "{{ __('app.su') }}",
+                "{{ __('app.mo') }}",
+                "{{ __('app.tu') }}",
+                "{{ __('app.we') }}",
+                "{{ __('app.th') }}",
+                "{{ __('app.fr') }}",
+                "{{ __('app.sa') }}"
+            ],
+            "monthNames": [
+                "{{ __('app.january') }}",
+                "{{ __('app.february') }}",
+                "{{ __('app.march') }}",
+                "{{ __('app.april') }}",
+                "{{ __('app.may') }}",
+                "{{ __('app.june') }}",
+                "{{ __('app.july') }}",
+                "{{ __('app.august') }}",
+                "{{ __('app.september') }}",
+                "{{ __('app.october') }}",
+                "{{ __('app.november') }}",
+                "{{ __('app.december') }}",
+            ],
+            "firstDay": '2021-09-08',
+        }
+    })
+    
 
+    $('.input-daterange-datepicker').on('apply.daterangepicker', function (ev, picker) {
+       
+    });
+   
 
     $(".select2").select2({
         formatNoMatches: function () {
@@ -191,9 +245,15 @@
         if($(this).val() == 'multiple'){
             $('#multi-date').show();
             $('#single-date').hide();
+            $('#date-range').hide();
         }
-        else{
+        else if($(this).val() == 'date_range'){
             $('#multi-date').hide();
+            $('#single-date').hide();
+            $('#date-range').show();
+        }else{
+            $('#multi-date').hide();
+            $('#date-range').hide();
             $('#single-date').show();
         }
     })

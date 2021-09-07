@@ -83,7 +83,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>@lang('app.mobile')</label>
-                                                <input type="tel" name="mobile" id="mobile" onkeypress='validate(event)' class="form-control" autocomplete="nope"  value="{{ $userDetail->mobile }}" >
+                                                <input type="tel" name="mobile" id="mobile" maxlength="9" onkeypress='validate(event)' class="form-control" autocomplete="nope"  value="{{ $userDetail->mobile }}" >
                                                 <span style="display:none; color:red" id="errMobile"> @lang('modules.employees.errMobile') </span>
                                             </div>
                                         </div>
@@ -136,7 +136,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>@lang('modules.employees.identityCardNumber')</label>
-                                                    <input autocomplete="nope" type="text" id="id_no" onkeypress='validate(event)' name="id_no" class="form-control" @if($employeeDetail) value="{{ $employeeDetail->id_no}}"
+                                                    <input autocomplete="nope" type="text" id="id_no" maxlength="12" onkeypress='validate(event)' name="id_no" class="form-control" @if($employeeDetail) value="{{ $employeeDetail->id_no}}"
                                                     @endif>
                                                     <span style="display:none; color:red" id="errIdNo"> @lang('modules.employees.errIdNo') </span>
                                             </div>
@@ -146,7 +146,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>@lang('modules.employees.issueDate')</label>
-                                                <input type="text" autocomplete="off"  name="issue_date" id="issue_date" class="form-control" @if($employeeDetail) value="{{ $employeeDetail->issue_date}}"
+                                                <input type="text" autocomplete="off"  onkeypress='validate(event)'  name="issue_date" id="issue_date" class="form-control" @if($employeeDetail) value="{{ $employeeDetail->issue_date}}"
                                                 @endif>
                                             </div>
                                         </div>
@@ -175,7 +175,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="required">@lang('modules.employees.joiningDate')</label>
-                                                <input type="text" autocomplete="off"  name="joining_date" id="joining_date" class="form-control" readonly @if($employeeDetail) value="{{ $employeeDetail->joining_date->format($global->date_format) }}"
+                                                <input type="text" autocomplete="off"  onkeypress='validate(event)'  name="joining_date" id="joining_date" class="form-control" readonly @if($employeeDetail) value="{{ $employeeDetail->joining_date->format($global->date_format) }}"
                                                 @endif>
                                             </div>
                                         </div>
@@ -184,7 +184,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>@lang('modules.employees.lastDate')</label>
-                                                <input type="text" autocomplete="off" name="last_date" id="end_date" readonly  @if($employeeDetail) @if($employeeDetail->last_date) value="{{ $employeeDetail->last_date->format($global->date_format) }}" @endif
+                                                <input type="text" autocomplete="off" name="last_date"  onkeypress='validate(event)' id="end_date" readonly  @if($employeeDetail) @if($employeeDetail->last_date) value="{{ $employeeDetail->last_date->format($global->date_format) }}" @endif
                                                 @endif class="form-control">
                                             </div>
                                         </div>

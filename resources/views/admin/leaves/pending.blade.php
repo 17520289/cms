@@ -4,7 +4,7 @@
     <div class="row bg-title">
         <!-- .page title -->
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 bg-title-left">
-            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> {{ __($pageTitle) }} <span class="text-warning b-l p-l-10 m-l-5">{{ count($pendingLeaves)}}</span> <span class="font-12 text-muted m-l-5"> @lang('modules.leaves.pendingLeaves')</span></h4>
+            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> {{ __($pageTitle) }} <span class="text-warning b-l p-l-10 m-l-5">{{ $totalPendingLeave  }}</span> <span class="font-12 text-muted m-l-5"> @lang('modules.leaves.pendingLeaves')</span></h4>
         </div>
         <!-- /.page title -->
         <!-- .breadcrumb -->
@@ -49,13 +49,20 @@
                                 $allowedLeaves = $pendingLeave->user->leaveTypes->sum('no_of_leaves');
                                 $leavesRemaining = ($allowedLeaves-$pendingLeave->leaves_taken_count);
                                 $percentLeavesRemaining = ($leavesRemaining/$allowedLeaves) * 100;
+                                $pendingLeaveEnd = \Carbon\Carbon::parse($pendingLeave->leave_date)->add($pendingLeave->count - 1,'day')->format($global->date_format);
                             }
                             catch (Exception $e){
                                  $percentLeavesRemaining = 0;
+                                 $pendingLeaveEnd=0;
                             }
                             @endphp
                             <div class="text-center bg-light p-t-20 p-b-20 m-l-n-25 m-r-n-25">
+                                @if ($pendingLeave->duration == 'date_range')
+                                {{ $pendingLeave->leave_date->format($global->date_format) }} >>  {{ $pendingLeaveEnd }}
+                                @else
                                 {{ $pendingLeave->leave_date->format($global->date_format) }} ({{ $pendingLeave->leave_date->format('l') }})
+                                @endif
+                                
                                 <div class="progress m-l-30 m-r-30 m-t-15">
                                     <div class="progress-bar progress-bar-info" aria-valuenow="{{ $percentLeavesRemaining }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $percentLeavesRemaining }}%" role="progressbar"> <span class="sr-only">{{ $percentLeavesRemaining }}% Complete</span> </div>
                                 </div>
@@ -79,6 +86,8 @@
                             </div>
                             </div>
                         </div>
+                 
+                       
                     @empty
                         @lang('messages.noPendingLeaves')
                     @endforelse
@@ -133,7 +142,7 @@
     $('.leave-action').on('click', function() {
         var action = $(this).data('leave-action');
         var leaveId = $(this).data('leave-id');
-        var url = '{{ route("admin.leaves.leaveAction") }}';
+        var url = '{{ route("admin.leaves.leaveActionPending") }}';
 
         $.easyAjax({
             type: 'POST',

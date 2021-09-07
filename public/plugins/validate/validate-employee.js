@@ -1,7 +1,7 @@
 $("#password").on("keyup", function() {
     var password = document.getElementById("password").value;
     console.log(password.length);
-    var regex = /^[\w(!@#$%^&*()_+\-={};':"|,.<>?)][^\s(àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ)]{7,32}$/;
+    var regex = /^[\w(!@#$%^&*()_+\-={};':"|,.<>?)][^\s(àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ)]{7,}$/;
     if (regex.test(password)) {
         document.getElementById("password").style.border = "1px solid Gainsboro";
         document.getElementById("errPass").style.display = "none";
