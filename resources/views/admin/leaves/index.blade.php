@@ -4,7 +4,7 @@
     <div class="row bg-title">
         <!-- .page title -->
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 bg-title-left">
-            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> {{ __($pageTitle) }} <span class="text-warning b-l p-l-10 m-l-5">{{ count($pendingLeaves) }}</span> <a href="{{ route('admin.leaves.pending') }}" class="font-12 text-muted m-l-5"> @lang('modules.leaves.pendingLeaves')</a>
+            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> {{ __($pageTitle) }} <span class="text-warning b-l p-l-10 m-l-5">{{ $pendingLeavesCount }}</span> <a href="{{ route('admin.leaves.pending') }}" class="font-12 text-muted m-l-5"> @lang('modules.leaves.pendingLeaves')</a>
             </h4>
         </div>
         <!-- /.page title -->

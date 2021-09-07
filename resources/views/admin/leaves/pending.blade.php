@@ -49,18 +49,21 @@
                                 $allowedLeaves = $pendingLeave->user->leaveTypes->sum('no_of_leaves');
                                 $leavesRemaining = ($allowedLeaves-$pendingLeave->leaves_taken_count);
                                 $percentLeavesRemaining = ($leavesRemaining/$allowedLeaves) * 100;
-                                $pendingLeaveEnd = \Carbon\Carbon::parse($pendingLeave->leave_date)->add($pendingLeave->count - 1,'day')->format($global->date_format);
+                                $pendingLeaveStartDate = $pendingLeave->leave_date->format($global->date_format);
+                               
                             }
                             catch (Exception $e){
                                  $percentLeavesRemaining = 0;
-                                 $pendingLeaveEnd=0;
+                                 $pendingLeaveStartDate = 0;
                             }
                             @endphp
                             <div class="text-center bg-light p-t-20 p-b-20 m-l-n-25 m-r-n-25">
                                 @if ($pendingLeave->duration == 'date_range')
-                                {{ $pendingLeave->leave_date->format($global->date_format) }} >>  {{ $pendingLeaveEnd }}
+                                {{ $pendingLeaveStartDate  }} >>  {{ $pendingLeave->endDate->format($global->date_format) }}
+                                @elseif ($pendingLeave->duration == 'half day')
+                                {{ $pendingLeaveStartDate }} ({{ $pendingLeave->leave_date->format('l') }})<div class="label-inverse label"> @lang('modules.leaves.halfDay') </div>
                                 @else
-                                {{ $pendingLeave->leave_date->format($global->date_format) }} ({{ $pendingLeave->leave_date->format('l') }})
+                                {{ $pendingLeaveStartDate }} ({{ $pendingLeave->leave_date->format('l') }})
                                 @endif
                                 
                                 <div class="progress m-l-30 m-r-30 m-t-15">
@@ -142,7 +145,7 @@
     $('.leave-action').on('click', function() {
         var action = $(this).data('leave-action');
         var leaveId = $(this).data('leave-id');
-        var url = '{{ route("admin.leaves.leaveActionPending") }}';
+        var url = '{{ route("admin.leaves.leaveAction") }}';
 
         $.easyAjax({
             type: 'POST',

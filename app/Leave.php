@@ -33,7 +33,10 @@ class Leave extends BaseModel
     {
         return $this->leave_date->toDateString();
     }
-
+    public function groupId()
+    {
+        return $this->belongsTo(GroupIdLeave::class, 'group_id');
+    }
     public function getLeavesTakenCountAttribute()
     {
         $userId = $this->user_id;
@@ -53,7 +56,7 @@ class Leave extends BaseModel
                 ->where('duration', 'half day')
                 ->count();
 
-            return ($fullDay + ($halfDay/2));
+            return ($fullDay + ($halfDay / 2));
         } else {
             $fullDay = Leave::where('user_id', $userId)
                 ->where('leave_date', '<=', Carbon::today()->endOfYear()->format('Y-m-d'))
@@ -67,9 +70,8 @@ class Leave extends BaseModel
                 ->where('duration', 'half day')
                 ->count();
 
-            return ($fullDay + ($halfDay/2));
+            return ($fullDay + ($halfDay / 2));
         }
-
     }
 
     public static function byUser($userId)
@@ -109,8 +111,7 @@ class Leave extends BaseModel
                 ->where('duration', 'half day')
                 ->get();
 
-            return (count($fullDay) + (count($halfDay)/2));
-
+            return (count($fullDay) + (count($halfDay) / 2));
         } else {
             $fullDay = Leave::where('user_id', $userId)
                 ->where('leave_date', '<=', Carbon::today()->endOfYear()->format('Y-m-d'))
@@ -124,7 +125,7 @@ class Leave extends BaseModel
                 ->where('duration', 'half day')
                 ->get();
 
-            return (count($fullDay) + (count($halfDay)/2));
+            return (count($fullDay) + (count($halfDay) / 2));
         }
     }
 }

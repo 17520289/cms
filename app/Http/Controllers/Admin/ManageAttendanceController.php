@@ -529,7 +529,7 @@ class ManageAttendanceController extends AdminBaseController
         return view('admin.attendance.summary', $this->data);
     }
 
-     /**
+    /**
      * Edit function to display attendance summary and total attendance of employee
      * 
      * @param Request $rerquest
@@ -585,35 +585,36 @@ class ManageAttendanceController extends AdminBaseController
                 }
             }
             $final[$employee->id . '#' . $employee->name] = array_replace($dataTillToday, $dataFromTomorrow);
-            
+
             // custom to show icon for attendance
             $totalAbsent[$employee->id . '#' . $employee->name] = 0.0;
-            
+
 
             foreach ($employee->attendance as $attendance) {
                 $d = Carbon::createFromFormat('Y-m-d H:i:s', $attendance->clock_in_time)->day;
-               
-                $jd = gregoriantojd($this->month, $d , $this->year);
+
+                $jd = gregoriantojd($this->month, $d, $this->year);
                 if ($attendance->half_day == 'no' || $attendance->half_day == '') {
                     $totalAbsent[$employee->id . '#' . $employee->name] += 1;
-                }else{
+                } else {
                     $totalAbsent[$employee->id . '#' . $employee->name] += 0.5;
                 }
 
-                if(jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday'){
-                    if($attendance->half_day == 'yes'){
-                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i class="fa fa-times text-warning"></i></a>';
-                    }else{
-                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i class="fa fa-times text-success"></i></a>';
-                    }
-                }else{
-                    if ($attendance->half_day == 'no' || $attendance->half_day == '') {
-                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i class="fa fa-star text-success" aria-hidden="true"></i></a>';
+                $clockInTime = $attendance->clock_in_time->timezone($this->global->timezone)->format($this->global->time_format);
+                $clockOutTime= $attendance->clock_out_time == null ? '' :  $attendance->clock_out_time->timezone($this->global->timezone)->format($this->global->time_format) ;
+                if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday') {
+                    if ($attendance->half_day == 'yes') {
+                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i title="' . $clockInTime . '~' . $clockOutTime . '" class="fa fa-times text-warning"></i></a>';
                     } else {
-                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i class="fa fa-star-half-o text-success" aria-hidden="true"></i></a>';
+                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i  title="' . $clockInTime . '~' . $clockOutTime . '" class="fa fa-times text-success"></i></a>';
+                    }
+                } else {
+                    if ($attendance->half_day == 'no' || $attendance->half_day == '') {
+                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i  title="' . $clockInTime . '~' . $clockOutTime . '" class="fa fa-star text-success" aria-hidden="true"></i></a>';
+                    } else {
+                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i  title="' . $clockInTime . '~' . $clockOutTime . '" class="fa fa-star-half-o text-success" aria-hidden="true"></i></a>';
                     }
                 }
-              
             }
 
             $image = '<img src="' . $employee->image_url . '" alt="user" class="img-circle" width="30" height="30"> ';
