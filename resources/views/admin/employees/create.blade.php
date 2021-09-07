@@ -112,7 +112,7 @@
                                                     @endforeach
                                                 </select>
                                                 <input type="tel" name="mobile" id="mobile" class="mobile"
-                                                    onkeypress='validate(event)' autocomplete="nope">
+                                                    onkeypress='validate(event)' autocomplete="nope"  maxlength="9">
                                                 <span style="display:none; color:red" id="errMobile"> @lang('modules.employees.errMobile') </span>
                                             </div>
                                         </div>
@@ -164,7 +164,7 @@
                                             <div class="form-group">
                                                 <label>@lang('modules.employees.identityCardNumber')</label>
                                                 <input autocomplete="nope" type="text" id="id_no" name="id_no"
-                                                onkeypress='validate(event)'  class="form-control">
+                                                onkeypress='validate(event)'  class="form-control"  maxlength="12">
                                                 <span style="display:none; color:red" id="errIdNo"> @lang('modules.employees.errIdNo') </span>
                                             </div>
                                         </div>
@@ -173,7 +173,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>@lang('modules.employees.issueDate')</label>
-                                                <input type="text" autocomplete="off" name="issue_date" id="issue_date"
+                                                <input type="text" autocomplete="off" name="issue_date" id="issue_date"  onkeypress='validate(event)'
                                                     class="form-control">
                                             </div>
                                         </div>
@@ -204,7 +204,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="required">@lang('modules.employees.joiningDate')</label>
-                                                <input type="text" autocomplete="off" name="joining_date" id="joining_date"
+                                                <input type="text" autocomplete="off" name="joining_date" id="joining_date"  onkeypress='validate(event)'
                                                     class="form-control">
                                             </div>
                                         </div>
@@ -213,7 +213,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>@lang('modules.employees.lastDate')</label>
-                                                <input type="text" autocomplete="off" name="last_date" id="end_date"
+                                                <input type="text" autocomplete="off" name="last_date" id="end_date"  onkeypress='validate(event)'
                                                     class="form-control">
                                             </div>
                                         </div>

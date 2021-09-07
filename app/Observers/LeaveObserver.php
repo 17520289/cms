@@ -27,7 +27,7 @@ class LeaveObserver
     public function created(Leave $leave)
     {
         if (!isRunningInConsoleOrSeeding()) {
-            if (request()->duration == 'multiple') {
+            if (request()->duration == 'multiple' || request()->duration == 'date_range' ) {
                 if (session()->has('leaves_duration')) {
                     event(new LeaveEvent($leave, 'created', request()->multi_date));
                 }

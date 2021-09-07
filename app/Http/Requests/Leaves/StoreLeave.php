@@ -31,6 +31,7 @@ class StoreLeave extends CoreRequest
             'leave_type_id' => 'required',
             'duration' => 'required',
             'multi_date' => 'required_if:duration,multiple',
+            'date_range' => 'required_if:duration,date_range',
             'reason' => 'required',
             'status' => 'required'
         ];

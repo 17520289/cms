@@ -14,6 +14,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class ManageLeavesController extends AdminBaseController
 {
@@ -23,7 +24,7 @@ class ManageLeavesController extends AdminBaseController
         $this->pageTitle = 'app.menu.leaves';
         $this->pageIcon = 'icon-logout';
         $this->middleware(function ($request, $next) {
-            abort_if(!in_array('leaves', $this->user->modules),403);
+            abort_if(!in_array('leaves', $this->user->modules), 403);
             return $next($request);
         });
     }
@@ -50,6 +51,8 @@ class ManageLeavesController extends AdminBaseController
      */
     public function create()
     {
+        $this->startDate = Carbon::today()->timezone($this->global->timezone)->startOfMonth();
+        $this->endDate = Carbon::today()->timezone($this->global->timezone)->endOfMonth();
         $this->employees = User::allEmployees();
         $this->leaveTypes = LeaveType::all();
         return view('admin.leaves.create', $this->data);
@@ -61,20 +64,52 @@ class ManageLeavesController extends AdminBaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(StoreLeave $request)
     {
-        if ($request->duration == 'multiple') {
-            session(['leaves_duration' => 'multiple']);
-            $dates = explode(',', $request->multi_date);
+        if ($request->duration == 'multiple' || $request->duration == 'date_range') {
+            if ($request->duration == 'multiple') {
+                //session(['leaves_duration' => 'multiple']);
+                $dates = explode(',', $request->multi_date);
+            } else {
+                //session(['leaves_duration' => 'date_range']);
+                $t = str_replace(' ', '', $request->date_range);
+                $d = explode('-', $t);
+                $startDate = Carbon::createFromFormat('m/d/Y', $d[0]);
+                $endDate = Carbon::createFromFormat('m/d/Y', $d[1]);
+                $dates = $this->getDatesFromRange($startDate, $endDate);
+            }
             foreach ($dates as $date) {
                 $this->storeLeave($request, $date);
-                session()->forget('leaves_duration');
+                //session()->forget('leaves_duration');
             }
         } else {
             $this->storeLeave($request, $request->leave_date);
         }
-
         return Reply::redirect(route('admin.leaves.index'), __('messages.leaveAssignSuccess'));
+    }
+
+    /**
+     * Get all date between $date1 and $date2
+     *
+     * @param  $date1, $date2
+     * @return array()
+     * 
+     * Edric - 9/1/2020
+     */
+    public function getDatesFromRange($date1, $date2, $format = 'Y-m-d')
+    {
+        $dates = array();
+        $current = strtotime($date1);
+        $date2 = strtotime($date2);
+        $stepVal = '+1 day';
+        $i = 0;
+        while ($current <= $date2) {
+            $dates[$i] = date($format, $current);
+            $current = strtotime($stepVal, $current);
+            $i++;
+        }
+        return $dates;
     }
 
     public function storeLeave($request, $date)
@@ -150,6 +185,40 @@ class ManageLeavesController extends AdminBaseController
         return Reply::success('messages.leaveDeleteSuccess');
     }
 
+    /**
+     * LeaveAction for pending blade
+     * 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     * 
+     * Edric - 9/1/2020
+     */
+    public function leaveActionPending(Request $request)
+    {
+        $leave = Leave::findOrFail($request->leaveId);
+        if ($leave->duration == 'date_range') {
+            $leaves = DB::table('leaves')
+                ->where('user_id', $leave->user_id)
+                ->where('created_at', $leave->created_at)
+                ->update(['status' => $request->action]);
+            if (!empty($request->reason)) {
+                $leaves = DB::table('leaves')
+                    ->where('user_id', $leave->user_id)
+                    ->where('created_at', $leave->created_at)
+                    ->update(['reject_reason' => $request->reason]);
+            }
+        } else {
+            $leave->status = $request->action;
+            if (!empty($request->reason)) {
+                $leave->reject_reason = $request->reason;
+            }
+            $leave->save();
+        }
+
+        return Reply::success(__('messages.leaveStatusUpdate'));
+    }
+
     public function leaveAction(Request $request)
     {
         $leave = Leave::findOrFail($request->leaveId);
@@ -161,7 +230,6 @@ class ManageLeavesController extends AdminBaseController
 
         return Reply::success(__('messages.leaveStatusUpdate'));
     }
-
     public function rejectModal(Request $request)
     {
         $this->leaveAction = $request->leave_action;
@@ -220,10 +288,10 @@ class ManageLeavesController extends AdminBaseController
                 return '<div class="label label-' . $label . '">' . $row->status . '</div>';
             })
             ->addColumn('leave_type', function ($row) {
-                $type = '<div class="label-'.$row->color.' label">'.$row->type_name.'</div>';
+                $type = '<div class="label-' . $row->color . ' label">' . $row->type_name . '</div>';
 
                 if ($row->duration == 'half day') {
-                    $type.= ' <div class="label-inverse label">'.__('modules.leaves.halfDay').'</div>';
+                    $type .= ' <div class="label-inverse label">' . __('modules.leaves.halfDay') . '</div>';
                 }
 
                 return $type;
@@ -271,10 +339,29 @@ class ManageLeavesController extends AdminBaseController
 
     public function pendingLeaves()
     {
-        $pendingLeaves = Leave::with('type', 'user', 'user.leaveTypes')->where('status', 'pending')
-            ->orderBy('leave_date', 'asc')
+        $pendingLeavesSingleMultiple = Leave::with('type', 'user', 'user.leaveTypes')->where('status', 'pending')
+            ->where('duration', 'single')
+            ->orwhere('duration', 'multiple')
             ->get();
-        $this->pendingLeaves = $pendingLeaves->each->append('leaves_taken_count');
+
+        $pendingLeavesDateRange = Leave::with('type', 'user', 'user.leaveTypes')->where('status', 'pending')
+            ->where('duration', 'date_range')
+            ->groupBy('duration')
+            ->groupBy('user_id')
+            ->groupBy('created_at')
+            ->get();
+        $this->totalPendingLeave = Leave::with('type', 'user', 'user.leaveTypes')->where('status', 'pending')->count();
+        $pendingLeaves1 = $pendingLeavesDateRange->merge($pendingLeavesSingleMultiple)->all();
+
+        foreach ($pendingLeaves1 as $pendingLeave) {
+            $count = Leave::where('user_id', $pendingLeave->user_id)
+                ->where('created_at', $pendingLeave->created_at)
+                ->where('duration', $pendingLeave->duration)
+                ->count();
+            $pendingLeave->count = $count;
+        }
+        $pendingLeaves = collect($pendingLeaves1)->sortBy('leave_date');
+        $this->pendingLeaves =   $pendingLeaves->each->append('leaves_taken_count');
 
         return view('admin.leaves.pending', $this->data);
     }

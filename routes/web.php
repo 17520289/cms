@@ -910,6 +910,7 @@ Route::group(['middleware' => 'auth'], function () {
 
                 //Leaves
                 Route::post('leaves/leaveAction', ['as' => 'leaves.leaveAction', 'uses' => 'ManageLeavesController@leaveAction']);
+                Route::post('leaves/leaveActionPending', ['as' => 'leaves.leaveActionPending', 'uses' => 'ManageLeavesController@leaveActionPending']);
                 Route::get('leaves/show-reject-modal', ['as' => 'leaves.show-reject-modal', 'uses' => 'ManageLeavesController@rejectModal']);
                 Route::post('leave/data/{employeeId?}', ['uses' => 'ManageLeavesController@data'])->name('leave.data');
                 Route::get('leave/all-leaves', ['uses' => 'ManageLeavesController@allLeave'])->name('leave.all-leaves');
