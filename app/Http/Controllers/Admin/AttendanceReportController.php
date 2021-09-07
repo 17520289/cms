@@ -12,6 +12,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AttendanceExport;
 
 class AttendanceReportController extends AdminBaseController
 {
@@ -21,7 +22,7 @@ class AttendanceReportController extends AdminBaseController
         $this->pageTitle = 'app.menu.attendanceReport';
         $this->pageIcon = 'icon-clock';
         $this->middleware(function ($request, $next) {
-            abort_if(!in_array('reports', $this->user->modules),403);
+            abort_if(!in_array('reports', $this->user->modules), 403);
             return $next($request);
         });
     }
@@ -34,29 +35,7 @@ class AttendanceReportController extends AdminBaseController
 
     public function report(Request $request)
     {
-        $startDate = $request->startDate;
-        $endDate = $request->endDate;
-        $employee = $request->employeeID;
-        $this->attendanceSettings = AttendanceSetting::first();
-        $openDays = json_decode($this->attendanceSettings->office_open_days);
-        if ($startDate !== null && $request->startDate != '') {
-            $this->startDate = $startDate = Carbon::createFromFormat($this->global->date_format, $startDate);
-        }else{
-            $this->startDate =$startDate ='';
-        }
-        
-        $this->endDate = $endDate = Carbon::createFromFormat($this->global->date_format, $endDate);
-
-        $this->totalDays = $totalWorkingDays = $startDate->diffInDaysFiltered(function (Carbon $date) use ($openDays) {
-            foreach ($openDays as $day) {
-                if ($date->dayOfWeek == $day) {
-                    return $date;
-                }
-            }
-        }, $endDate);
-
-        return Reply::dataOnly(['status' => 'success', 'data' => $this->totalDays]);
-
+        return Excel::download(new AttendanceExport($request, $this->global->timezone), 'AttendanceExport.xlsx');
     }
 
     public function reportExport($startDate = null, $endDate = null, $employee = null)
