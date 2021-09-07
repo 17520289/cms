@@ -13,7 +13,7 @@ class CreateGroupIdLeavesTable extends Migration
      */
     public function up()
     {
-        Schema::create('group_id_leaves', function (Blueprint $table) {
+        Schema::create('group_leaves', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
@@ -32,6 +32,7 @@ class CreateGroupIdLeavesTable extends Migration
      */
     public function down()
     {
+        Schema::drop('table');
         Schema::dropIfExists('group_id_leaves');
     }
 }

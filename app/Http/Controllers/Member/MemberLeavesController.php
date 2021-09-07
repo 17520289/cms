@@ -14,7 +14,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
-use App\GroupIdLeave;
+use App\GroupLeave;
 use Illuminate\Support\Facades\DB;
 
 class MemberLeavesController extends MemberBaseController
@@ -38,7 +38,7 @@ class MemberLeavesController extends MemberBaseController
         $this->allowedLeaves = $this->user->leaveTypes->sum('no_of_leaves');
         $pendingLeavesDateRange = Leave::where('status', 'pending')
             ->where('user_id', $this->user->id)
-            ->groupBy('group_id')
+            ->groupBy('group_leave_id')
             ->where('duration', 'date_range')
             ->get();
         $pendingLeavesOrther = Leave::where('status', 'pending')
@@ -90,7 +90,7 @@ class MemberLeavesController extends MemberBaseController
      */
     public function store(StoreLeave $request)
     {
-        $groupId = GroupIdLeave::create(
+        $groupId = GroupLeave::create(
             [
                 'user_id' => $request->user_id,
                 'leave_type_id' => $request->leave_type_id,
@@ -122,12 +122,12 @@ class MemberLeavesController extends MemberBaseController
         return Reply::redirect(route('member.leaves.index'), __('messages.leaveAssignSuccess'));
     }
 
-    public function storeLeave($request, $date, $groupIdLeave)
+    public function storeLeave($request, $date, $GroupLeave)
     {
         $leave = new Leave();
         $leave->user_id = $request->user_id;
         $leave->leave_type_id = $request->leave_type_id;
-        $leave->group_id = $groupIdLeave;
+        $leave->group_leave_id = $GroupLeave;
         $leave->duration = $request->duration;
         $leave->leave_date = Carbon::createFromFormat($this->global->date_format, $date)->format('Y-m-d');
         $leave->reason = $request->reason;
@@ -180,15 +180,15 @@ class MemberLeavesController extends MemberBaseController
     {
         $leave = Leave::findOrFail($id);
         DB::beginTransaction();
-        $groupIdLeave =  $leave->group_id;
+        $GroupLeave =  $leave->group_leave_id;
         if ($leave->duration == 'date_range') {
-            $groupId = DB::table('group_id_leaves')->where('id', $groupIdLeave)
+            $groupId = DB::table('group_leave_id_leaves')->where('id', $GroupLeave)
                 ->update([
                     'leave_type_id' => $request->leave_type_id,
                 ]);
             $test = DB::table('leaves')
                 ->where('user_id', $leave->user_id)
-                ->where('group_id', $leave->group_id)
+                ->where('group_leave_id', $leave->group_leave_id)
                 ->delete();
 
             $t = str_replace(' ', '', $request->date_range);
@@ -199,7 +199,7 @@ class MemberLeavesController extends MemberBaseController
 
             foreach ($dates as $date) {
                 if ($this->checkDateIsWeekends($date) == false) {
-                    $this->storeLeave($request, $date, $groupIdLeave);
+                    $this->storeLeave($request, $date, $GroupLeave);
                     //session()->forget('leaves_duration');
                 }
             }
@@ -217,14 +217,14 @@ class MemberLeavesController extends MemberBaseController
     public function destroy($id)
     {
         $leave = Leave::findOrFail($id);
-        $groupIdLeave = GroupIdLeave::findOrFail($leave->group_id);
+        $GroupLeave = GroupLeave::findOrFail($leave->group_leave_id);
         if ($leave->duration == 'multiple') {
             Leave::destroy($id);
-            if ($groupIdLeave->leaves->count() == 0) {
-                GroupIdLeave::destroy($groupIdLeave->id);
+            if ($GroupLeave->leaves->count() == 0) {
+                GroupLeave::destroy($GroupLeave->id);
             }
         } else {
-            GroupIdLeave::destroy($leave->group_id);
+            GroupLeave::destroy($leave->group_leave_id);
         }
 
         return Reply::success('messages.leaveDeleteSuccess');
@@ -233,14 +233,14 @@ class MemberLeavesController extends MemberBaseController
     public function leaveAction(Request $request)
     {
         $leave = Leave::findOrFail($request->leaveId);
-        $groupIdLeave = GroupIdLeave::findOrFail($leave->group_id);
-        if ($groupIdLeave->duration == 'multiple') {
+        $GroupLeave = GroupLeave::findOrFail($leave->group_leave_id);
+        if ($GroupLeave->duration == 'multiple') {
             Leave::destroy($request->leaveId);
-            if ($groupIdLeave->leaves->count() == 0) {
-                GroupIdLeave::destroy($groupIdLeave->id);
+            if ($GroupLeave->leaves->count() == 0) {
+                GroupLeave::destroy($GroupLeave->id);
             }
         } else {
-            GroupIdLeave::destroy($groupIdLeave->id);
+            GroupLeave::destroy($GroupLeave->id);
         }
 
         return Reply::success(__('messages.leaveStatusUpdate'));
@@ -255,7 +255,7 @@ class MemberLeavesController extends MemberBaseController
         $laveDateRange = Leave::with('user', 'type')
             ->where('user_id', $this->user->id)
             ->where('duration', 'date_range')
-            ->groupBy('group_id')
+            ->groupBy('group_leave_id')
             ->get();
         $leaves = $laveDateRange->merge($leavesOrther)->sortBy('leave_date')->all();
         foreach ($leaves as $leave) {
@@ -314,7 +314,7 @@ class MemberLeavesController extends MemberBaseController
      */
     public function getEndDateOfDateRange($leave)
     {
-        $endDate =  Leave::where('group_id', $leave->group_id)->get()->last();
+        $endDate =  Leave::where('group_leave_id', $leave->group_leave_id)->get()->last();
         return  $endDate->leave_date;
     }
 
