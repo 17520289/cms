@@ -116,7 +116,71 @@
 
             </div>
         </div>
+        <div class="col-xs-12">
+            <div class="white-box p-b-0">
+                <div class="row"><h5><strong>Export data</strong></h5></div>
+                <form 
+                autocomplete="off" 
+                enctype="multipart/form-data"
+                action="{{ route('admin.attendance-report.report') }}"
+                method="POST">
+                {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">@lang('modules.timeLogs.employeeName')</label>
+                                <select class="select2 form-control" data-placeholder="Choose Employee" id="user_id_export"
+                                    name="user_id">
+                                    <option value="0">--</option>
+                                    @foreach($employees as $employee)
+                                        <option value="{{ $employee->id }}">{{ ucwords($employee->name) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">@lang('app.select') @lang('app.month')</label>
+                                <select class="select2 form-control" data-placeholder="" id="month_export" name="month">
+                                    <option @if($month=='01' ) selected @endif value="01">@lang('app.january')</option>
+                                    <option @if($month=='02' ) selected @endif value="02">@lang('app.february')</option>
+                                    <option @if($month=='03' ) selected @endif value="03">@lang('app.march')</option>
+                                    <option @if($month=='04' ) selected @endif value="04">@lang('app.april')</option>
+                                    <option @if($month=='05' ) selected @endif value="05">@lang('app.may')</option>
+                                    <option @if($month=='06' ) selected @endif value="06">@lang('app.june')</option>
+                                    <option @if($month=='07' ) selected @endif value="07">@lang('app.july')</option>
+                                    <option @if($month=='08' ) selected @endif value="08">@lang('app.august')</option>
+                                    <option @if($month=='09' ) selected @endif value="09">@lang('app.september')
+                                    </option>
+                                    <option @if($month=='10' ) selected @endif value="10">@lang('app.october')</option>
+                                    <option @if($month=='11' ) selected @endif value="11">@lang('app.november')</option>
+                                    <option @if($month=='12' ) selected @endif value="12">@lang('app.december')</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control-label">@lang('app.select') @lang('app.year')</label>
+                                <select class="select2 form-control" data-placeholder="" id="year_export" name="year">
+                                    @for($i = $year; $i >= ($year-4); $i--)
+                                        <option @if($i==$year) selected @endif value="{{ $i }}">{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group m-t-20">
+                                <button type="submit"
+                                    class="btn btn-info btn-block">@lang('app.exportExcel')</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     </div>
 
@@ -161,7 +225,7 @@
     $('#apply-filter').click(function () {
        showTable();
     });
-
+    
     $(".select2").select2({
         formatNoMatches: function () {
             return "{{ __('messages.noRecordFound') }}";
@@ -195,7 +259,7 @@
         });
 
     }
-
+    
     showTable();
 
     $('#attendance-data').on('click', '.view-attendance',function () {
