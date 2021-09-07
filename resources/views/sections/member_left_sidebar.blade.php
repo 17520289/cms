@@ -162,11 +162,11 @@
             <li><a href="{{ route('member.holidays.index') }}" class="waves-effect"><i class="icon-calender fa-fw"></i> <span class="hide-menu">@lang("app.menu.holiday") </span></a> </li>
             @endif
 
-            @if(in_array('tickets',$modules))
+            {{-- @if(in_array('tickets',$modules))
             <li><a href="{{ route('member.tickets.index') }}" class="waves-effect"><i class="ti-ticket fa-fw"></i> <span class="hide-menu">@lang("app.menu.tickets") </span></a> </li>
-            @endif
+            @endif --}}
 
-            @if((in_array('estimates',$modules) && $user->cans('view_estimates'))
+            {{-- @if((in_array('estimates',$modules) && $user->cans('view_estimates'))
             || (in_array('invoices',$modules)  && $user->cans('view_invoices'))
             || (in_array('payments',$modules) && $user->cans('view_payments'))
             || (in_array('expenses',$modules)))
@@ -202,14 +202,14 @@
                     @endif
                 </ul>
             </li>
-            @endif
+            @endif --}}
 
-            @if(in_array('messages',$modules))
+            {{-- @if(in_array('messages',$modules))
             <li><a href="{{ route('member.user-chat.index') }}" class="waves-effect"><i class="icon-envelope fa-fw"></i> <span class="hide-menu">@lang("app.menu.messages") @if($unreadMessageCount > 0)<span class="label label-rouded label-custom pull-right">{{ $unreadMessageCount }}</span> @endif
                     </span>
                 </a>
             </li>
-            @endif
+            @endif --}}
 
             @if(in_array('events',$modules))
             <li><a href="{{ route('member.events.index') }}" class="waves-effect"><i class="icon-calender fa-fw"></i> <span class="hide-menu">@lang('app.menu.Events')</span></a> </li>
@@ -222,9 +222,9 @@
             @if(in_array('notices',$modules))
                 <li><a href="{{ route('member.notices.index') }}" class="waves-effect"><i class="ti-layout-media-overlay fa-fw"></i> <span class="hide-menu">@lang("app.menu.noticeBoard") </span></a> </li>
             @endif
-            @if(!is_null($faqs))
+            {{-- @if(!is_null($faqs))
                 <li><a href="{{ route('member.faqs.index') }}" class="waves-effect"><i class="icon-docs fa-fw"></i> <span class="hide-menu">@lang('app.menu.employeeFaq')</span></a> </li>
-            @endif
+            @endif --}}
 
             {{-- <li><a href="#" class="waves-effect" id="rtl"><i class="ti-settings fa-fw"></i> <span class="hide-menu"> RTL</span></a></li> --}}
 
