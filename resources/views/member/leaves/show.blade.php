@@ -74,7 +74,7 @@
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">@lang('app.close')</button>
         @if($leave->status == 'pending')
             <button type="button" class="btn btn-danger btn-outline delete-event waves-effect waves-light"><i class="fa fa-times"></i> @lang('app.delete')</button>
             <button type="button" class="btn btn-info save-event waves-effect waves-light"><i class="fa fa-edit"></i> @lang('app.edit')</button>

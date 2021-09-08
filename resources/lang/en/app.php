@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'leavesRejectReason' => 'Leaves Reject Reason',
   'salary' => 'salary',
   'loginAsEmployee' => 'Login As Employee',
   'ogImage' => 'Og Image',

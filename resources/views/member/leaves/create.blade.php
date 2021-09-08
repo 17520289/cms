@@ -33,7 +33,7 @@
         <div class="col-xs-12">
 
             <div class="panel panel-inverse">
-                <div class="panel-heading"> @lang('modules.leaves.assignLeave')</div>
+                <div class="panel-heading"> @lang('modules.leaves.applyLeave')</div>
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body">
                         {!! Form::open(['id' => 'createLeave', 'class' => 'ajax-form', 'method' => 'POST']) !!}

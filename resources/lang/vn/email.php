@@ -3,16 +3,16 @@
 return array(
   'newEvent' =>
   array(
-    'subject' => 'New Event Created',
-    'text' => 'New event has been created. Download the attachment to add event to your calendar.',
+    'subject' => 'Sự Kiện Mới Đã Được Tạo',
+    'text' => 'Sự kiện mới đã được tạo. Tải xuống tệp đính kèm để thêm sự kiện vào lịch của bạn.',
   ),
-  'loginDashboard' => 'Login To Dashboard',
+  'loginDashboard' => 'Đăng Nhập Vào Hệ Thống',
   'thankyouNote' => 'Thank you for using our application!',
-  'hello' => 'Hello',
-  'whoops' => 'Whoops',
-  'regards' => 'Regards',
-  'footerLine' => 'If you’re having trouble clicking the :buttonText button, copy and paste the URL below
-into your web browser:',
+  'hello' => 'Xin Chào',
+  'whoops' => 'Rất tiếc',
+  'regards' => 'Trân Trọng',
+  'footerLine' => 'Nếu bạn gặp sự cố khi nhấp vào nút: buttonText, hãy sao chép và dán URL bên dưới
+  vào trình duyệt web của bạn:',
   'newExpense' =>
   array(
     'subject' => 'New Expense added',
@@ -66,13 +66,13 @@ into your web browser:',
   ),
   'newUser' =>
   array(
-    'subject' => 'Welcome to',
-    'text' => 'Your account has been created successfully.',
+    'subject' => 'Chào mừng bạn đến',
+    'text' => 'Tài khoản của bạn đã được tạo thành công.',
   ),
   'leaves' =>
   array(
-    'subject' => 'New leave request received',
-    'statusSubject' => 'Leave application status updated',
+    'subject' => 'Đã nhận được đơn xin nghỉ mới',
+    'statusSubject' => 'Cập nhật trạng thái đơn xin nghỉ',
   ),
   'taskComplete' =>
   array(
@@ -84,9 +84,9 @@ into your web browser:',
   ),
   'leave' =>
   array(
-    'approve' => 'Leave application approved.',
-    'reject' => 'Leave application rejected.',
-    'applied' => 'Leave application applied.',
+    'approve' => 'Đơn xin nghỉ đã được phê duyệt.',
+    'reject' => 'Đơn xin nghỉ phép bị từ chối.',
+    'applied' => 'Đã nộp đơn xin nghỉ phép.',
   ),
   'newClientTask' =>
   array(
@@ -171,9 +171,9 @@ into your web browser:',
   ),
   'emailVerifySuccess' =>
   array(
-    'subject' => 'Email Verification Success',
-    'text' => 'Thank you for email verification. Please click the below link to login',
-    'login' => 'Login'
+    'subject' => 'Xác Thực Email Thành Công',
+    'text' => 'Cảm ơn bạn đã xác thực email. Vui lòng nhấp vào liên kết dưới đây để đăng nhập',
+    'login' => 'Đăng Nhập'
   ),
   'discussionReply' =>
   array(
@@ -287,7 +287,7 @@ into your web browser:',
   ),
   'discussion' =>
   array(
-    'subject' => 'New discussion started ',
+    'subject' => 'Cuộc thảo luận mới đã bắt đầu ',
   ),
   'subTaskCreated' => 'Sub task created.',
   'subTaskComplete' =>
@@ -311,8 +311,8 @@ into your web browser:',
   ),
   'noticeUpdate' =>
   array(
-    'subject' => 'A notice has been updated',
-    'text' => 'Notice has been updated. Login to view the notice.',
+    'subject' => 'Một thông báo đã được cập nhật',
+    'text' => 'Thông báo đã được cập nhật. Đăng nhập để xem thông báo.',
   ),
   'taskNote' =>
   array (
@@ -405,7 +405,7 @@ into your web browser:',
   ),
  'AttendanceReminder' =>
     array(
-        'subject' => 'Attendance Reminder',
-        'text' => 'You forgot to mark your today attendance. Kindly clock-in to avoid being marked as absent.',
+        'subject' => 'Nhắc nhở chấm công',
+        'text' => 'Bạn quên chấm công ngày hôm nay. Vui lòng clock-in để tránh bị điểm danh vắng mặt.',
     ),
 );
