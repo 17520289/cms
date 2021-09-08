@@ -64,7 +64,7 @@
             </div>
 
             <div class="col-xs-12">
-                <h5 class="box-title m-t-30">@lang('app.employee') @lang('app.name')</h5>
+                <h5 class="box-title m-t-30">@lang('modules.employees.title')</h5>
 
                 <div class="form-group">
                     <div class="row">
