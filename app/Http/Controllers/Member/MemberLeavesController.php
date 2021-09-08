@@ -182,7 +182,7 @@ class MemberLeavesController extends MemberBaseController
         DB::beginTransaction();
         $GroupLeave =  $leave->group_leave_id;
         if ($leave->duration == 'date_range') {
-            $groupId = DB::table('group_leave_id_leaves')->where('id', $GroupLeave)
+            $groupId = DB::table('group_leaves')->where('id', $GroupLeave)
                 ->update([
                     'leave_type_id' => $request->leave_type_id,
                 ]);
@@ -269,11 +269,11 @@ class MemberLeavesController extends MemberBaseController
                 $action = '';
 
                 $action .= '<a href="javascript:;" onclick="getEventDetail(' . $row->id . ')" class="btn btn-info btn-circle"
-                      data-toggle="tooltip" data-original-title="View"><i class="fa fa-search" aria-hidden="true"></i></a>';
+                      data-toggle="tooltip" data-original-title='.__('app.view').'><i class="fa fa-search" aria-hidden="true"></i></a>';
 
                 if ($row->status == 'pending') {
                     $action .= '  <a href="javascript:;" class="btn btn-danger btn-circle sa-params"
-                      data-toggle="tooltip" data-user-id="' . $row->id . '" data-original-title="Delete"><i class="fa fa-times" aria-hidden="true"></i></a>';
+                      data-toggle="tooltip" data-user-id="' . $row->id . '" data-original-title='.__('app.delete').'><i class="fa fa-times" aria-hidden="true"></i></a>';
                 }
 
                 return $action;

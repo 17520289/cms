@@ -10,7 +10,7 @@ return array (
   'alpha_num' => 'The :attribute may only contain letters and numbers.',
   'array' => 'The :attribute must be an array.',
   'before' => 'The :attribute must be a date before :date.',
-    'invalidEmail' => 'Please enter a valid email address.',
+    'invalidEmail' => 'Nhập Email đúng định dạng.',
     'invalidEmailPassword' => 'Email and password combination is not correct.',
     'givenDataInvalid' => 'Dữ liệu đã cho không hợp lệ.',
   'before_or_equal' => 'The :attribute must be a date before or equal to :date.',
@@ -77,7 +77,7 @@ return array (
   ),
   'string' => 'The :attribute must be a string.',
   'timezone' => 'The :attribute must be a valid zone.',
-  'unique' => 'The :attribute has already been taken.',
+  'unique' => ':attribute đã được sử dụng.',
   'uploaded' => 'The :attribute failed to upload.',
   'url' => 'The :attribute is not a valid url. For example:http://abc.com',
   'custom' => 

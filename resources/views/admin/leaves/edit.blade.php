@@ -97,7 +97,7 @@
 
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">@lang('app.close')</button>
     <button type="button" class="btn btn-success save-leave waves-effect waves-light">@lang('app.update')</button>
 </div>
 
