@@ -108,7 +108,7 @@
             @endif
         </div>
         @if(!module_enabled('Subdomain'))
-            @if($global->enable_register == true)
+            {{-- @if($global->enable_register == true)
                 <div class="form-group m-b-0">
                     <div class="col-sm-12 text-center">
                         <p>@lang('messages.dontHaveAccount') <a href="{{ route('front.signup.index') }}"
@@ -116,10 +116,10 @@
                         </p>
                     </div>
                 </div>
-            @endif
+            @endif --}}
             <div class="form-group m-b-0">
                 <div class="col-sm-12 text-center">
-                    <p>@lang('messages.goToWebsite') <a href="{{ route('front.home') }}"
+                    <p>@lang('messages.goToWebsite') <a href="https://hlsolutions.jp/"
                                                         class="text-primary m-l-5"><b>@lang('app.home')</b></a></p>
                 </div>
             </div>
