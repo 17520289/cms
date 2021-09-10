@@ -116,7 +116,7 @@ class MemberAttendanceController extends MemberBaseController
         }
 
         $final = array_replace($dataTillToday, $dataFromTomorrow);
-        $totalAbsent = 0.0;
+        $totalPresent = 0.0;
 
         foreach($attendances as $attendance){
 
@@ -124,9 +124,9 @@ class MemberAttendanceController extends MemberBaseController
             $jd = gregoriantojd($this->month, $d , $this->year);
 
             if ($attendance->half_day == 'no' || $attendance->half_day == '') {
-                $totalAbsent += 1;
+                $totalPresent += 1;
             }else{
-                $totalAbsent += 0.5;
+                $totalPresent += 0.5;
             }
             
             $clockInTime= $attendance->clock_in_time->timezone($this->global->timezone)->format($this->global->time_format);
@@ -160,7 +160,7 @@ class MemberAttendanceController extends MemberBaseController
         }
         
         $this->attendencesData = $final;
-        $this->totalAbsent = $totalAbsent;
+        $this->totalPresent = $totalPresent;
         $view = view('member.attendance.attendance_data', $this->data)->render();
         return Reply::dataOnly(['status' => 'success', 'data' => $view]);
     }

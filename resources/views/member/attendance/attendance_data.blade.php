@@ -33,7 +33,7 @@
                          @endif
                         
                     @endforeach
-                    <td class="text-success">{{ $totalAbsent . ' / ' . $daysInMonth }}</td>
+                    <td class="text-success">{{ $totalPresent . ' / ' . $daysInMonth }}</td>
                 </tr>
               
             </tbody>

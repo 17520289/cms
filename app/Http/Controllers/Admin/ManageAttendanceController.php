@@ -587,7 +587,7 @@ class ManageAttendanceController extends AdminBaseController
             $final[$employee->id . '#' . $employee->name] = array_replace($dataTillToday, $dataFromTomorrow);
 
             // custom to show icon for attendance
-            $totalAbsent[$employee->id . '#' . $employee->name] = 0.0;
+            $totalPresent[$employee->id . '#' . $employee->name] = 0.0;
 
 
             foreach ($employee->attendance as $attendance) {
@@ -595,9 +595,9 @@ class ManageAttendanceController extends AdminBaseController
 
                 $jd = gregoriantojd($this->month, $d, $this->year);
                 if ($attendance->half_day == 'no' || $attendance->half_day == '') {
-                    $totalAbsent[$employee->id . '#' . $employee->name] += 1;
+                    $totalPresent[$employee->id . '#' . $employee->name] += 1;
                 } else {
-                    $totalAbsent[$employee->id . '#' . $employee->name] += 0.5;
+                    $totalPresent[$employee->id . '#' . $employee->name] += 0.5;
                 }
 
                 $clockInTime = $attendance->clock_in_time->timezone($this->global->timezone)->format($this->global->time_format);
@@ -628,7 +628,7 @@ class ManageAttendanceController extends AdminBaseController
         }
 
         $this->employeeAttendence = $final;
-        $this->totalAbsent = $totalAbsent;
+        $this->totalPresent = $totalPresent;
         $view = view('admin.attendance.summary_data', $this->data)->render();
         return Reply::dataOnly(['status' => 'success', 'data' => $view]);
     }

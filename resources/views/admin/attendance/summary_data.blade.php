@@ -45,7 +45,7 @@
                                 </td>
                             @endif
                         @endforeach
-                        <td class="text-success">{{ $totalAbsent[$key] . ' / ' . $daysInMonth }}</td>
+                        <td class="text-success">{{ $totalPresent[$key] . ' / ' . $daysInMonth }}</td>
                     </tr>
                 @endforeach
             </tbody>
