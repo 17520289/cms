@@ -12,7 +12,7 @@
             <td><strong>BẢNG CHẤM CÔNG THÁNG {{ $month }}</strong></td>
         </tr>
         <tr>
-            <td>ngày {{ date("d/m/Y") }}</td>
+            <td>Ngày {{ date("1/$month/$year") }}</td>
         </tr>
         <tr>
             <td>Định mức ngày công trong tháng:</td>
@@ -71,8 +71,8 @@
                                 @endif
                         @endif
                     @endforeach
-                    <td class="text-success">{{ $totalAbsent[$key] }}</td>
-                    <td class="text-success">{{ count($daysInMonth)  }}</td>
+                    <td class="text-success">{{ $totalHours[$key] }}</td>
+                    <td class="text-success">{{ $totalPresent[$key]  }}</td>
                     <td class="text-success"></td>
                 </tr>
             @endforeach
