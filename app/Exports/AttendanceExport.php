@@ -73,16 +73,18 @@ class AttendanceExport implements FromView, WithCustomStartCell
             }
             $final[$employee->name] = array_replace($dataTillToday, $dataFromTomorrow);
 
-            $totalAbsent[$employee->name] = 0.0;
-
+            $totalPresent[$employee->name] = 0.0;
+            $totalHours[$employee->name] = 0;
             foreach ($employee->attendance as $attendance) {
                 $d = Carbon::createFromFormat('Y-m-d H:i:s', $attendance->clock_in_time)->day;
 
                 $jd = gregoriantojd($request->month, $d, $request->year);
                 if ($attendance->half_day == 'no' || $attendance->half_day == '') {
-                    $totalAbsent[$employee->name] += 1;
+                    $totalPresent[$employee->name] += 1;
+                    $totalHours[$employee->name] += 8;
                 } else {
-                    $totalAbsent[$employee->name] += 0.5;
+                    $totalPresent[$employee->name] += 0.5;
+                    $totalHours[$employee->name] += 4;
                 }
                 if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday') {
                     if ($attendance->half_day == 'yes') {
@@ -115,11 +117,12 @@ class AttendanceExport implements FromView, WithCustomStartCell
         }
 
         $this->employeeAttendence = $final;
-        $this->totalAbsent = $totalAbsent;
+        $this->totalPresent = $totalPresent;
         return view('admin/reports/attendance/summary_data', [
             'employeeAttendence' => $final,
-            'totalAbsent' => $totalAbsent,
+            'totalPresent' => $totalPresent,
             'daysInMonth' => $daysInMonth,
+            'totalHours' => $totalHours,
             'month' => $request->month,
             'year' => $request->year
         ]);

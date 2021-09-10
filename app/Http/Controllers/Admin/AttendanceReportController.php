@@ -35,7 +35,8 @@ class AttendanceReportController extends AdminBaseController
 
     public function report(Request $request)
     {
-        return Excel::download(new AttendanceExport($request, $this->global->timezone), 'AttendanceExport.xlsx');
+        $fileName = 'Tháng_'.$request->month.'_'.$request->year.'.xlsx';
+        return Excel::download(new AttendanceExport($request, $this->global->timezone), $fileName);
     }
 
     public function reportExport($startDate = null, $endDate = null, $employee = null)
