@@ -59,7 +59,7 @@
                                                             <span class="fileinput-exists"> @lang('app.change') </span>
                                                             <input type="file" id="image" name="image"> </span>
                                                         <a href="javascript:;" class="btn btn-danger fileinput-exists"
-                                                            data-dismiss="fileinput"> @lang('app.remove') </a>
+                                                            data-dismiss="fileinput"> <i class="fa fa-trash text-white" aria-hidden="true"></i> </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -310,7 +310,7 @@
                                                 <div class="col-xs-12">
                                                     <div class="form-group">
                                                         <label>@lang('app.skills')</label>
-                                                        <input name='tags' placeholder='@lang('app.skills')' value=''>
+                                                        <input name='tags' placeholder='@lang('app.skills')' value='' class="overflow-clip tagify">
                                                     </div>
                                                 </div>
                                             </div>
@@ -335,9 +335,9 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="row">
-                                        <div class="info-person">
+                                        <div class="padding-create info-person" >
                                             <div class="panel-heading"> @lang('modules.employees.bankAccountInfomation') </div>
                                             <div class="row">
                                                 <div class="col-md-6">

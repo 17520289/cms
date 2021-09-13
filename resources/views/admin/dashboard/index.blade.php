@@ -358,7 +358,7 @@
                 </div>
             @endif
 
-            @if(in_array('tickets',$modules) && in_array('total_resolved_tickets',$activeWidgets))
+            {{-- @if(in_array('tickets',$modules) && in_array('total_resolved_tickets',$activeWidgets))
                 <div class="col-md-3 col-sm-6 front-dashboard dashboard-stats">
                     <a href="{{ route('admin.tickets.index') }}">
                     <div class="white-box">
@@ -376,9 +376,9 @@
                     </div>
                     </a>
                 </div>
-            @endif
+            @endif --}}
 
-            @if(in_array('tickets',$modules)   && in_array('total_unresolved_tickets',$activeWidgets))
+            {{-- @if(in_array('tickets',$modules)   && in_array('total_unresolved_tickets',$activeWidgets))
                 <div class="col-md-3 col-sm-6 front-dashboard dashboard-stats">
                     <a href="{{ route('admin.tickets.index') }}">
                         <div class="white-box">
@@ -396,7 +396,7 @@
                         </div>
                     </a>
                 </div>
-            @endif
+            @endif --}}
             
         </div>
         <!-- .row -->
