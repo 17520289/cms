@@ -15,40 +15,73 @@
     margin-bottom: 50px;
 }
 
-.profile-picture {
-    width: 100%;
-    height: 250px;
-}
-
-.profile-picture .img-thumb {
-    width: 70%;
-    height: 250px;
-    border-radius: none !important;
+/* .img-thumb img{
     display: block;
     margin-left: auto;
     margin-right: auto;
-}
+} */
 
-.profile-picture .img-thumb>img {
-    height: 100%;
+.fileinput-preview img, .fileinput-new img  {
+    height: 230px;
+    clip-path: circle();
 }
-
-.btn-img .btn-file{
-    width: 50%;
+.fileinput-preview , .fileinput-new, .fileinput{
+    width: fit-content;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
 }
+.fileinput{
+   text-align: center;
+    width: 230px;
+}
+.btn-img{
+    padding-top: 10px;
+}
+
+.btn-img .btn-file  {
+    margin-right: 10px;
+}
+
+
 
 .info-person .phone_country_code {
     width: 40%;
     margin-top: -4px;
 }
-
+.info-person-padding{
+    padding-top: 25px;
+    padding-bottom: 30px;
+}
+.padding-edit{
+    padding-top: 20px;
+    padding-bottom: 60px;
+}
+.padding-create{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.panel-heading{
+    margin-bottom: 20px;
+}
 .info-person .mobile {
     width: 60%;
 }
 
 .info-person .tagify {
     background-color: white;
+}
+.text{
+    display : block; overflow-wrap: break-word; max-width : 100%;
+}
+.text-datatable{
+    max-width: 150px;
+    display : block;
+    overflow-wrap: break-word;
+}
+ 
+
+.tagify {
+    overflow: auto !important;
+    flex-wrap: unset !important;
+    height: 42.6px;
 }

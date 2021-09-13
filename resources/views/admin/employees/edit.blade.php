@@ -39,23 +39,24 @@
                 <div class="panel-body">
                     {!! Form::open(['id'=>'updateEmployee','class'=>'ajax-form','method'=>'PUT']) !!}
                     <div class="form-body">
-                        <div class="row">
+                        <div class="row" >
                             <div class="col-md-3">
                                 <div class="row">
                                     <div class="info-person">
                                         <label>@lang('modules.profile.profilePicture')</label>
                                         <div class="form-group">
-                                            <div class="fileinput fileinput-new profile-picture" data-provides="fileinput">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-new img-thumb thumbnail">
-                                                    <img src="{{ $userDetail->image_url }}" alt="" />
+                                                    <img src="{{ $userDetail->image_url }}" alt=""/>
                                                 </div>
-                                                <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                                                <div class="btn-img">
-                                                    <span class="btn btn-info btn-file">
-                                                    <span class="fileinput-new"> @lang('app.selectImage') </span>
-                                                    <span class="fileinput-exists"> @lang('app.change') </span>
-                                                    <input type="file" name="image" id="image"> </span>
-                                                    <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> @lang('app.remove') </a>
+                                                <div class="fileinput-preview fileinput-exists thumbnail "></div>
+                                                <div class="btn-img d-flex justify-content-center">
+                                                    <span class="btn btn-info btn-file ">
+                                                    <span class="fileinput-new "> @lang('app.selectImage') </span>
+                                                        <span class="fileinput-exists " id="change-img"> @lang('app.change') </span>
+                                                        <input type="file" name="image" id="image"> </span>
+                                                    <span><a href="javascript:;" class="btn btn-danger fileinput-exists " data-dismiss="fileinput" > <i class="fa fa-trash text-white" aria-hidden="true"></i> </a></span>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -290,7 +291,7 @@
                                             <div class="col-xs-12">
                                                 <div class="form-group">
                                                     <label>@lang('app.skills')</label>
-                                                    <input  name='tags' placeholder='@lang('app.skills')'  value='{{implode(' , ', $userDetail->skills()) }}'>
+                                                    <input  name='tags' class="overflow-clip tagify" placeholder='@lang('app.skills')'  value='{{implode(' , ', $userDetail->skills()) }}'>
                                                 </div>
                                             </div>
                                         </div>
@@ -312,10 +313,10 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <br>
                                 <div class="row">
-                                    <div class="info-person">
-                                        <div class="panel-heading"> @lang('modules.employees.bankAccountInfomation') </div>
+                                    <div class="info-person padding-edit" >
+                                        <div class="panel-heading" > @lang('modules.employees.bankAccountInfomation') </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">

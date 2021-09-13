@@ -34,23 +34,27 @@
                         {!! Form::open(['id'=>'updateProfile','class'=>'ajax-form','method'=>'PUT']) !!}
                         <div class="form-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-3" >
                                     <div class="row">
-                                        <div class="info-person">
+                                        <div class="info-person" style="padding-bottom: 128px">
                                             <label>@lang('modules.profile.profilePicture')</label>
                                             <div class="form-group">
-                                                <div class="fileinput fileinput-new profile-picture" data-provides="fileinput">
+                                                <div class="fileinput fileinput-new " data-provides="fileinput">
                                                     <div class="fileinput-new img-thumb thumbnail">
+                                                        @if(is_null($userDetail->image))
                                                         <img src="https://via.placeholder.com/200x150.png?text={{ str_replace(' ', '+', __('modules.profile.uploadPicture')) }}"   alt=""/>
+                                                        @else
+                                                        <img src="{{ asset_url('avatar/'.$userDetail->image) }}" alt=""/>
+                                                        @endif
                                                     </div>
                                                     <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                                                    <div class="btn-img">
+                                                    <div class="btn-img d-flex justify-content-center">
                                                         <span class="btn btn-info btn-file">
                                                         <span class="fileinput-new"> @lang('app.selectImage') </span>
                                                         <span class="fileinput-exists"> @lang('app.change') </span>
                                                         <input type="file" id="image" name="image"> </span>
                                                         <a href="javascript:;" class="btn btn-danger fileinput-exists"
-                                                        data-dismiss="fileinput"> @lang('app.remove') </a>
+                                                        data-dismiss="fileinput"> <i class="fa fa-trash text-white" aria-hidden="true"></i> </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -238,7 +242,7 @@
                                                     <div class="col-xs-12">
                                                         <div class="form-group">
                                                             <label>@lang('app.skills')</label>
-                                                            <input  name='tags' placeholder='@lang('app.skills')'  value='{{implode(' , ', $userDetail->skills()) }}' style="background:white">
+                                                            <input  name='tags' placeholder='@lang('app.skills')'  value='{{implode(' , ', $userDetail->skills()) }}' style="background:white"  class="overflow-clip tagify">
                                                         </div>
                                                     </div>
                                                 </div>
