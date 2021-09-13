@@ -3,7 +3,7 @@
 <table class="table">
     <thead>
       <tr>
-          <th><strong>Công ty HL Solution</strong></th>
+          <th><strong>Công ty HL Solutions</strong></th>
           <th></th>
       </tr>
     </thead>

@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <input class="form-control input-daterange-datepicker" type="text" name="date_range"
                             id="date_range"
-                            value="{{ $startDate->format('m-d-Y') . ' - ' . $endDate->format('m-d-Y') }}" />
+                            value="{{ $startDate->format('m/d/Y') . ' - ' . $endDate->format('m/d/Y') }}" />
                     </div>
                 @else
                     <label>@lang('app.date')</label>
@@ -138,12 +138,9 @@
             data: $('#createLeave').serialize()
         })
     });
-    var nowDate = new Date();
-    var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+   
     $('.input-daterange-datepicker').daterangepicker({
-        minDate: today,
-        startDate: @json($startDate->format('m-d-Y')),
-        endDate: @json($endDate->format('m-d-Y')),
+      
         buttonClasses: ['btn', 'btn-sm'],
         cancelClass: 'btn-inverse',
         "locale": {

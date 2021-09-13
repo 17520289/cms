@@ -422,7 +422,7 @@
 
         <div class="row">
             @if(in_array('leaves',$modules)  && in_array('settings_leaves',$activeWidgets))
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">@lang('app.menu.leaves')</div>
                     <div class="panel-wrapper collapse in" style="overflow: auto">
@@ -434,7 +434,7 @@
             </div>
             @endif
 
-            @if(in_array('tickets',$modules)  && in_array('new_tickets',$activeWidgets))
+            {{-- @if(in_array('tickets',$modules)  && in_array('new_tickets',$activeWidgets))
             <div class="col-md-6">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">@lang('modules.dashboard.newTickets')</div>
@@ -466,7 +466,7 @@
                     </div>
                 </div>
             </div>
-            @endif
+            @endif --}}
 
         </div>
 

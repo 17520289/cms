@@ -24,13 +24,16 @@
 } */
 
 .fileinput-preview img, .fileinput-new img  {
-    height: 230px;
+    height: 220px;
+    width: 230px;
+    object-fit: cover;
     clip-path: circle();
 }
 .fileinput-preview , .fileinput-new, .fileinput{
     width: fit-content;
     display: block;
     margin: 0 auto;
+  
 }
 .fileinput{
    text-align: center;
