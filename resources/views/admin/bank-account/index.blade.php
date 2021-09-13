@@ -91,10 +91,8 @@
     </div>
 
     <div class="row">
-       
         <div class="col-xs-12">
             <div class="white-box">
-                
                 <div class="table-responsive">
                     {!! $dataTable->table(['class' => 'table table-bordered table-hover toggle-circle default footable-loaded footable']) !!}
                 </div>
