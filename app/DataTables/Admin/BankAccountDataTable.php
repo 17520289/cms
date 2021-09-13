@@ -28,26 +28,28 @@ class BankAccountDataTable extends BaseDataTable
                 return (($row->current_role_name != 'admin') ? $row->current_role_name : __('app.' . $row->roleName));
             })
             ->addColumn('accountOwner', function ($row) {
-              
-                return $row->account_owner === null ? "-" :  $row->account_owner;
+
+                $row->account_owner = $row->account_owner === null ? "-" : $row->account_owner;
+                return '<p class="text-datatable">' . $row->account_owner . '</p>';
             })
             ->addColumn('accountNumber', function ($row) {
-              
-                return $row->account_number === null ? "-" :  $row->account_number;
+
+                $row->account_number = $row->account_number === null ? "-" : $row->account_number;
+                return '<p class="text-datatable">' . $row->account_number . '</p>';
             })
             ->addColumn('bankName', function ($row) {
-              
-                return $row->bank_name === null ? "-" :  $row->bank_name;
+                $row->bank_name = $row->bank_name === null ? "-" : $row->bank_name;
+                return '<p class="text-datatable">' . $row->bank_name . '</p>';
             })
             ->addColumn('branch', function ($row) {
-              
-                return $row->branch === null ? "-" :  $row->branch;
+                $row->branch = $row->branch === null ? "-" : $row->branch;
+                return '<p class="text-datatable">' . $row->branch . '</p>';
             })
             ->addColumn('salary', function ($row) {
-              
-                return $row->office_salary === null ? "-" :  $row->office_salary;
+                $row->office_salary = $row->office_salary === null ? "-" : $row->office_salary;
+                return '<p class="text-datatable">' . $row->office_salary . '</p>';
             })
-            
+
             ->addColumn('action', function ($row) {
 
                 $action = '<div class="btn-group dropdown m-r-0">
@@ -88,7 +90,7 @@ class BankAccountDataTable extends BaseDataTable
                 return   ucwords($row->name);
             })
             ->addIndexColumn()
-            ->rawColumns(['name', 'action',  'status', 'accountOwner','accountNumber','bankName','branch','salary'])
+            ->rawColumns(['name', 'action',  'status', 'accountOwner', 'accountNumber', 'bankName', 'branch', 'salary'])
             ->removeColumn('roleId')
             ->removeColumn('roleName');
     }
@@ -102,7 +104,7 @@ class BankAccountDataTable extends BaseDataTable
     public function query(User $model)
     {
         $request = $this->request();
-      
+
 
         $users = User::with('role')
             ->withoutGlobalScope('active')
@@ -111,7 +113,7 @@ class BankAccountDataTable extends BaseDataTable
             ->leftJoin('designations', 'employee_details.designation_id', '=', 'designations.id')
             ->leftJoin('bank_accounts', 'employee_details.user_id', '=', 'bank_accounts.user_id')
             ->join('roles', 'roles.id', '=', 'role_user.role_id')
-            ->select('users.id', 'users.name', 'users.email','bank_accounts.account_owner','bank_accounts.account_number', 'bank_accounts.bank_name','bank_accounts.branch','employee_details.employee_id','employee_details.office_salary', 'users.created_at', 'roles.name as roleName', 'roles.id as roleId', 'users.image', 'users.status', \DB::raw("(select user_roles.role_id from role_user as user_roles where user_roles.user_id = users.id ORDER BY user_roles.role_id DESC limit 1) as `current_role`"), \DB::raw("(select roles.name from roles as roles where roles.id = current_role limit 1) as `current_role_name`"), 'designations.name as designation_name')
+            ->select('users.id', 'users.name', 'users.email', 'bank_accounts.account_owner', 'bank_accounts.account_number', 'bank_accounts.bank_name', 'bank_accounts.branch', 'employee_details.employee_id', 'employee_details.office_salary', 'users.created_at', 'roles.name as roleName', 'roles.id as roleId', 'users.image', 'users.status', \DB::raw("(select user_roles.role_id from role_user as user_roles where user_roles.user_id = users.id ORDER BY user_roles.role_id DESC limit 1) as `current_role`"), \DB::raw("(select roles.name from roles as roles where roles.id = current_role limit 1) as `current_role_name`"), 'designations.name as designation_name')
             ->where('roles.name', '<>', 'client');
 
         if ($request->status != 'all' && $request->status != '') {
@@ -179,7 +181,7 @@ class BankAccountDataTable extends BaseDataTable
             __('app.employee_name') => ['data' => 'employee_name', 'employee_name' => 'employee_name', 'visible' => false],
             __('app.salary') => ['data' => 'salary', 'name' => 'salary'],
             __('modules.employees.accountOwner') => ['data' => 'accountOwner', 'name' => 'accountOwner'],
-            __('modules.employees.accountNumber') => ['data' => 'accountNumber', 'name' => 'accountNumber'],
+            __('modules.employees.accountNumber') => ['data' => 'accountNumber', 'name' => 'accountNumber', 'width' => '20%'],
             __('modules.employees.bankName') => ['data' => 'bankName', 'name' => 'bankName'],
             __('modules.employees.branch') => ['data' => 'branch', 'name' => 'branch'],
             __('app.status') => ['data' => 'status', 'name' => 'status'],
