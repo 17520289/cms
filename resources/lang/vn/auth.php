@@ -13,9 +13,9 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
+    'failed' => 'Thông tin không hợp lệ.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'recaptchaFailed' => 'Recaptcha not validated.',
-    'companyStatusInactive' => 'Company account is inactive. Please contact to administrator.',
+    'companyStatusInactive' => 'Tài khoản không hoạt động,  vui lòng liên hệ Admin.',
     'sociaLoginFail' => 'Your account does not exists. Please sign up',
 ];

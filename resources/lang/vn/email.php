@@ -7,7 +7,7 @@ return array(
     'text' => 'Sự kiện mới đã được tạo. Tải xuống tệp đính kèm để thêm sự kiện vào lịch của bạn.',
   ),
   'loginDashboard' => 'Đăng Nhập Vào Hệ Thống',
-  'thankyouNote' => 'Thank you for using our application!',
+  'thankyouNote' => 'Cảm ơn, chúc bạn có một ngày làm việc vui vẻ !',
   'hello' => 'Xin Chào',
   'whoops' => 'Rất tiếc',
   'regards' => 'Trân Trọng',

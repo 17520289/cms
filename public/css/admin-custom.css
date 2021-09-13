@@ -2,7 +2,7 @@
 
 .info-person {
     background-color: rgb(246, 247, 249);
-    padding: 20px 15px;
+    padding: 10px 15px;
     /* border-radius: 5px; */
     margin: 0 5px 20px 0;
     /* border: 1px solid LightGray; */
@@ -21,11 +21,13 @@
     margin-right: auto;
 } */
 
-.fileinput-preview img, .fileinput-new img  {
-    height: 230px;
+.profile-picture img  {
+    height: 220px;
+    width: 230px;
+    object-fit: cover;
     clip-path: circle();
 }
-.fileinput-preview , .fileinput-new, .fileinput{
+.profile-picture {
     width: fit-content;
     display: block;
     margin: 0 auto;
@@ -54,11 +56,10 @@
 }
 .padding-edit{
     padding-top: 20px;
-    padding-bottom: 60px;
+    padding-bottom: 50px;
 }
 .padding-create{
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 0px;
 }
 .panel-heading{
     margin-bottom: 20px;
@@ -74,7 +75,7 @@
     display : block; overflow-wrap: break-word; max-width : 100%;
 }
 .text-datatable{
-    max-width: 150px;
+    max-width: 130px;
     display : block;
     overflow-wrap: break-word;
 }
@@ -85,3 +86,4 @@
     flex-wrap: unset !important;
     height: 42.6px;
 }
+

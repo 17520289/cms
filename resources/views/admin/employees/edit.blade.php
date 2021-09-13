@@ -45,14 +45,14 @@
                                     <div class="info-person">
                                         <label>@lang('modules.profile.profilePicture')</label>
                                         <div class="form-group">
-                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput fileinput-new profile-picture" data-provides="fileinput">
                                                 <div class="fileinput-new img-thumb thumbnail">
-                                                    <img src="{{ $userDetail->image_url }}" alt=""/>
+                                                    <img width="400" height="230" src="{{ $userDetail->image_url }}" alt=""/>
                                                 </div>
-                                                <div class="fileinput-preview fileinput-exists thumbnail "></div>
+                                                <div class="fileinput-preview fileinput-exists thumbnail profile-picture"></div>
                                                 <div class="btn-img d-flex justify-content-center">
                                                     <span class="btn btn-info btn-file ">
-                                                    <span class="fileinput-new "> @lang('app.selectImage') </span>
+                                                    <span class="fileinput-new profile-picture"> @lang('app.selectImage') </span>
                                                         <span class="fileinput-exists " id="change-img"> @lang('app.change') </span>
                                                         <input type="file" name="image" id="image"> </span>
                                                     <span><a href="javascript:;" class="btn btn-danger fileinput-exists " data-dismiss="fileinput" > <i class="fa fa-trash text-white" aria-hidden="true"></i> </a></span>

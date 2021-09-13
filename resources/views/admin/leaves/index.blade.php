@@ -27,10 +27,10 @@
 @endsection
 
 @push('head-script')
-<link rel="stylesheet" href="{{ asset('css/full-calendar/main.min.css') }}">
+
 <link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/bower_components/timepicker/bootstrap-timepicker.min.css') }}">
-
+<link rel="stylesheet" href="{{ asset('plugins/bower_components/calendar/dist/fullcalendar.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/bower_components/custom-select/custom-select.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/bower_components/multiselect/css/multi-select.css') }}">
@@ -40,6 +40,33 @@
     .fc-event{
         font-size: 10px !important;
     }
+    <style>
+    .fc-event{
+        font-size: 10px !important;
+    }
+    #calendar .fc-view-container .fc-view .fc-more-popover{
+        top: 136px !important;
+        left: 105px !important;
+    }
+    @keyframes fa-blink {
+     0% { opacity: 1; }
+     25% { opacity: 0.25; }
+     50% { opacity: 0.5; }
+     75% { opacity: 0.75; }
+     100% { opacity: 0; }
+ }
+.fa-blink {
+   -webkit-animation: fa-blink 1.75s linear infinite;
+   -moz-animation: fa-blink 1.75s linear infinite;
+   -ms-animation: fa-blink 1.75s linear infinite;
+   -o-animation: fa-blink 1.75s linear infinite;
+   animation: fa-blink 1.75s linear infinite;
+}
+    .dashboard-clock {
+        font-size: 26px;
+        font-weight: 300;
+    }
+</style>
 </style>
 @endpush
 
@@ -178,60 +205,9 @@
     })
 </script>
 
-<script src="{{ asset('plugins/bower_components/calendar/jquery-ui.min.js') }}"></script>
-<script src="{{ asset('plugins/bower_components/moment/moment.js') }}"></script>
-<script src="{{ asset('js/full-calendar/main.min.js') }}"></script>
-<script src="{{ asset('js/full-calendar/locales-all.min.js') }}"></script>
-<script>
-    var firstDay = '{{ $global->week_start }}';
-    var initialLocaleCode = '{{ $global->locale }}';
-    document.addEventListener('DOMContentLoaded', function() {
-      var calendarEl = document.getElementById('calendar');
-  
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        firstDay: firstDay,
-        locale: initialLocaleCode,
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        },
-        // initialDate: '2020-09-12',
-        navLinks: true, // can click day/week names to navigate views
-        selectable: false,
-        selectMirror: true,
-        select: function(arg) {
-          var title = prompt('Event Title:');
-          if (title) {
-            calendar.addEvent({
-              title: title,
-              start: arg.start,
-              end: arg.end,
-              allDay: arg.allDay
-            })
-          }
-          calendar.unselect()
-        },
-        eventClick: function(arg) {
-            getEventDetail(arg.event.id);
-        },
-        editable: false,
-        dayMaxEvents: true, // allow "more" link when too many events
-        events: taskEvents,
-        eventDidMount: function(info){
-            if (info.el.querySelector('.fc-event-title') !== null) {
-                info.el.querySelector('.fc-event-title').innerHTML = info.event.title;
-            }
-            if (info.el.querySelector('.fc-list-event-title') !== null) {
-                info.el.querySelector('.fc-list-event-title').innerHTML = info.event.title;
-            }
+<script src="{{ asset('plugins/bower_components/calendar/dist/fullcalendar.min.js') }}"></script>
+<script src="{{ asset('plugins/bower_components/calendar/dist/jquery.fullcalendar.js') }}"></script>
+<script src="{{ asset('plugins/bower_components/calendar/dist/locale-all.js') }}"></script>
+<script src="{{ asset('js/event-calendar.js') }}"></script>
 
-        }
-        
-      });
-  
-      calendar.render();
-    });
-  
-</script>
 @endpush

@@ -36,7 +36,7 @@
                             <div class="row">
                                 <div class="col-md-3" >
                                     <div class="row">
-                                        <div class="info-person" style="padding-bottom: 128px">
+                                        <div class="info-person" style="padding-bottom: 137px">
                                             <label>@lang('modules.profile.profilePicture')</label>
                                             <div class="form-group">
                                                 <div class="fileinput fileinput-new " data-provides="fileinput">
