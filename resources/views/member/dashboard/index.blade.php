@@ -358,7 +358,7 @@
                             @forelse($userActivities as $key=>$activity)
                                 <div class="sl-item">
                                     <div class="sl-left">
-                                        <img src="{{ $activity->user->image_url}}" alt="user" class="img-circle">'
+                                        <img src="{{ $activity->user->image_url}}" alt="user" width="30" height="30"  class="img-circle">'
                                     </div>
                                     <div class="sl-right">
                                         <div class="m-l-40">

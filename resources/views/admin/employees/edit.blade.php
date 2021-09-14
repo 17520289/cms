@@ -211,7 +211,8 @@
                                                 <div class="form-group">
                                                     <select class="select2 phone_country_code form-control" name="phone_code">
                                                         @foreach ($countries as $item)
-                                                            <option value="{{ $item->id }}">+{{ $item->phonecode.' ('.$item->iso.')' }}</option>
+                                                            <option @if ($userDetail->country_id == $item->id) selected  @endif
+                                                             value="{{ $item->id }}">+{{ $item->phonecode.' ('.$item->iso.')' }}</option>
                                                         @endforeach
                                                     </select>   
                                                     <input type="tel" name="mobile" id="mobile" class="mobile"  onkeypress='validate(event)' autocomplete="nope"  value="{{ $userDetail->mobile }}" maxlength="9" >
