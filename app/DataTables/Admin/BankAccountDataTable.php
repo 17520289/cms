@@ -29,24 +29,24 @@ class BankAccountDataTable extends BaseDataTable
             })
             ->addColumn('accountOwner', function ($row) {
 
-                $row->account_owner = $row->account_owner === null ? "-" : $row->account_owner;
+                $row->account_owner = $row->account_owner == null ? "-" : $row->account_owner;
                 return '<p class="text-datatable">' . $row->account_owner . '</p>';
             })
             ->addColumn('accountNumber', function ($row) {
 
-                $row->account_number = $row->account_number === null ? "-" : $row->account_number;
+                $row->account_number = $row->account_number == null ? "-" : $row->account_number;
                 return '<p class="text-datatable">' . $row->account_number . '</p>';
             })
             ->addColumn('bankName', function ($row) {
-                $row->bank_name = $row->bank_name === null ? "-" : $row->bank_name;
+                $row->bank_name = $row->bank_name == null ? "-" : $row->bank_name;
                 return '<p class="text-datatable">' . $row->bank_name . '</p>';
             })
             ->addColumn('branch', function ($row) {
-                $row->branch = $row->branch === null ? "-" : $row->branch;
+                $row->branch = $row->branch == null ? "-" : $row->branch;
                 return '<p class="text-datatable">' . $row->branch . '</p>';
             })
             ->addColumn('salary', function ($row) {
-                $row->office_salary = $row->office_salary === null ? "-" : $row->office_salary;
+                $row->office_salary = $row->office_salary == null ? "-" : $row->office_salary;
                 return '<p class="text-datatable">' . $row->office_salary . '</p>';
             })
 
@@ -145,7 +145,6 @@ class BankAccountDataTable extends BaseDataTable
             ->dom("<'row'<'col-md-6'l><'col-md-6'Bf>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>")
             ->destroy(true)
             ->orderBy(0)
-            ->responsive(true)
             ->serverSide(true)
             ->stateSave(true)
             ->processing(true)
@@ -161,6 +160,7 @@ class BankAccountDataTable extends BaseDataTable
                     })
                 }',
             ])
+            ->scrollX(true)
             ->buttons(
                 Button::make(['extend' => 'export', 'buttons' => ['excel', 'csv'], 'text' => '<i class="fa fa-download"></i> ' . trans('app.exportExcel') . '&nbsp;<span class="caret"></span>'])
             );
@@ -177,11 +177,11 @@ class BankAccountDataTable extends BaseDataTable
             __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'exportable' => false],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false],
             __('modules.employees.employeeId') => ['data' => 'employee_id', 'name' => 'employee_details.employee_id'],
-            __('app.name') => ['data' => 'name', 'name' => 'name', 'exportable' => false],
+            __('app.name') => ['data' => 'name', 'name' => 'name', 'exportable' => false, 'width' => '30%'],
             __('app.employee_name') => ['data' => 'employee_name', 'employee_name' => 'employee_name', 'visible' => false],
             __('app.salary') => ['data' => 'salary', 'name' => 'salary'],
             __('modules.employees.accountOwner') => ['data' => 'accountOwner', 'name' => 'accountOwner'],
-            __('modules.employees.accountNumber') => ['data' => 'accountNumber', 'name' => 'accountNumber', 'width' => '20%'],
+            __('modules.employees.accountNumber') => ['data' => 'accountNumber', 'name' => 'accountNumber'],
             __('modules.employees.bankName') => ['data' => 'bankName', 'name' => 'bankName'],
             __('modules.employees.branch') => ['data' => 'branch', 'name' => 'branch'],
             __('app.status') => ['data' => 'status', 'name' => 'status'],
