@@ -81,6 +81,7 @@ class MemberProfileController extends MemberBaseController
             }
         }
         $user->mobile = $request->input('mobile');
+        $user->country_id = $request->input('phone_code');
         $user->email_notifications = $request->email_notifications;
 
         if ($request->hasFile('image')) {
