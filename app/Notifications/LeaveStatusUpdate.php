@@ -59,7 +59,7 @@ class LeaveStatusUpdate extends BaseNotification
             ->subject(__('email.leaves.statusSubject') . ' - ' . config('app.name'))
             ->greeting(__('email.hello') . ' ' . ucwords($user->name) . '!')
             ->line(__('email.leaves.statusSubject') . ':- ')
-            ->line(__('app.date') . ': ' . $this->leave->leave_date->format('d M, Y'))
+            ->line(__('app.date') . ': ' . $this->leave->leave_date->format('d-m-Y'))
             ->line(__('app.status') . ': ' . ucwords($this->leave->status))
             ->action(__('email.loginDashboard'), getDomainSpecificUrl(url('/login'), $notifiable->company))
             ->line(__('email.thankyouNote'));
