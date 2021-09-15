@@ -52,7 +52,6 @@
 .info-person .phone_country_code {
     width: 40%;
     margin-top: -4px;
-    display: inline;
 }
 .info-person-padding{
     padding-top: 25px;
@@ -71,7 +70,6 @@
 }
 .info-person .mobile {
     width: 60%;
-    display: inline;
 }
 
 .info-person .tagify {
