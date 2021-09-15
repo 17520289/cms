@@ -226,7 +226,7 @@
                                                     <div class="form-group">
                                                         <select class="select2 phone_country_code form-control" name="phone_code">
                                                             @foreach ($countries as $item)
-                                                                <option value="{{ $item->id }}">
+                                                                <option value="{{ $item->id }}" @if ($item->id == 232) selected @endif > 
                                                                     +{{ $item->phonecode . ' (' . $item->iso . ')' }}</option>
                                                             @endforeach
                                                         </select>
