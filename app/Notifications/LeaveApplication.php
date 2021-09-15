@@ -60,7 +60,7 @@ class LeaveApplication extends BaseNotification
             ->subject(__('email.leave.applied') . ' - ' . config('app.name'))
             ->greeting(__('email.hello') . ' ' . ucwords($user->name) . '!')
             ->line(__('email.leave.applied') . ':- ')
-            ->line(__('app.date') . ': ' . $this->leave->leave_date->format('d M, Y'))
+            ->line(__('app.date') . ': ' . $this->leave->leave_date->format('d-M-Y'))
             ->line(__('app.status') . ': ' . ucwords($this->leave->status))
             ->action(__('email.loginDashboard'), getDomainSpecificUrl(url('/login'), $notifiable->company))
             ->line(__('email.thankyouNote'));

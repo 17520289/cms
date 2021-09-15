@@ -293,8 +293,8 @@ Route::group(['middleware' => 'auth'], function () {
                     Route::resource('package-settings', 'SuperAdminPackageSettingController', ['only' => ['index', 'update']]);
 
                     // Custom Modules
-                    // Route::post('custom-modules/verify-purchase', ['uses' => 'CustomModuleController@verifyingModulePurchase'])->name('custom-modules.verify-purchase');
-                    //Route::resource('custom-modules', 'CustomModuleController');
+                    Route::post('custom-modules/verify-purchase', ['uses' => 'CustomModuleController@verifyingModulePurchase'])->name('custom-modules.verify-purchase');
+                    Route::resource('custom-modules', 'CustomModuleController');
 
 
                     Route::post('theme-settings/activeTheme', ['uses' => 'SuperAdminThemeSettingsController@activeTheme'])->name('theme-settings.activeTheme');
