@@ -1,6 +1,8 @@
 <?php
 
 return array (
+  'detail' => 'Detail',
+  'addMore' => 'Add More',
   'exportData' => 'Export Data',
   'leavesRejectReason' => 'Leaves Reject Reason',
   'salary' => 'salary',
