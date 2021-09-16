@@ -37,10 +37,10 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="white-box">
-                                        <h3 class="box-title m-b-0">{{ ucfirst($type) }} @lang("modules.moduleSettings.moduleSetting")</h3>
+                                        <h3 class="box-title m-b-0"> @lang('modules.moduleSettings.'.$type)</h3>
 
                                         <p class="text-muted m-b-10 font-13">
-                                            @lang("modules.moduleSettings.employeeSubTitle") {{ ucfirst($type) }} @lang("modules.moduleSettings.section")
+                                             @lang("modules.moduleSettings.employeeSubTitle") {{--{{ ucfirst($type) }} @lang("modules.moduleSettings.section") --}}
                                         </p>
 
                                         <div class="row">

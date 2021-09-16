@@ -13,48 +13,48 @@
 
 
 
-// Route::post('/consent/remove-lead-request', ['uses' => 'PublicLeadGdprController@removeLeadRequest'])->name('front.gdpr.remove-lead-request');
-// Route::post('/consent/l/update/{lead}', ['uses' => 'PublicLeadGdprController@updateConsent'])->name('front.gdpr.consent.update');
-// Route::post('/consent/l/update/{lead}', ['uses' => 'PublicLeadGdprController@updateConsent'])->name('front.gdpr.consent.update');
-// Route::get('/consent/l/{lead}', ['uses' => 'PublicLeadGdprController@consent'])->name('front.gdpr.consent');
-// Route::post('/forms/l/update/{lead}', ['uses' => 'PublicLeadGdprController@updateLead'])->name('front.gdpr.lead.update');
-// Route::get('/forms/l/{lead}', ['uses' => 'PublicLeadGdprController@lead'])->name('front.gdpr.lead');
-// Route::get('/contract/{id}', ['uses' => 'Front\PublicUrlController@contractView'])->name('front.contract.show');
-// Route::get('/contract/download/{id}', ['uses' => 'Front\PublicUrlController@contractDownload'])->name('front.contract.download');
-// Route::get('contract/sign-modal/{id}', ['uses' => 'Front\PublicUrlController@contractSignModal'])->name('front.contract.sign-modal');
-// Route::post('contract/sign/{id}', ['uses' => 'Front\PublicUrlController@contractSign'])->name('front.contract.sign');
-// Route::get('/estimate/{id}', ['uses' => 'Front\PublicUrlController@estimateView'])->name('front.estimate.show');
-// Route::post('/estimate/decline/{id}', ['uses' => 'Front\PublicUrlController@decline'])->name('front.estimate.decline');
-// Route::get('/estimate/accept/{id}', ['uses' => 'Front\PublicUrlController@acceptModal'])->name('front.estimate.accept');
-// Route::post('/estimate/accept/{id}', ['uses' => 'Front\PublicUrlController@accept'])->name('front.accept-estimate');
-// Route::get('/estimate/download/{id}', ['uses' => 'Front\PublicUrlController@estimateDownload'])->name('front.estimateDownload');
-// Route::post('/invoices/stripe-modal/', ['uses' => 'Front\HomeController@stripeModal'])->name('front.stripe-modal');
-// Route::get('/invoices/payfast-success/', ['uses' => 'Front\HomeController@payfastSuccess'])->name('front.payfast-success');
-// Route::get('/invoices/payfast-cancel/', ['uses' => 'Front\HomeController@payfastCancel'])->name('front.payfast-cancel');
-// Route::get('/invoice/download/{id}', ['uses' => 'Front\HomeController@downloadInvoice'])->name('front.invoiceDownload');
-// Route::get('/task-files/{id}', ['uses' => '\App\Http\Controllers\Front\HomeController@taskFiles'])->name('front.task-files');
-// Route::get('/task-share/{id}', ['uses' => '\App\Http\Controllers\Front\HomeController@taskShare'])->name('front.task-share');
-// Route::get('/taskboard/{encrypt}', ['uses' => '\App\Http\Controllers\Front\HomeController@taskboard'])->name('front.taskboard');
-// Route::get('/taskboard-data', ['uses' => '\App\Http\Controllers\Front\HomeController@taskBoardData'])->name('front.taskBoardData');
-// Route::get('/task-detail/{id}/{companyId}', ['uses' => '\App\Http\Controllers\Front\HomeController@taskDetail'])->name('front.task-detail');
-// Route::get('/task-detail/history/{id}/{companyId}', ['uses' => '\App\Http\Controllers\Front\HomeController@history'])->name('front.task-history');
+Route::post('/consent/remove-lead-request', ['uses' => 'PublicLeadGdprController@removeLeadRequest'])->name('front.gdpr.remove-lead-request');
+Route::post('/consent/l/update/{lead}', ['uses' => 'PublicLeadGdprController@updateConsent'])->name('front.gdpr.consent.update');
+Route::post('/consent/l/update/{lead}', ['uses' => 'PublicLeadGdprController@updateConsent'])->name('front.gdpr.consent.update');
+Route::get('/consent/l/{lead}', ['uses' => 'PublicLeadGdprController@consent'])->name('front.gdpr.consent');
+Route::post('/forms/l/update/{lead}', ['uses' => 'PublicLeadGdprController@updateLead'])->name('front.gdpr.lead.update');
+Route::get('/forms/l/{lead}', ['uses' => 'PublicLeadGdprController@lead'])->name('front.gdpr.lead');
+Route::get('/contract/{id}', ['uses' => 'Front\PublicUrlController@contractView'])->name('front.contract.show');
+Route::get('/contract/download/{id}', ['uses' => 'Front\PublicUrlController@contractDownload'])->name('front.contract.download');
+Route::get('contract/sign-modal/{id}', ['uses' => 'Front\PublicUrlController@contractSignModal'])->name('front.contract.sign-modal');
+Route::post('contract/sign/{id}', ['uses' => 'Front\PublicUrlController@contractSign'])->name('front.contract.sign');
+Route::get('/estimate/{id}', ['uses' => 'Front\PublicUrlController@estimateView'])->name('front.estimate.show');
+Route::post('/estimate/decline/{id}', ['uses' => 'Front\PublicUrlController@decline'])->name('front.estimate.decline');
+Route::get('/estimate/accept/{id}', ['uses' => 'Front\PublicUrlController@acceptModal'])->name('front.estimate.accept');
+Route::post('/estimate/accept/{id}', ['uses' => 'Front\PublicUrlController@accept'])->name('front.accept-estimate');
+Route::get('/estimate/download/{id}', ['uses' => 'Front\PublicUrlController@estimateDownload'])->name('front.estimateDownload');
+Route::post('/invoices/stripe-modal/', ['uses' => 'Front\HomeController@stripeModal'])->name('front.stripe-modal');
+Route::get('/invoices/payfast-success/', ['uses' => 'Front\HomeController@payfastSuccess'])->name('front.payfast-success');
+Route::get('/invoices/payfast-cancel/', ['uses' => 'Front\HomeController@payfastCancel'])->name('front.payfast-cancel');
+Route::get('/invoice/download/{id}', ['uses' => 'Front\HomeController@downloadInvoice'])->name('front.invoiceDownload');
+Route::get('/task-files/{id}', ['uses' => '\App\Http\Controllers\Front\HomeController@taskFiles'])->name('front.task-files');
+Route::get('/task-share/{id}', ['uses' => '\App\Http\Controllers\Front\HomeController@taskShare'])->name('front.task-share');
+Route::get('/taskboard/{encrypt}', ['uses' => '\App\Http\Controllers\Front\HomeController@taskboard'])->name('front.taskboard');
+Route::get('/taskboard-data', ['uses' => '\App\Http\Controllers\Front\HomeController@taskBoardData'])->name('front.taskBoardData');
+Route::get('/task-detail/{id}/{companyId}', ['uses' => '\App\Http\Controllers\Front\HomeController@taskDetail'])->name('front.task-detail');
+Route::get('/task-detail/history/{id}/{companyId}', ['uses' => '\App\Http\Controllers\Front\HomeController@history'])->name('front.task-history');
 
-// Route::get('/invoice/{id}', ['uses' => '\App\Http\Controllers\Front\HomeController@invoice'])->name('front.invoice');
+Route::get('/invoice/{id}', ['uses' => '\App\Http\Controllers\Front\HomeController@invoice'])->name('front.invoice');
 Route::get('/', ['uses' => '\App\Http\Controllers\Front\HomeController@index'])->name('front.home')->middleware('disable-frontend');
 
-// Route::get('page/{slug?}', ['uses' => '\App\Http\Controllers\Front\HomeController@page'])->name('front.page');
-// Route::get('/gantt-chart-data/{id}', ['uses' => 'Front\HomeController@ganttData'])->name('front.gantt-data');
-// Route::get('/gantt-chart/{id}', ['uses' => 'Front\HomeController@gantt'])->name('front.gantt');
-// Route::get('/lead-form/{id}', ['uses' => 'Front\HomeController@leadForm'])->name('front.leadForm');
-// Route::get('/ticket-form/{id}', ['uses' => 'Front\HomeController@ticketForm'])->name('front.ticketForm');
-// Route::post('/lead-form/leadStore', ['uses' => 'Front\HomeController@leadStore'])->name('front.leadStore');
-// Route::get('/proposal/{id}', ['uses' => 'Front\HomeController@proposal'])->name('front.proposal');
-// Route::get('/proposal/download/{id}', ['uses' => 'Front\HomeController@downloadProposal'])->name('front.download-proposal');
-// Route::get('/proposal-action/{id}', ['uses' => 'Front\HomeController@proposalAction'])->name('front.proposal-action');
-// Route::post('/proposal-action-post/{id}', ['uses' => 'Front\HomeController@proposalActionStore'])->name('front.proposal-action-post');
-// Route::post('/ticket-form/ticketStore', ['uses' => 'Front\HomeController@ticketStore'])->name('front.ticketStore');
-// Route::post('public/pay-with-razorpay', array('as' => 'public.pay-with-razorpay', 'uses' => 'Client\RazorPayController@payWithRazorPay',));
-// Route::get('/email-verification/{code}', '\App\Http\Controllers\Front\RegisterController@getEmailVerification')->name('front.get-email-verification');
+Route::get('page/{slug?}', ['uses' => '\App\Http\Controllers\Front\HomeController@page'])->name('front.page');
+Route::get('/gantt-chart-data/{id}', ['uses' => 'Front\HomeController@ganttData'])->name('front.gantt-data');
+Route::get('/gantt-chart/{id}', ['uses' => 'Front\HomeController@gantt'])->name('front.gantt');
+Route::get('/lead-form/{id}', ['uses' => 'Front\HomeController@leadForm'])->name('front.leadForm');
+Route::get('/ticket-form/{id}', ['uses' => 'Front\HomeController@ticketForm'])->name('front.ticketForm');
+Route::post('/lead-form/leadStore', ['uses' => 'Front\HomeController@leadStore'])->name('front.leadStore');
+Route::get('/proposal/{id}', ['uses' => 'Front\HomeController@proposal'])->name('front.proposal');
+Route::get('/proposal/download/{id}', ['uses' => 'Front\HomeController@downloadProposal'])->name('front.download-proposal');
+Route::get('/proposal-action/{id}', ['uses' => 'Front\HomeController@proposalAction'])->name('front.proposal-action');
+Route::post('/proposal-action-post/{id}', ['uses' => 'Front\HomeController@proposalActionStore'])->name('front.proposal-action-post');
+Route::post('/ticket-form/ticketStore', ['uses' => 'Front\HomeController@ticketStore'])->name('front.ticketStore');
+Route::post('public/pay-with-razorpay', array('as' => 'public.pay-with-razorpay', 'uses' => 'Client\RazorPayController@payWithRazorPay',));
+Route::get('/email-verification/{code}', '\App\Http\Controllers\Front\RegisterController@getEmailVerification')->name('front.get-email-verification');
 Route::group(
     ['namespace' => 'Front', 'as' => 'front.', 'middleware' => 'disable-frontend'],
     function () {
@@ -68,47 +68,47 @@ Route::group(
 );
 //Route::get('/mollie/payment/callback', 'MollieController@handleGatewayCallback')->name('payments.mollie.callback');
 
-// Route::group(
-//     ['namespace' => 'Client', 'prefix' => 'client', 'as' => 'client.'],
-//     function () {
+Route::group(
+    ['namespace' => 'Client', 'prefix' => 'client', 'as' => 'client.'],
+    function () {
 
-//         Route::post('stripe/{invoiceId}', array('as' => 'stripe', 'uses' => 'StripeController@paymentWithStripe',));
-//         Route::post('stripe-public/{invoiceId}', array('as' => 'stripe-public', 'uses' => 'StripeController@paymentWithStripePublic',));
-//         // route for post request
-//         Route::get('paypal-public/{invoiceId}', array('as' => 'paypal-public', 'uses' => 'PaypalController@paymentWithpaypalPublic',));
-//         Route::get('paypal/{invoiceId}', array('as' => 'paypal', 'uses' => 'PaypalController@paymentWithpaypal',));
-//         // route for check status responce
-//         Route::get('paypal', array('as' => 'status', 'uses' => 'PaypalController@getPaymentStatus',));
-//         Route::get('paypal-recurring', array('as' => 'paypal-recurring', 'uses' => 'PaypalController@payWithPaypalRecurrring',));
+        Route::post('stripe/{invoiceId}', array('as' => 'stripe', 'uses' => 'StripeController@paymentWithStripe',));
+        Route::post('stripe-public/{invoiceId}', array('as' => 'stripe-public', 'uses' => 'StripeController@paymentWithStripePublic',));
+        // route for post request
+        Route::get('paypal-public/{invoiceId}', array('as' => 'paypal-public', 'uses' => 'PaypalController@paymentWithpaypalPublic',));
+        Route::get('paypal/{invoiceId}', array('as' => 'paypal', 'uses' => 'PaypalController@paymentWithpaypal',));
+        // route for check status responce
+        Route::get('paypal', array('as' => 'status', 'uses' => 'PaypalController@getPaymentStatus',));
+        Route::get('paypal-recurring', array('as' => 'paypal-recurring', 'uses' => 'PaypalController@payWithPaypalRecurrring',));
 
-//         //paystack payment
-//         Route::get('paystack-public/{invoiceId}', array('as' => 'paystack-public', 'uses' => 'PaystackController@redirectToGateway',));
-//         Route::get('/paystack/callback', 'PaystackController@handleGatewayCallback')->name('paystack.callback');
+        //paystack payment
+        Route::get('paystack-public/{invoiceId}', array('as' => 'paystack-public', 'uses' => 'PaystackController@redirectToGateway',));
+        Route::get('/paystack/callback', 'PaystackController@handleGatewayCallback')->name('paystack.callback');
 
-//         //mollie payment
-//         Route::get('mollie-public/{invoiceId}', array('as' => 'mollie-public', 'uses' => 'MollieController@redirectToGateway',));
-//         Route::get('/mollie/callback', 'MollieController@handleGatewayCallback')->name('mollie.callback');
+        //mollie payment
+        Route::get('mollie-public/{invoiceId}', array('as' => 'mollie-public', 'uses' => 'MollieController@redirectToGateway',));
+        Route::get('/mollie/callback', 'MollieController@handleGatewayCallback')->name('mollie.callback');
 
-//         //Authorize.net payment
-//         Route::post('/checkout/pay/submit', 'AuthorizeController@handleOnlinePay')->name('authorize.pay-submit');
-//     }
-// );
+        //Authorize.net payment
+        Route::post('/checkout/pay/submit', 'AuthorizeController@handleOnlinePay')->name('authorize.pay-submit');
+    }
+);
 
 //Paypal IPN
-// Route::post('verify-ipn', array('as' => 'verify-ipn', 'uses' => 'PaypalIPNController@verifyIPN'));
-// Route::post('verify-billing-ipn', array('as' => 'verify-billing-ipn', 'uses' => 'PaypalIPNController@verifyBillingIPN'));
-// Route::post('/verify-webhook', ['as' => 'verify-webhook', 'uses' => 'StripeWebhookController@verifyStripeWebhook']);
-// Route::post('/save-invoices', ['as' => 'save_webhook', 'uses' => 'StripeWebhookController@saveInvoices']);
-// Route::post('/save-razorpay-invoices', ['as' => 'save_razorpay-webhook', 'uses' => 'RazorpayWebhookController@saveInvoices']);
-// Route::get('/check-razorpay-invoices', ['as' => 'check_razorpay-webhook', 'uses' => 'RazorpayWebhookController@checkInvoices']);
-// Route::post('/payfast-notification', ['as' => 'payfast-notification', 'uses' => 'PayFastWebhookController@saveInvoice']);
-// Route::post('/client-payfast-invoice', ['as' => 'client-payfast-invoice', 'uses' => 'ClientPayFastController@savePayment']);
+Route::post('verify-ipn', array('as' => 'verify-ipn', 'uses' => 'PaypalIPNController@verifyIPN'));
+Route::post('verify-billing-ipn', array('as' => 'verify-billing-ipn', 'uses' => 'PaypalIPNController@verifyBillingIPN'));
+Route::post('/verify-webhook', ['as' => 'verify-webhook', 'uses' => 'StripeWebhookController@verifyStripeWebhook']);
+Route::post('/save-invoices', ['as' => 'save_webhook', 'uses' => 'StripeWebhookController@saveInvoices']);
+Route::post('/save-razorpay-invoices', ['as' => 'save_razorpay-webhook', 'uses' => 'RazorpayWebhookController@saveInvoices']);
+Route::get('/check-razorpay-invoices', ['as' => 'check_razorpay-webhook', 'uses' => 'RazorpayWebhookController@checkInvoices']);
+Route::post('/payfast-notification', ['as' => 'payfast-notification', 'uses' => 'PayFastWebhookController@saveInvoice']);
+Route::post('/client-payfast-invoice', ['as' => 'client-payfast-invoice', 'uses' => 'ClientPayFastController@savePayment']);
 
 
-// Route::post('/save-paystack-invoices', ['as' => 'save_paystack-webhook', 'uses' => 'PaystackWebhookController@saveInvoices']);
+Route::post('/save-paystack-invoices', ['as' => 'save_paystack-webhook', 'uses' => 'PaystackWebhookController@saveInvoices']);
 
 // Authorize.net webhook
-// Route::any('/save-authorize-invoices', ['as' => 'save_authorize_webhook', 'uses' => '\App\Http\Controllers\Webhook\AuthorizeWebhookController@saveInvoices']);
+Route::any('/save-authorize-invoices', ['as' => 'save_authorize_webhook', 'uses' => '\App\Http\Controllers\Webhook\AuthorizeWebhookController@saveInvoices']);
 
 // Social Auth
 Route::get('/redirect/{provider}', ['uses' => 'Auth\LoginController@redirect', 'as' => 'social.login']);

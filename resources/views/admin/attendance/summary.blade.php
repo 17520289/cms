@@ -118,7 +118,7 @@
         </div>
         <div class="col-xs-12">
             <div class="white-box p-b-0">
-                <div class="row"><h5><strong>Export data</strong></h5></div>
+                <div class="row"><h5><strong>@lang('app.exportData')</strong></h5></div>
                 <form 
                 autocomplete="off" 
                 enctype="multipart/form-data"
