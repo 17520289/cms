@@ -1,6 +1,8 @@
 <?php
 
 return array (
+  'detail' => 'Chi tiết',
+  'addMore' => 'Thêm',
   'exportData' => 'Xuất Bảng Chấm Công',
   'leavesRejectReason' => 'Lý Do Từ Chối Nghỉ Phép',
   'salary' => 'Lương',
@@ -451,7 +453,7 @@ return array (
     'description' => 'Description',
   ),
   'content' => 'Content',
-  'download' => 'Download',
+  'download' => 'Tải Xuống',
   'subject' => 'Subject',
   'renew' => 'Renew',
   'applyToInvoice' => 'Apply To Invoice',
@@ -538,8 +540,8 @@ return array (
   'authCss' => 'Auth Css',
   'forTheme' => 'For Login Theme',
   'receipt' => 'Receipt',
-  'hrs' => 'hrs',
-  'mins' => 'mins',
+  'hrs' => 'Giờ',
+  'mins' => 'Phút',
   'uploadReceipt' => 'Upload Receipt',
   'socialAuthSettings' => 
   array (
@@ -592,12 +594,12 @@ return array (
   'attachment' => 'Attachment',
   'consent' => 'Consent',
   'milestone' => 'Milestone',
-  'clientDashboard' => 'Client Dashboard',
-  'financeDashboard' => 'Finance Dashboard',
+  'clientDashboard' => 'Bảng Điều Khiển Khách Hàng',
+  'financeDashboard' => 'Bảng Điều Khiển Tài Chính',
   'signature' => 'Signature',
-  'hrDashboard' => 'HR Dashboard',
+  'hrDashboard' => 'Bảng Điều Khiển Nhân Sự',
   'completions' => 'Completions',
-  'projectDashboard' => 'Project Dashboard',
+  'projectDashboard' => 'Bảng Điều Khiển Dự Án',
   'ticketDashboard' => 'Ticket Dashboard',
   'ticket' => 'Ticket',
   'goToCart' => 'Go to cart',

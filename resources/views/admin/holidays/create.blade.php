@@ -10,13 +10,13 @@
             <div id="addMoreBox1" class="clearfix">
                 <div class="col-md-5">
                     <div id="dateBox" class="form-group ">
-                        <input class="form-control date-picker" autocomplete="off" id="dateField1" data-date-format="dd/mm/yyyy" name="date[0]" type="text" value="" placeholder="Date"/>
+                        <input class="form-control date-picker" autocomplete="off" id="dateField1" data-date-format="dd/mm/yyyy" name="date[0]" type="text" value="" placeholder="@lang('app.date')"/>
                         <div id="errorDate"></div>
                     </div>
                 </div>
                 <div class="col-md-5" style="margin-left: 5px;">
                     <div class="form-group" id="occasionBox">
-                        <input class="form-control"  type="text" name="occasion[0]" placeholder="Occasion"/>
+                        <input class="form-control"  type="text" name="occasion[0]" placeholder="@lang('modules.holiday.occasion')"/>
                         <div id="errorOccasion"></div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
 
             </div>
             <button type="button" id="plusButton" class="btn btn-sm btn-info" style="margin-bottom: 20px">
-                Add More <i class="fa fa-plus"></i>
+                @lang('app.addMore') <i class="fa fa-plus"></i>
             </button>
         </div>
         <!--/row-->
@@ -37,7 +37,7 @@
     {!! Form::close() !!}
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">@lang('app.close')</button>
     <button type="button" onclick="storeHolidays()" class="btn btn-info save-event waves-effect waves-light"><i class="fa fa-check"></i> @lang('app.save')
     </button>
 </div>

@@ -103,7 +103,7 @@
                         @forelse($activities as $key=>$activity)
                         <div class="sl-item">
                             <div class="sl-left">
-                                <img src="{{ $employee->image_url }}" alt="user" class="img-circle">'
+                                <img src="{{ $employee->image_url }}" alt="user" width="30" height="30" class="img-circle">'
                             </div>
                             <div class="sl-right">
                                 <div class="m-l-40"><a href="#" class="text-info">{{ ucwords($employee->name) }}</a> <span  class="sl-date">{{ $activity->created_at->diffForHumans() }}</span>
