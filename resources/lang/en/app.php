@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'exportData' => 'Export Data',
   'leavesRejectReason' => 'Leaves Reject Reason',
   'salary' => 'salary',
   'loginAsEmployee' => 'Login As Employee',
@@ -114,6 +115,7 @@ return array (
   ),
   'menu' => 
   array (
+    'leadSettings' => 'Lead Settings',
     'bankAccount' => "Bank Account",
     'bankAccountList' => "Bank Account List",
     'holidaylistof'=> 'Holiday List Of ',

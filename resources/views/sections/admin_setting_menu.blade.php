@@ -66,7 +66,7 @@
 
     @if(in_array('leads',$user->modules))
         <li class="tab @if(\Illuminate\Support\Facades\Route::currentRouteName() == 'admin.lead-source-settings.index') active @endif">
-            <a href="{{ route('admin.lead-source-settings.index') }}">@lang('app.lead') @lang('app.menu.settings')</a></li>
+            <a href="{{ route('admin.lead-source-settings.index') }}">@lang('app.menu.leadSettings')</a></li>
     @endif
 
     @if(in_array('timelogs',$user->modules))

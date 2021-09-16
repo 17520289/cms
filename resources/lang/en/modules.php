@@ -637,6 +637,9 @@ return array (
   ),
   'moduleSettings' => 
   array (
+    'employee' => 'Employee Module Setting',
+    'admin' => 'Admin Module Setting',
+    'client' => 'Client Module Setting',
     'employeeModuleTitle' => 'Modules',
     'clientModuleTitle' => 'Client Module Title',
     'employeeSubTitle' => 'Select the modules which you want to enable.',

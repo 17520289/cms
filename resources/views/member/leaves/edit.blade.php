@@ -39,8 +39,6 @@
 
         <div class="row">
             <div class="col-md-6">
-                <label>@lang('app.date')</label>
-               
                 @if ($leave->duration == 'date_range')
                     <label class="control-label">@lang('app.selectDateRange')</label>
                     <div class="form-group">

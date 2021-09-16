@@ -272,13 +272,13 @@
             @if(in_array("reports", $modules))
             <li><a href="{{ route('admin.reports.index') }}" class="waves-effect"><i class="ti-pie-chart fa-fw"></i> <span class="hide-menu"> @lang('app.menu.reports') <span class="fa arrow"></span> </span></a>
                 <ul class="nav nav-second-level">
-                    @if(in_array('tasks',$modules))
+                    {{-- @if(in_array('tasks',$modules))
                         <li><a href="{{ route('admin.task-report.index') }}">@lang('app.menu.taskReport')</a></li>
                     @endif
 
                     @if(in_array('timelogs',$modules))
                         <li><a href="{{ route('admin.time-log-report.index') }}">@lang('app.menu.timeLogReport')</a></li>
-                    @endif
+                    @endif --}}
 
                     {{-- @if((in_array("estimates", $modules)  || in_array("invoices", $modules)  || in_array("payments", $modules) || in_array("expenses", $modules)  ))
                         <li><a href="{{ route('admin.finance-report.index') }}">@lang('app.menu.financeReport')</a></li>
