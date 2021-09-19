@@ -114,9 +114,9 @@
 <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
 <script src="{{ asset('js/datatables/buttons.server-side.js') }}"></script>
 
-{!! $dataTable->scripts() !!}
+{!! $dataTable->scripts()!!}
 <script>
-
+  
     $(".select2").select2({
         formatNoMatches: function () {
             return "{{ __('messages.noRecordFound') }}";

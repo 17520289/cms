@@ -36,21 +36,21 @@
                             <div class="row">
                                 <div class="col-md-3" >
                                     <div class="row">
-                                        <div class="info-person" style="padding-bottom: 128px">
+                                        <div class="info-person" style="padding-bottom: 137px">
                                             <label>@lang('modules.profile.profilePicture')</label>
                                             <div class="form-group">
-                                                <div class="fileinput fileinput-new " data-provides="fileinput">
-                                                    <div class="fileinput-new img-thumb thumbnail">
+                                                <div class="fileinput fileinput-new profile-picture" data-provides="fileinput">
+                                                    <div class="fileinput-new img-thumb thumbnail ">
                                                         @if(is_null($userDetail->image))
                                                         <img src="https://via.placeholder.com/200x150.png?text={{ str_replace(' ', '+', __('modules.profile.uploadPicture')) }}"   alt=""/>
                                                         @else
                                                         <img src="{{ asset_url('avatar/'.$userDetail->image) }}" alt=""/>
                                                         @endif
                                                     </div>
-                                                    <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                                                    <div class="fileinput-preview fileinput-exists thumbnail profile-picture"></div>
                                                     <div class="btn-img d-flex justify-content-center">
                                                         <span class="btn btn-info btn-file">
-                                                        <span class="fileinput-new"> @lang('app.selectImage') </span>
+                                                        <span class="fileinput-new profile-picture"> @lang('app.selectImage') </span>
                                                         <span class="fileinput-exists"> @lang('app.change') </span>
                                                         <input type="file" id="image" name="image"> </span>
                                                         <a href="javascript:;" class="btn btn-danger fileinput-exists"
@@ -160,37 +160,44 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-4">
                                                         <label>@lang('app.mobile')</label>
-                                                        <input type="tel" name="mobile" id="mobile" maxlength="9" onkeypress='validate(event)' class="form-control" autocomplete="nope"  value="{{ $userDetail->mobile }}" >
-                                                        <span style="display:none; color:red" id="errMobile"> @lang('modules.employees.errMobile') </span>
-                                                    </div>
+                                                        <div class="form-group">
+                                                            <select class="select2 phone_country_code form-control" name="phone_code">
+                                                                @foreach ($countries as $item)
+                                                                    <option @if ($userDetail->country_id == $item->id) selected  @endif
+                                                                     value="{{ $item->id }}">+{{ $item->phonecode.' ('.$item->iso.')' }}</option>
+                                                                @endforeach
+                                                            </select>   
+                                                            <input type="tel" name="mobile" id="mobile" class="mobile"  onkeypress='validate(event)' autocomplete="nope"  value="{{ $userDetail->mobile }}" maxlength="9" >
+                                                            <span style="display:none; color:red" id="errMobile"> @lang('modules.employees.errMobile') </span>
+                                                         </div>
+                                                         </div>
+                    
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label >@lang('modules.employees.date_of_birth')</label>
+                                                                <input type="text" autocomplete="off"  name="date_of_birth" id="date_of_birth" class="form-control" @if($employeeDetail) value="{{ $employeeDetail->date_of_birth}}"
+                                                                @endif >
+                                                            </div>
+                                                        </div>
+                    
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>@lang('modules.employees.gender')</label>
+                                                                <select name="gender" id="gender" class="form-control">
+                                                                    <option @if($userDetail->gender == 'male') selected
+                                                                            @endif value="male">@lang('app.male')</option>
+                                                                    <option @if($userDetail->gender == 'female') selected
+                                                                            @endif value="female">@lang('app.female')</option>
+                                                                    <option @if($userDetail->gender == 'others') selected
+                                                                            @endif value="others">@lang('app.others')</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                 </div>
-            
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label >@lang('modules.employees.date_of_birth')</label>
-                                                        <input type="text" autocomplete="off"  name="date_of_birth" id="date_of_birth" class="form-control" @if($employeeDetail) value="{{ $employeeDetail->date_of_birth}}"
-                                                        @endif >
-                                                    </div>
-                                                </div>
-            
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>@lang('modules.employees.gender')</label>
-                                                        <select name="gender" id="gender" class="form-control">
-                                                            <option @if($userDetail->gender == 'male') selected
-                                                                    @endif value="male">@lang('app.male')</option>
-                                                            <option @if($userDetail->gender == 'female') selected
-                                                                    @endif value="female">@lang('app.female')</option>
-                                                            <option @if($userDetail->gender == 'others') selected
-                                                                    @endif value="others">@lang('app.others')</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            
+                                           
                                                 <!--/row-->
                                                 <div class="row">
                                                     <div class="col-md-4">
@@ -263,7 +270,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                     <div class="row">

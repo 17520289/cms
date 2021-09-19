@@ -23,14 +23,17 @@
     margin-right: auto;
 } */
 
-.fileinput-preview img, .fileinput-new img  {
-    height: 230px;
+.profile-picture img  {
+    height: 220px;
+    width: 230px;
+    object-fit: cover;
     clip-path: circle();
 }
-.fileinput-preview , .fileinput-new, .fileinput{
+.profile-picture{
     width: fit-content;
     display: block;
     margin: 0 auto;
+  
 }
 .fileinput{
    text-align: center;
@@ -49,6 +52,7 @@
 .info-person .phone_country_code {
     width: 40%;
     margin-top: -4px;
+    display: inline;
 }
 .info-person-padding{
     padding-top: 25px;
@@ -67,6 +71,7 @@
 }
 .info-person .mobile {
     width: 60%;
+    display: inline;
 }
 
 .info-person .tagify {

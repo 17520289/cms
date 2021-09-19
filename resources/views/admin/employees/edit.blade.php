@@ -47,12 +47,12 @@
                                         <div class="form-group">
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-new img-thumb thumbnail">
-                                                    <img src="{{ $userDetail->image_url }}" alt=""/>
+                                                    <img width="400" height="230" src="{{ $userDetail->image_url }}" alt=""/>
                                                 </div>
-                                                <div class="fileinput-preview fileinput-exists thumbnail "></div>
+                                                <div class="fileinput-preview fileinput-exists thumbnail profile-picture"></div>
                                                 <div class="btn-img d-flex justify-content-center">
                                                     <span class="btn btn-info btn-file ">
-                                                    <span class="fileinput-new "> @lang('app.selectImage') </span>
+                                                    <span class="fileinput-new profile-picture"> @lang('app.selectImage') </span>
                                                         <span class="fileinput-exists " id="change-img"> @lang('app.change') </span>
                                                         <input type="file" name="image" id="image"> </span>
                                                     <span><a href="javascript:;" class="btn btn-danger fileinput-exists " data-dismiss="fileinput" > <i class="fa fa-trash text-white" aria-hidden="true"></i> </a></span>
@@ -211,7 +211,8 @@
                                                 <div class="form-group">
                                                     <select class="select2 phone_country_code form-control" name="phone_code">
                                                         @foreach ($countries as $item)
-                                                            <option value="{{ $item->id }}">+{{ $item->phonecode.' ('.$item->iso.')' }}</option>
+                                                            <option @if ($userDetail->country_id == $item->id) selected  @endif
+                                                             value="{{ $item->id }}">+{{ $item->phonecode.' ('.$item->iso.')' }}</option>
                                                         @endforeach
                                                     </select>   
                                                     <input type="tel" name="mobile" id="mobile" class="mobile"  onkeypress='validate(event)' autocomplete="nope"  value="{{ $userDetail->mobile }}" maxlength="9" >
