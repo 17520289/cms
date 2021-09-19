@@ -4,7 +4,7 @@
     <div class="row bg-title">
         <!-- .page title -->
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 bg-title-left">
-            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> {{ __($pageTitle) }} @lang('modules.holiday.listOf') {{ \Carbon\Carbon::now()->format('Y') }}</h4>
+            <h4 class="page-title"><i class="{{ $pageIcon }}"></i>  @lang('app.menu.holidaylistof') {{ \Carbon\Carbon::now()->format('Y') }}</h4>
         </div>
         <!-- /.page title -->
         <!-- .breadcrumb -->
