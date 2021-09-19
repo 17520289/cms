@@ -71,7 +71,7 @@ class NewLeaveRequest extends BaseNotification
             ->subject(__('email.leaves.subject') . ' - ' . config('app.name'))
             ->greeting(__('email.hello') . ' ' . ucwords($user->name) . '!')
             ->line(__('email.leaves.subject') . ' by: ' . ucwords($this->leave->user->name) . '.')
-            ->line(__('app.date') . ': ' . $this->leave->leave_date->format('d M, Y'))
+            ->line(__('app.date') . ': ' . $this->leave->leave_date->format('d-M-Y'))
             ->line(__('modules.leaves.leaveType') . ': ' . $this->leave->type->type_name)
             ->line(__('modules.leaves.reason') . ':-')
             ->line($this->leave->reason)

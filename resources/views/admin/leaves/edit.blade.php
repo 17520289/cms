@@ -117,7 +117,6 @@
         todayHighlight: true,
         weekStart: '{{ $global->week_start }}',
         format: '{{ $global->date_picker_format }}',
-        beforeShowDay: $.datepicker.noWeekends,
         minDate: 0,
         startDate: "-0m",
         endDate: "+1y",
@@ -169,12 +168,12 @@
                 "{{ __('app.november') }}",
                 "{{ __('app.december') }}",
             ],
-            "firstDay": '2021-09-08',
+            // "firstDay": '2021-09-08',
         }
     })
 
 
-    $('.input-daterange-datepicker').on('apply.daterangepicker', function(ev, picker) {
+    // $('.input-daterange-datepicker').on('apply.daterangepicker', function(ev, picker) {
 
-    });
+    // });
 </script>

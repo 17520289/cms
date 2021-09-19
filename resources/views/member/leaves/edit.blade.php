@@ -94,7 +94,6 @@
     });
 
     jQuery('#single_date').datepicker({
-        beforeShowDay: $.datepicker.noWeekends,
         autoclose: true,
         todayHighlight: true,
         weekStart: '{{ $global->week_start }}',
@@ -142,12 +141,12 @@
                 "{{ __('app.november') }}",
                 "{{ __('app.december') }}",
             ],
-            "firstDay": '2021-09-08',
+            // "firstDay": '2021-09-08',
         }
     })
 
 
-    $('.input-daterange-datepicker').on('apply.daterangepicker', function(ev, picker) {
+    // $('.input-daterange-datepicker').on('apply.daterangepicker', function(ev, picker) {
 
-    });
+    // });
 </script>
