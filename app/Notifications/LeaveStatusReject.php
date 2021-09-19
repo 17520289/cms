@@ -60,7 +60,7 @@ class LeaveStatusReject extends BaseNotification
             ->subject(__('email.leaves.statusSubject') . ' - ' . config('app.name'))
             ->greeting(__('email.hello') . ' ' . ucwords($user->name) . '!')
             ->line(__('email.leave.reject') . ':- ')
-            ->line(__('app.date') . ': ' . $this->leave->leave_date->format('d M, Y'))
+            ->line(__('app.date') . ': ' . $this->leave->leave_date->format('d-m-Y'))
             ->line(__('app.status') . ': ' . ucwords($this->leave->status))
             ->line(__('app.reason') . ': ' . ucwords($this->leave->reject_reason))
             ->action(__('email.loginDashboard'), getDomainSpecificUrl(url('/login'), $notifiable->company))

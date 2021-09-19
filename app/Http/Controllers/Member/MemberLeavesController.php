@@ -171,7 +171,9 @@ class MemberLeavesController extends MemberBaseController
             ->where('user_id', $this->user->id)
             ->get();
         $this->leave = Leave::findOrFail($id);
-        $this->endDate = $this->getEndDateOfDateRange($this->leave);
+        if($this->leave->duration == 'date_range'){
+            $this->endDate = $this->getEndDateOfDateRange($this->leave);
+        }
         $view = view('member.leaves.edit', $this->data)->render();
         return Reply::dataOnly(['status' => 'success', 'view' => $view]);
     }

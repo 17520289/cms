@@ -113,12 +113,7 @@
             data: $('#createLeave').serialize()
         })
     });
-    var nowDate = new Date();
-    var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
     $('.input-daterange-datepicker').daterangepicker({
-        minDate: today,
-        startDate: Date.now(),
-        endDate: @json($endDate->format('m-d-Y')),
         buttonClasses: ['btn', 'btn-sm'],
         cancelClass: 'btn-inverse',
         "locale": {

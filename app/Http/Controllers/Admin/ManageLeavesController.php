@@ -37,8 +37,9 @@ class ManageLeavesController extends AdminBaseController
      */
     public function index()
     {
-        $this->leaves = Leave::where('status', '<>', 'rejected')
-            ->get();
+        $this->leaves = Leave::with('user', 'type')->where('status', '<>', 'rejected')
+        ->whereYear('leave_date', Carbon::now()->timezone($this->global->timezone)->format('Y'))
+        ->get();
         $this->pendingLeaves = Leave::where('status', 'pending')
             ->orderBy('leave_date', 'asc')
             ->get();
@@ -89,10 +90,10 @@ class ManageLeavesController extends AdminBaseController
         );
         if ($request->duration == 'multiple' || $request->duration == 'date_range') {
             if ($request->duration == 'multiple') {
-                //session(['leaves_duration' => 'multiple']);
+                session(['leaves_duration' => 'multiple']);
                 $dates = explode(',', $request->multi_date);
             } else {
-                //session(['leaves_duration' => 'date_range']);
+                session(['leaves_duration' => 'date_range']);
                 $t = str_replace(' ', '', $request->date_range);
                 $d = explode('-', $t);
                 $startDate = Carbon::createFromFormat('m/d/Y', $d[0]);
@@ -104,7 +105,7 @@ class ManageLeavesController extends AdminBaseController
                     $this->storeLeave($request, $date, $groupId->id);
                 }
 
-                //session()->forget('leaves_duration');
+                session()->forget('leaves_duration');
             }
         } else {
             if ($this->checkDateIsWeekends($request->leave_date) == false) {
@@ -174,8 +175,10 @@ class ManageLeavesController extends AdminBaseController
         $this->employees = User::allEmployees();
         $this->leaveTypes = LeaveType::all();
         $this->leave = Leave::findOrFail($id);
-        $this->endDate = $this->getEndDateOfDateRange($this->leave);
-        $this->startDate = Leave::where('group_leave_id', $this->leave->group_leave_id)->first()->leave_date;
+        if ($this->leave->duration == 'date_range') {
+            $this->endDate = $this->getEndDateOfDateRange($this->leave);
+            $this->startDate = Leave::where('group_leave_id', $this->leave->group_leave_id)->first()->leave_date;
+        }
         $view = view('admin.leaves.edit', $this->data)->render();
         return Reply::dataOnly(['status' => 'success', 'view' => $view]);
     }
