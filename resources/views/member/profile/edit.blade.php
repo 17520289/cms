@@ -164,7 +164,7 @@
                                                     <div class="col-md-4">
                                                         <label>@lang('app.mobile')</label>
                                                         <div class="form-group">
-                                                            <select class="select2 phone_country_code form-control" name="phone_code">
+                                                            <select class="select2 phone_country_code form-control" id="phone_code" name="phone_code">
                                                                 @foreach ($countries as $item)
                                                                     <option @if ($userDetail->country_id == $item->id) selected  @endif
                                                                      value="{{ $item->id }}">+{{ $item->phonecode.' ('.$item->iso.')' }}</option>
@@ -391,15 +391,18 @@
     <script src="{{ asset('plugins/tagify-master/dist/tagify.js') }}"></script>
     <script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
     <script src="{{ asset('plugins/bower_components/custom-select/custom-select.min.js') }}"></script>
-    <script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
     <script src="{{ asset('plugins/validate/validate-employee.js') }}"></script>
-<script>
+<script data-name="basic">
+      $(".select2").select2({
+            
+        });
     var input = document.querySelector('input[name=tags]'),
                 // init Tagify script on the above inputs
                 tagify = new Tagify(input, {
                     whitelist : {!! json_encode($skills) !!},
                     //  blacklist : [".NET", "PHP"] // <-- passed as an attribute in this demo
                 });
+          
 
     $(" #date_of_birth,#issue_date, .date-picker").datepicker({
             todayHighlight: true,
