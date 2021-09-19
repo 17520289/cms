@@ -96,7 +96,7 @@ class EmployeesDataTable extends BaseDataTable
 
                 $designation = ($row->designation_name) ? ucwords($row->designation_name) : ' ';
 
-                return  '<div class="row truncate"><div class="col-sm-3 col-xs-4">' . $image . '</div><div class="col-sm-1 col-xs-1"></div><div class="col-sm-7 col-xs-6"><a href="' . route('admin.employees.show', $row->id) . '">' . ucwords($row->name) . '</a><br><span class="text-muted font-12">' . $designation . '</span></div></div>';
+                return  '<div class="row truncate"><div class="col-sm-3 col-xs-4">' . $image . '</div><div class="col-sm-7 col-xs-6"><a href="' . route('admin.employees.show', $row->id) . '">' . ucwords($row->name) . '</a><br><span class="text-muted font-12">' . $designation . '</span></div></div>';
             })
             ->addColumn('employee_name', function ($row) use ($roles) {
 
@@ -212,10 +212,10 @@ class EmployeesDataTable extends BaseDataTable
             __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'exportable' => false],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false],
             __('modules.employees.employeeId') => ['data' => 'employee_id', 'name' => 'employee_details.employee_id'],
-            __('app.name') => ['data' => 'name', 'name' => 'name', 'exportable' => false],
+            __('app.name') => ['data' => 'name', 'name' => 'name', 'exportable' => false, 'width' => '30%'],
             __('app.employee_name') => ['data' => 'employee_name', 'employee_name' => 'employee_name', 'visible' => false],
             __('app.email') => ['data' => 'email', 'name' => 'email'],
-            __('app.role') => ['data' => 'role', 'name' => 'role', 'width' => '20%', 'exportable' => false],
+            __('app.role') => ['data' => 'role', 'name' => 'role', 'exportable' => false],
             __('app.roleAssigned') => ['data' => 'employeeRole', 'name' => 'employeeRole', 'width' => '20%', 'visible' => false],
             __('app.status') => ['data' => 'status', 'name' => 'status'],
             Column::computed('action', __('app.action'))
@@ -223,7 +223,7 @@ class EmployeesDataTable extends BaseDataTable
                 ->printable(false)
                 ->orderable(false)
                 ->searchable(false)
-                ->width(150)
+                ->width(100)
                 ->addClass('text-center')
         ];
     }
