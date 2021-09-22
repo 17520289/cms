@@ -6,6 +6,7 @@ use App\Notifications\EmailVerificationSuccess;
 use App\Notifications\ResetPassword;
 use App\Observers\UserObserver;
 use App\Scopes\CompanyScope;
+use App\Standup;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -139,7 +140,10 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
     {
         return $this->hasMany(ClientDetails::class, 'user_id');
     }
-
+    public function standUp()
+    {
+        return $this->hasMany(Standup::class, 'user_id');
+    }
     public function country()
     {
         return $this->hasOne(Country::class, 'id', 'country_id');

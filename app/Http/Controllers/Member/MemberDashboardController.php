@@ -87,7 +87,10 @@ class MemberDashboardController extends MemberBaseController
             ->groupBy('tasks.id')
             ->get();
 
-
+        //Getting yesterday clock-in if exsit
+        $this->yesterdayClockIn =  Attendance::where(DB::raw('DATE(clock_in_time)') , '<' ,Carbon::today()->format('Y-m-d'))
+            ->where('user_id', $this->user->id)
+            ->orderBy('clock_in_time', 'desc')->first();
         // Getting Current Clock-in if exist
         $this->currenntClockIn = Attendance::where(DB::raw('DATE(clock_in_time)'), Carbon::today()->format('Y-m-d'))
             ->where('user_id', $this->user->id)->whereNull('clock_out_time')->first();
