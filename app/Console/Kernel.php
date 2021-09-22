@@ -24,7 +24,9 @@ class Kernel extends ConsoleKernel
         Commands\AutoCreateRecurringInvoices::class,
         Commands\FreeLicenceRenew::class,
         Commands\AutoCreateRecurringExpenses::class,
-        Commands\SendAttendanceReminder::class
+        Commands\SendAttendanceReminder::class,
+        Commands\StandUpCommand::class
+
 
     ];
 
@@ -46,6 +48,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('recurring-expenses-create')->daily();
         $schedule->command('send-invoice-reminder')->daily();
         $schedule->command('send-attendance-reminder')->everyMinute();
+        $schedule->command('standup:slack')->dailyAt('09:00')->days([1,5]);
     }
 
     /**

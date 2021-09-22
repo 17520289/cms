@@ -974,7 +974,7 @@ return array(
             'radius' => 'Radius (in meter)',
             'ipAddress' => 'Địa chỉ IP',
             'hoursClocked' => 'Số Giờ Clock',
-            'notClockOut' => 'Khôngs clock out',
+            'notClockOut' => 'Không clock out',
             'everyonePresent' => 'Everyone`s present today',
             'clockedIn' => 'Clocked In',
             'clockedOut' => 'Clocked Out',

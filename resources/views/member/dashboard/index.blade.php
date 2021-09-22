@@ -190,6 +190,16 @@
                                     @endif
 
                                     <div class="col-xs-8 m-t-20 truncate">
+                                        <label for="">Yesterday</label>
+                                            <textarea class="form-control" name="yesterday"  id="yesterday" cols="50" rows="5"
+                                            @if(!is_null($currenntClockIn)) readonly @endif>@if(!is_null($yesterdayClockIn)){{$yesterdayClockIn->standUp->todays_Work}}@endif </textarea>
+                                    </div>
+                                    <div class="col-xs-8 m-t-20 truncate">
+                                        <label for="">Today</label>
+                                         <textarea class="form-control" name="today" id="today" cols="50" rows="5"
+                                         @if(!is_null($currenntClockIn)) readonly @endif>@if(!is_null($currenntClockIn)){{$currenntClockIn->standUp->todays_Work}}@endif </textarea>
+                                    </div>
+                                    <div class="col-xs-8 m-t-20 truncate">
                                         <label for="">@lang('modules.attendance.working_from')</label>
                                         @if(is_null($currenntClockIn))
                                             <input type="text" class="form-control" id="working_from" name="working_from">
@@ -450,7 +460,8 @@
 <script>
     $('#clock-in').click(function () {
         var workingFrom = $('#working_from').val();
-
+        var today = $('#today').val();
+        var yesterday = $('#yesterday').val();
         var currentLatitude = document.getElementById("current-latitude").value;
         var currentLongitude = document.getElementById("current-longitude").value;
 
@@ -461,6 +472,8 @@
             type: "POST",
             data: {
                 working_from: workingFrom,
+                today : today,
+                yesterday : yesterday,
                 currentLatitude: currentLatitude,
                 currentLongitude: currentLongitude,
                 _token: token

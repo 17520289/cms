@@ -4,6 +4,7 @@ namespace App;
 
 use App\Observers\AttendanceObserver;
 use App\Scopes\CompanyScope;
+use App\Standup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +25,11 @@ class Attendance extends BaseModel
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id')->withoutGlobalScopes(['active']);
+    }
+
+    public function standUp()
+    {
+        return $this->hasOne(Standup::class, 'attendance_id');
     }
 
     public function getClockInDateAttribute()
