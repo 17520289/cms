@@ -22,7 +22,7 @@
                                     @if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday')
                                        <i title="weekend" class="fa fa-times text-danger"></i>
                                     @else
-                                        <i class="fa fa-smile-o text-danger" title="Absent" aria-hidden="true"></i> 
+                                       <p>0</p> 
                                     @endif
                                 @elseif($att == 'Holiday')
                                         <i title="holiday"  class="fa fa-flag-o text-warning" ></i></a>

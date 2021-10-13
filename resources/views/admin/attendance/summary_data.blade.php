@@ -27,18 +27,13 @@
                                             $jd = gregoriantojd($month, $key2, $year);
                                         @endphp
                                         @if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday')
-                                            <a href="javascript:;" class="edit-attendance"
-                                                data-attendance-date="{{ $key2 }}"><i title="weekend"
-                                                    class="fa fa-times text-danger"></i></a>
+                                            <i title="weekend" class="fa fa-times text-danger"></i>
                                         @else
                                             <a href="javascript:;" class="edit-attendance"
-                                                data-attendance-date="{{ $key2 }}"><i title="Absent"
-                                                    class="fa fa-smile-o text-primary" aria-hidden="true"></i></a>
+                                                data-attendance-date="{{ $key2 }}"><p>0</p></a>
                                         @endif
                                     @elseif($day == 'Holiday')
-                                        <a href="javascript:;" title="holiday" class="edit-attendance"
-                                            data-attendance-date="{{ $key2 }}"><i
-                                                class="fa fa-flag-o text-warning"></i></a>
+                                        <i class="fa fa-flag-o text-warning"></i>
                                     @else
                                         {!! $day !!}
                                     @endif

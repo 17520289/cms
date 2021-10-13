@@ -19,7 +19,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-
+use Illuminate\Support\Facades\Auth;
 /**
  * Class ManageAttendanceController
  * @package App\Http\Controllers\Admin
@@ -587,36 +587,34 @@ class ManageAttendanceController extends AdminBaseController
             $final[$employee->id . '#' . $employee->name] = array_replace($dataTillToday, $dataFromTomorrow);
 
             // custom to show icon for attendance
-            $totalPresent[$employee->id . '#' . $employee->name] = 0.0;
+            $totalPresent[$employee->id . '#' . $employee->name] = $totalHours[$employee->id . '#' . $employee->name] = 0.0;
 
 
             foreach ($employee->attendance as $attendance) {
                 $d = Carbon::createFromFormat('Y-m-d H:i:s', $attendance->clock_in_time)->day;
-
                 $jd = gregoriantojd($this->month, $d, $this->year);
-                if ($attendance->half_day == 'no' || $attendance->half_day == '') {
-                    $totalPresent[$employee->id . '#' . $employee->name] += 1;
-                } else {
-                    $totalPresent[$employee->id . '#' . $employee->name] += 0.5;
-                }
+
+                //get total working in day
+                $totalWorkingHour = $this->totalHoursRound($attendance);
+
+                // //total working day
+                // if ($totalWorkingHour <= 4) {
+                //     $totalPresent[$employee->id . '#' . $employee->name] += 0.5;
+                // } else {
+                //     $totalPresent[$employee->id . '#' . $employee->name] += 1;
+                // }
+                $totalHours[$employee->id . '#' . $employee->name] += $totalWorkingHour;
 
                 $clockInTime = $attendance->clock_in_time->timezone($this->global->timezone)->format($this->global->time_format);
-                $clockOutTime= $attendance->clock_out_time == null ? '' :  $attendance->clock_out_time->timezone($this->global->timezone)->format($this->global->time_format) ;
+                $clockOutTime = $attendance->clock_out_time == null ? '' : $attendance->clock_out_time->timezone($this->global->timezone)->format($this->global->time_format);
+
                 if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday') {
-                    if ($attendance->half_day == 'yes') {
-                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i title="' . $clockInTime . '~' . $clockOutTime . '" class="fa fa-times text-warning"></i></a>';
-                    } else {
-                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i  title="' . $clockInTime . '~' . $clockOutTime . '" class="fa fa-times text-success"></i></a>';
-                    }
+                    $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="' . $clockInTime . '~' . $clockOutTime . '" class="fa fa-times text-warning"></i>';
                 } else {
-                    if ($attendance->half_day == 'no' || $attendance->half_day == '') {
-                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i  title="' . $clockInTime . '~' . $clockOutTime . '" class="fa fa-star text-success" aria-hidden="true"></i></a>';
-                    } else {
-                        $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i  title="' . $clockInTime . '~' . $clockOutTime . '" class="fa fa-star-half-o text-success" aria-hidden="true"></i></a>';
-                    }
+                    $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><p  title="' . $clockInTime . '~' . $clockOutTime . '" >' . $totalWorkingHour . '</p></a>';
                 }
             }
-
+            $totalPresent[$employee->id . '#' . $employee->name] = round($totalHours[$employee->id . '#' . $employee->name]/8 , 1);
             $image = '<img src="' . $employee->image_url . '" alt="user" class="img-circle" width="30" height="30"> ';
             $final[$employee->id . '#' . $employee->name][] = '<a class="userData" id="userID' . $employee->id . '" data-employee-id="' . $employee->id . '"  href="' . route('admin.employees.show', $employee->id) . '">' . $image . ' ' . ucwords($employee->name) . '</a>';
 
@@ -733,5 +731,47 @@ class ManageAttendanceController extends AdminBaseController
         }
 
         return Reply::success(__('messages.attendanceSaveSuccess'));
+    }
+    public function totalHoursRound($attendance)
+    { 
+        $clockInTime = Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone);
+        $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->global->timezone);
+        $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
+        $halfday_mark_time = Carbon::createFromFormat( 'H:i:s', $this->attendanceSettings->halfday_mark_time);
+        if ($attendance->clock_out_time != null) {
+            $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
+            if ($totalWorkingHour > 9) {
+                $totalWorkingHour = 9;
+            }
+        } else {
+            if($clockInTime->isToday()){
+                $totalWorkingHour = Carbon::now()->floatDiffInHours($clockInTime);
+            }else{
+               // $attendanceSetting = AttendanceSetting::where('company_id', $this->global->id)->first();
+                if($clockInTime1->greaterThan($halfday_mark_time)){
+                    $totalWorkingHour = 4 ;
+                }else{
+                    $totalWorkingHour = 9;
+                }
+                
+            }
+        }
+       
+        $whole = (int) $totalWorkingHour;
+        $frac = $totalWorkingHour - $whole;
+        if ($frac <= 0.25) {
+            $frac = 0;
+        } else {
+            if ($frac > 0.25 && $frac <= 0.5) {
+                $frac = 0.5;
+            } else {
+                $frac = ($frac <= 0.75) ? 0.5 : 1;
+            }
+        }
+        if(Carbon::parse($attendance->clock_in_time)->isToday()){
+            return $whole + $frac;
+        }else{
+            return ($whole + $frac - 1) <= 4 ? 4 : ($whole + $frac - 1);
+        }
     }
 }
