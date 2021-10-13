@@ -27,7 +27,7 @@ class MemberAttendanceController extends MemberBaseController
         $this->pageIcon = 'icon-clock';
         $this->pageTitle = 'app.menu.attendance';
         $this->middleware(function ($request, $next) {
-            abort_if(!in_array('attendance', $this->user->modules),403);
+            abort_if(!in_array('attendance', $this->user->modules), 403);
             return $next($request);
         });
 
@@ -81,7 +81,7 @@ class MemberAttendanceController extends MemberBaseController
     }
 
 
-      /**
+    /**
      * Display attendance summary and total attendance of a employee
      * 
      * @param Request $rerquest
@@ -97,9 +97,9 @@ class MemberAttendanceController extends MemberBaseController
         $this->startDate = $request->startDate;
         $this->endDate = $request->endDate;
         $this->holidays = Holiday::whereRaw('MONTH(holidays.date) = ?', [$request->month])->whereRaw('YEAR(holidays.date) = ?', [$request->year])->get();
-        $this->daysInMonth = Carbon::parse('01-' .$request->month . '-' . $request->year)->daysInMonth;
+        $this->daysInMonth = Carbon::parse('01-' . $request->month . '-' . $request->year)->daysInMonth;
         $attendances = Attendance::userAttendanceByDate($this->startDate,  $this->endDate, $this->userId);
-        $month = Carbon::parse('01-' .$request->month . '-' . $request->year)->lastOfMonth();
+        $month = Carbon::parse('01-' . $request->month . '-' . $request->year)->lastOfMonth();
         $now = Carbon::now()->timezone($this->global->timezone);
         $requestedDate = Carbon::parse(Carbon::parse('01-' . $request->month . '-' . $request->year))->endOfMonth();
         if ($requestedDate->isPast()) {
@@ -119,41 +119,32 @@ class MemberAttendanceController extends MemberBaseController
         }
 
         $final = array_replace($dataTillToday, $dataFromTomorrow);
-        $totalPresent = 0.0;
-
-        foreach($attendances as $attendance){
+       
+        $totalhours = 0.0;
+        foreach ($attendances as $attendance) {
 
             $d = Carbon::createFromFormat('Y-m-d H:i:s', $attendance->clock_in_time)->day;
-            $jd = gregoriantojd($this->month, $d , $this->year);
+            $jd = gregoriantojd($this->month, $d, $this->year);
 
-            if ($attendance->half_day == 'no' || $attendance->half_day == '') {
-                $totalPresent += 1;
-            }else{
-                $totalPresent += 0.5;
+            $totalWorkingHour = $this->totalHoursRound($attendance);
+
+            // if ($totalWorkingHour <= 4) {
+            //     $totalPresent += 0.5;
+            // } else {
+            //     $totalPresent += 1;
+            // }
+            
+            $totalhours += $totalWorkingHour;
+            $clockInTime = $attendance->clock_in_time->timezone($this->global->timezone)->format($this->global->time_format);
+            $clockOutTime = $attendance->clock_out_time == null ? '' : $attendance->clock_out_time->timezone($this->global->timezone)->format($this->global->time_format);
+
+
+            if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday') {
+                $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="' . $clockInTime . '~' . $clockOutTime . '" class="fa fa-times text-warning"></p>';
+           
+            } else {
+                $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<p title="' . $clockInTime . '~' . $clockOutTime . '">'.$totalWorkingHour.'</p>';
             }
-            
-            $clockInTime= $attendance->clock_in_time->timezone($this->global->timezone)->format($this->global->time_format);
-            $clockOutTime= $attendance->clock_out_time == null ? '' :  $attendance->clock_out_time->timezone($this->global->timezone)->format($this->global->time_format) ;
-            
-            if($attendance->clock_in_time->isToday()){
-                $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="Today" class="fa fa-circle text-danger" aria-hidden="true"></i>';
-            }else{
-                if(jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday'){
-                    if($attendance->half_day == 'yes'){
-                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="'.$clockInTime.'~'.$clockOutTime.'" class="fa fa-times text-warning"></i>';
-                    }else{
-                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="'.$clockInTime.'~'.$clockOutTime.'" class="fa fa-times text-success"></i>';
-                    }
-                    
-                }else{
-                    if($attendance->half_day == 'yes') {
-                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i title="'.$clockInTime.'~'.$clockOutTime.'" class="fa fa-star-half-o  text-warning" aria-hidden="true"></i>';
-                    } else {
-                        $final[Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<i  title="'.$clockInTime.'~'.$clockOutTime.'" class="fa fa-star text-success" aria-hidden="true"></i>';
-                    }
-                }
-            }
-            
         }
 
         foreach ($this->holidays as $holiday) {
@@ -161,9 +152,9 @@ class MemberAttendanceController extends MemberBaseController
                 $final[$holiday->date->day] = 'Holiday';
             }
         }
-        
+
         $this->attendencesData = $final;
-        $this->totalPresent = $totalPresent;
+        $this->totalPresent = round($totalhours/8 , 1);
         $view = view('member.attendance.attendance_data', $this->data)->render();
         return Reply::dataOnly(['status' => 'success', 'data' => $view]);
     }
@@ -259,11 +250,11 @@ class MemberAttendanceController extends MemberBaseController
 
             //update yesterday's work
             $standupYesterday = Standup::where('id', $this->user->id)->orderBy('created_at', 'desc')->first();
-            if(!is_null($standupYesterday)){
+            if (!is_null($standupYesterday)) {
                 $standupYesterday->todays_Work = $request->yesterday;
                 $standupYesterday->save();
             }
-           
+
 
             $standup = new Standup();
             $standup->user_id = $this->user->id;
@@ -296,7 +287,7 @@ class MemberAttendanceController extends MemberBaseController
      */
     public function edit($id)
     {
-       abort_if(!$this->user->cans('add_attendance'),403);
+        abort_if(!$this->user->cans('add_attendance'), 403);
         $attendance = Attendance::find($id);
 
         $this->date = $attendance->clock_in_time->format('Y-m-d');
@@ -319,7 +310,7 @@ class MemberAttendanceController extends MemberBaseController
      */
     public function updateDetails(Request $request, $id)
     {
-       abort_if(!$this->user->cans('add_attendance'),403);
+        abort_if(!$this->user->cans('add_attendance'), 403);
         $attendance = Attendance::findOrFail($id);
         $date = Carbon::createFromFormat($this->global->date_format, $request->attendance_date)->format('Y-m-d');
         $clockIn = Carbon::createFromFormat('Y-m-d ' . $this->global->time_format, $date . ' ' . $request->clock_in_time, $this->global->timezone);
@@ -382,7 +373,7 @@ class MemberAttendanceController extends MemberBaseController
             $attendance->save();
         }
 
-        return Reply::success(__('messages.attendanceSaveSuccess'));
+        return Reply::success(__('messages.attendanceSaveSuccess') . $totalWorkingHour);
     }
 
     /**
@@ -651,7 +642,7 @@ class MemberAttendanceController extends MemberBaseController
     }
     public function summary()
     {
-       abort_if(!$this->user->cans('add_attendance'),403);
+        abort_if(!$this->user->cans('add_attendance'), 403);
         $this->employees = User::allEmployees();
         $now = Carbon::now();
         $this->year = $now->format('Y');
@@ -663,7 +654,7 @@ class MemberAttendanceController extends MemberBaseController
 
     public function summaryData(Request $request)
     {
-       abort_if(!$this->user->cans('add_attendance'),403);
+        abort_if(!$this->user->cans('add_attendance'), 403);
         $employees = User::with(
             ['attendance' => function ($query) use ($request) {
                 $query->whereRaw('MONTH(attendances.clock_in_time) = ?', [$request->month])
@@ -831,5 +822,46 @@ class MemberAttendanceController extends MemberBaseController
         }
 
         return Reply::success(__('messages.attendanceSaveSuccess'));
+    }
+    public function totalHoursRound($attendance)
+    {
+        $clockInTime = Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone);
+        $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->global->timezone);
+        $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
+        $halfday_mark_time = Carbon::createFromFormat('H:i:s', $this->attendanceSettings->halfday_mark_time);
+        if ($attendance->clock_out_time != null) {
+            $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
+            if ($totalWorkingHour > 9) {
+                $totalWorkingHour = 9;
+            }
+        } else {
+            if ($clockInTime->isToday()) {
+                $totalWorkingHour = Carbon::now()->floatDiffInHours($clockInTime);
+            } else {
+                // $attendanceSetting = AttendanceSetting::where('company_id', $this->global->id)->first();
+                if ($clockInTime1->greaterThan($halfday_mark_time)) {
+                    $totalWorkingHour = 4;
+                } else {
+                    $totalWorkingHour = 9;
+                }
+            }
+        }
+
+        $whole = (int) $totalWorkingHour;
+        $frac = $totalWorkingHour - $whole;
+        if ($frac <= 0.25) {
+            $frac = 0;
+        } else {
+            if ($frac > 0.25 && $frac <= 0.5) {
+                $frac = 0.5;
+            } else {
+                $frac = ($frac <= 0.75) ? 0.5 : 1;
+            }
+        }
+        if (Carbon::parse($attendance->clock_in_time)->isToday()) {
+            return $whole + $frac;
+        } else {
+            return ($whole + $frac - 1) <= 4 ? 4 : ($whole + $frac - 1);
+        }
     }
 }
