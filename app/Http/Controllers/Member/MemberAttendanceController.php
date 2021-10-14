@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\SendNewStandup;
+use PhpParser\Node\Stmt\TryCatch;
 
 class MemberAttendanceController extends MemberBaseController
 {
@@ -224,43 +225,52 @@ class MemberAttendanceController extends MemberBaseController
             $checkTodayAttendance = Attendance::where('user_id', $this->user->id)
                 ->where(DB::raw('DATE(attendances.clock_in_time)'), '=', $now->format('Y-m-d'))->first();
 
-            $attendance = new Attendance();
-            $attendance->user_id = $this->user->id;
-            $attendance->clock_in_time = $now;
-            $attendance->clock_in_ip = request()->ip();
-
-            if (is_null($request->working_from)) {
-                $attendance->working_from = 'office';
-            } else {
-                $attendance->working_from = $request->working_from;
+            DB::beginTransaction();
+            try{
+                $attendance = new Attendance();
+                $attendance->user_id = $this->user->id;
+                $attendance->clock_in_time = $now;
+                $attendance->clock_in_ip = request()->ip();
+    
+                if (is_null($request->working_from)) {
+                    $attendance->working_from = 'office';
+                } else {
+                    $attendance->working_from = $request->working_from;
+                }
+    
+                if ($now->gt($lateTime) && is_null($checkTodayAttendance)) {
+                    $attendance->late = 'yes';
+                }
+    
+                $attendance->half_day = 'no'; // default halfday
+    
+                // Check day's first record and half day time
+                if (!is_null($attendanceSetting->halfday_mark_time) && is_null($checkTodayAttendance) && $currentTimestamp > $halfDayTimestamp) {
+                    $attendance->half_day = 'yes';
+                }
+    
+                $attendance->save();
+    
+                //update yesterday's work
+                $standupYesterday = Standup::where('id', $this->user->id)->orderBy('created_at', 'desc')->first();
+                if (!is_null($standupYesterday)) {
+                    $standupYesterday->todays_Work = $request->yesterday;
+                    $standupYesterday->save();
+                }
+    
+    
+                $standup = new Standup();
+                $standup->user_id = $this->user->id;
+                $standup->attendance_id = $attendance->id;
+                $standup->todays_Work = $request->today;
+                $standup->save();
+                DB::commit();
+            } catch(\Exception $e){
+                DB::rollback();
+                return Reply::error(__('validation.today_is_required'));
             }
+           
 
-            if ($now->gt($lateTime) && is_null($checkTodayAttendance)) {
-                $attendance->late = 'yes';
-            }
-
-            $attendance->half_day = 'no'; // default halfday
-
-            // Check day's first record and half day time
-            if (!is_null($attendanceSetting->halfday_mark_time) && is_null($checkTodayAttendance) && $currentTimestamp > $halfDayTimestamp) {
-                $attendance->half_day = 'yes';
-            }
-
-            $attendance->save();
-
-            //update yesterday's work
-            $standupYesterday = Standup::where('id', $this->user->id)->orderBy('created_at', 'desc')->first();
-            if (!is_null($standupYesterday)) {
-                $standupYesterday->todays_Work = $request->yesterday;
-                $standupYesterday->save();
-            }
-
-
-            $standup = new Standup();
-            $standup->user_id = $this->user->id;
-            $standup->attendance_id = $attendance->id;
-            $standup->todays_Work = $request->today;
-            $standup->save();
             // Notification::send($this->user, new SendNewStandup());
             return Reply::successWithData(__('messages.attendanceSaveSuccess'), ['time' => $now->format('h:i A'), 'ip' => $attendance->clock_in_ip, 'working_from' => $attendance->working_from]);
         }
@@ -373,7 +383,7 @@ class MemberAttendanceController extends MemberBaseController
             $attendance->save();
         }
 
-        return Reply::success(__('messages.attendanceSaveSuccess') . $totalWorkingHour);
+        return Reply::success(__('messages.attendanceSaveSuccess') );
     }
 
     /**

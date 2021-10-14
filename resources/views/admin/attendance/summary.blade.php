@@ -122,7 +122,7 @@
                 <form 
                 autocomplete="off" 
                 enctype="multipart/form-data"
-                action="{{ route('admin.attendance-report.report') }}"
+                action="{{ route('admin.attendance-report.exportSummary') }}"
                 method="POST">
                 {{ csrf_field() }}
                     <div class="row">
