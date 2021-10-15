@@ -147,22 +147,23 @@ class AttendanceExport implements FromView, WithCustomStartCell
         $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
         $halfday_mark_time = Carbon::createFromFormat( 'H:i:s', $this->attendanceSettings->halfday_mark_time);
         if ($attendance->clock_out_time != null) {
+            $clockOutTime1 = Carbon::createFromFormat('H:i:s', $clockOutTime->format('H:i:s'));
             $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
             if ($totalWorkingHour > 9) {
                 $totalWorkingHour = 9;
             }
+            if ($clockInTime1->lessThan($halfday_mark_time) && $clockOutTime1->greaterThan($halfday_mark_time)) {
+                $totalWorkingHour =$totalWorkingHour - 1; //nghi trua 1 tieng
+            } 
         } else {
-            if($clockInTime->isToday()){
-                $totalWorkingHour = Carbon::now()->floatDiffInHours($clockInTime);
-            }else{
                // $attendanceSetting = AttendanceSetting::where('company_id', $this->global->id)->first();
                 if($clockInTime1->greaterThan($halfday_mark_time)){
                     $totalWorkingHour = 4 ;
                 }else{
-                    $totalWorkingHour = 9;
+                    $totalWorkingHour = 8;
                 }
                 
-            }
+            
         }
        
         $whole = (int) $totalWorkingHour;
@@ -176,10 +177,7 @@ class AttendanceExport implements FromView, WithCustomStartCell
                 $frac = ($frac <= 0.75) ? 0.5 : 1;
             }
         }
-        if(Carbon::parse($attendance->clock_in_time)->isToday()){
-            return $whole + $frac;
-        }else{
-            return ($whole + $frac - 1) <= 4 ? 4 : ($whole + $frac - 1);
-        }
+        return (($whole + $frac) >= 3.75 && ($whole + $frac) < 5) ? 4 : ($whole + $frac); 
+        
     }
 }
