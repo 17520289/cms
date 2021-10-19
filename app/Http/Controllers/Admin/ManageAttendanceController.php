@@ -734,33 +734,43 @@ class ManageAttendanceController extends AdminBaseController
     }
     public function totalHoursRound($attendance)
     { 
+        
         $clockInTime = Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone);
-        $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->global->timezone);
+
         $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
         $halfday_mark_time = Carbon::createFromFormat( 'H:i:s', $this->attendanceSettings->halfday_mark_time);
-        if ($attendance->clock_out_time != null) {
-            $clockOutTime1 = Carbon::createFromFormat('H:i:s', $clockOutTime->format('H:i:s'));
-            $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
-            if ($totalWorkingHour > 9) {
-                $totalWorkingHour = 9;
-            }
-            if ($clockInTime1->lessThan($halfday_mark_time) && $clockOutTime1->greaterThan($halfday_mark_time)) {
-                $totalWorkingHour =$totalWorkingHour - 1; //nghi trua 1 tieng
-            } 
-        } else {
-            if($clockInTime->isToday()){
-                $totalWorkingHour = Carbon::now()->floatDiffInHours($clockInTime);
-            }else{
-               // $attendanceSetting = AttendanceSetting::where('company_id', $this->global->id)->first();
-                if($clockInTime1->greaterThan($halfday_mark_time)){
-                    $totalWorkingHour = 4 ;
-                }else{
-                    $totalWorkingHour = 8;
-                }
-                
-            }
+
+        //$lunchBreak = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->global->timezone)->subHour();
+        if($clockInTime1->lessThan($halfday_mark_time) && $clockInTime1->greaterThan($halfday_mark_time->subHour())){
+            $clockInTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->global->timezone);
+        }
+        //set clock_out_time if null
+        if($attendance->clock_out_time == null ){
+            $clockOutTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->office_end_time, $this->global->timezone);
+        }else{
+            $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->global->timezone);
         }
        
+        //get total hours logged
+        $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
+        
+        $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
+        $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
+        if($totalWorkingHour > 5){
+            $totalWorkingHour -=1;
+            if($totalWorkingHour > 8){
+                $totalWorkingHour = 8;
+            }
+        }
+        if($clockInTime->isToday()){
+            $now = Carbon::now();
+            if($clockInTime->greaterThan($now)){
+                $totalWorkingHour = 0;
+            }else{
+                $totalWorkingHour = $now->floatDiffInHours($clockInTime);
+            }
+        }
+      
         $whole = (int) $totalWorkingHour;
         $frac = $totalWorkingHour - $whole;
         if ($frac <= 0.25) {
@@ -773,10 +783,7 @@ class ManageAttendanceController extends AdminBaseController
             }
         }
         
-        if(Carbon::parse($attendance->clock_in_time)->isToday()){
-            return $whole + $frac;
-        }else{
-            return (($whole + $frac) >= 3.75 && ($whole + $frac) < 5) ? 4 : ($whole + $frac); 
-        }
+        return $whole + $frac;
+     
     }
 }

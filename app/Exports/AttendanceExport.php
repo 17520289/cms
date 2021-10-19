@@ -79,18 +79,10 @@ class AttendanceExport implements FromView, WithCustomStartCell
             $totalHours[$employee->name] = 0;
             foreach ($employee->attendance as $attendance) {
                 $d = Carbon::createFromFormat('Y-m-d H:i:s', $attendance->clock_in_time)->day;
-
                 $jd = gregoriantojd($request->month, $d, $request->year);
 
                 //get total working in day
                 $totalWorkingHour = $this->totalHoursRound($attendance);
-
-
-                if ($totalWorkingHour <= 4) {
-                    $totalPresent[$employee->name] += 0.5;
-                } else {
-                    $totalPresent[$employee->name] += 1;
-                }
                 $totalHours[$employee->name] += $totalWorkingHour;
 
                 if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday') {
@@ -143,29 +135,41 @@ class AttendanceExport implements FromView, WithCustomStartCell
     public function totalHoursRound($attendance)
     { 
         $clockInTime = Carbon::parse($attendance->clock_in_time)->timezone($this->timezone);
-        $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->timezone);
+
         $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
         $halfday_mark_time = Carbon::createFromFormat( 'H:i:s', $this->attendanceSettings->halfday_mark_time);
-        if ($attendance->clock_out_time != null) {
-            $clockOutTime1 = Carbon::createFromFormat('H:i:s', $clockOutTime->format('H:i:s'));
-            $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
-            if ($totalWorkingHour > 9) {
-                $totalWorkingHour = 9;
-            }
-            if ($clockInTime1->lessThan($halfday_mark_time) && $clockOutTime1->greaterThan($halfday_mark_time)) {
-                $totalWorkingHour =$totalWorkingHour - 1; //nghi trua 1 tieng
-            } 
-        } else {
-               // $attendanceSetting = AttendanceSetting::where('company_id', $this->global->id)->first();
-                if($clockInTime1->greaterThan($halfday_mark_time)){
-                    $totalWorkingHour = 4 ;
-                }else{
-                    $totalWorkingHour = 8;
-                }
-                
-            
+
+        //$lunchBreak = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->timezone)->subHour();
+        if($clockInTime1->lessThan($halfday_mark_time) && $clockInTime1->greaterThan($halfday_mark_time->subHour())){
+            $clockInTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->timezone);
+        }
+        //set clock_out_time if null
+        if($attendance->clock_out_time == null ){
+            $clockOutTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->office_end_time, $this->timezone);
+        }else{
+            $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->timezone);
         }
        
+        //get total hours logged
+        $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
+        
+        $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
+        $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
+        if($totalWorkingHour > 5){
+            $totalWorkingHour -=1;
+            if($totalWorkingHour > 8){
+                $totalWorkingHour = 8;
+            }
+        }
+        if($clockInTime->isToday()){
+            $now = Carbon::now();
+            if($clockInTime->greaterThan($now)){
+                $totalWorkingHour = 0;
+            }else{
+                $totalWorkingHour = $now->floatDiffInHours($clockInTime);
+            }
+        }
+      
         $whole = (int) $totalWorkingHour;
         $frac = $totalWorkingHour - $whole;
         if ($frac <= 0.25) {
@@ -177,7 +181,8 @@ class AttendanceExport implements FromView, WithCustomStartCell
                 $frac = ($frac <= 0.75) ? 0.5 : 1;
             }
         }
-        return (($whole + $frac) >= 3.75 && ($whole + $frac) < 5) ? 4 : ($whole + $frac); 
+        
+        return $whole + $frac;
         
     }
 }

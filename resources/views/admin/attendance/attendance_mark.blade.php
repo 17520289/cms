@@ -28,7 +28,7 @@
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body">
                         <div class="row">
-                            @if($total_clock_in < $maxAttandenceInDay)
+                            @if(true)
                                 {!! Form::open(['id'=>'attendance-container','class'=>'ajax-form','method'=>'POST']) !!}
                                 {{ csrf_field() }}
                                 <input type="hidden" name="attendance_date" value="{{ Carbon\Carbon::createFromFormat('Y-m-d', $date)->format($global->date_format) }}">
