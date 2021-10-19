@@ -229,15 +229,22 @@ class MemberAttendanceController extends MemberBaseController
             try{
                 $attendance = new Attendance();
                 $attendance->user_id = $this->user->id;
-                $attendance->clock_in_time = $now;
+               
+
                 // Work from home
-                // if($request->working_from == 'work_from_home'){
-                //     $date = $now->format('Y-m-d');
-                //     $clockIn = Carbon::createFromFormat('Y-m-d ' . $this->global->time_format, $date . ' ' . $request->clock_in_time, $this->global->timezone);
-                //     $clockIn->setTimezone('UTC');
+                if($request->working_from == 'work_from_home'){
+                    $date = $now->format('Y-m-d');
+                    
+                    $clockIn = Carbon::createFromFormat('Y-m-d ' . $this->global->time_format, $date . ' ' . $request->clock_in_time, $this->global->timezone);
+                    $clockIn->setTimezone('UTC');
+                    $clockOut = Carbon::createFromFormat('Y-m-d ' . $this->global->time_format, $date . ' ' . $request->clock_out_time, $this->global->timezone);
+                    $clockOut->setTimezone('UTC');
     
-                //     $attendance->clock_in_time = $clockIn;
-                // }
+                    $attendance->clock_in_time = $clockIn;
+                    $attendance->clock_out_time = $clockOut;
+                }else{
+                    $attendance->clock_in_time = $now;
+                }
                 $attendance->clock_in_ip = request()->ip();
     
                 if (is_null($request->working_from)) {
@@ -866,8 +873,11 @@ class MemberAttendanceController extends MemberBaseController
         $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
         if($totalWorkingHour > 5){
             $totalWorkingHour -=1;
-            if($totalWorkingHour > 8){
+            if($totalWorkingHour > 8 && $clockInTime1->lessThan($halfday_mark_time)){
                 $totalWorkingHour = 8;
+            }
+            if($clockInTime1->greaterThan($halfday_mark_time)){
+                $totalWorkingHour = 4;
             }
         }
         if($clockInTime->isToday()){

@@ -758,8 +758,11 @@ class ManageAttendanceController extends AdminBaseController
         $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
         if($totalWorkingHour > 5){
             $totalWorkingHour -=1;
-            if($totalWorkingHour > 8){
+            if($totalWorkingHour > 8 && $clockInTime1->lessThan($halfday_mark_time->subHour())){
                 $totalWorkingHour = 8;
+            }
+            if($clockInTime1->greaterThan($halfday_mark_time)){
+                $totalWorkingHour = 4;
             }
         }
         if($clockInTime->isToday()){
@@ -782,7 +785,7 @@ class ManageAttendanceController extends AdminBaseController
                 $frac = ($frac <= 0.75) ? 0.5 : 1;
             }
         }
-        
+
         return $whole + $frac;
      
     }
