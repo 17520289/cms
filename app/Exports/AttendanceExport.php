@@ -157,8 +157,11 @@ class AttendanceExport implements FromView, WithCustomStartCell
         $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
         if($totalWorkingHour > 5){
             $totalWorkingHour -=1;
-            if($totalWorkingHour > 8){
+            if($totalWorkingHour > 8 && $clockInTime1->lessThan($halfday_mark_time->subHour())){
                 $totalWorkingHour = 8;
+            }
+            if($clockInTime1->greaterThan($halfday_mark_time)){
+                $totalWorkingHour = 4;
             }
         }
         if($clockInTime->isToday()){
