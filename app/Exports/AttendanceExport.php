@@ -139,10 +139,6 @@ class AttendanceExport implements FromView, WithCustomStartCell
         $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
         $halfday_mark_time = Carbon::createFromFormat( 'H:i:s', $this->attendanceSettings->halfday_mark_time);
 
-        //$lunchBreak = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->timezone)->subHour();
-        if($clockInTime1->lessThan($halfday_mark_time) && $clockInTime1->greaterThan($halfday_mark_time->subHour())){
-            $clockInTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->timezone);
-        }
         //set clock_out_time if null
         if($attendance->clock_out_time == null ){
             $clockOutTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->office_end_time, $this->timezone);
@@ -153,17 +149,31 @@ class AttendanceExport implements FromView, WithCustomStartCell
         //get total hours logged
         $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
         
-        $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
-        $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
-        if($totalWorkingHour > 5){
-            $totalWorkingHour -=1;
-            if($totalWorkingHour > 8 && $clockInTime1->lessThan($halfday_mark_time->subHour())){
+         //work from office
+         if($attendance->woking_from == 'office'){
+            if($clockInTime1->lessThan($halfday_mark_time) && $clockInTime1->greaterThan($halfday_mark_time->subHour())){
+                $clockInTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->timezone);
+            }
+            $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
+            $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
+            if($totalWorkingHour > 5){
+                $totalWorkingHour -=1;
+                if($totalWorkingHour > 8 && $clockInTime1->lessThan($halfday_mark_time->subHour())){
+                    $totalWorkingHour = 8;
+                }
+                if($clockInTime1->greaterThan($halfday_mark_time)){
+                    $totalWorkingHour = 4;
+                }
+            }
+        }else{ //work from home
+            if($attendance->lunch_break == 'yes'){
+                $totalWorkingHour -= 1;
+            }
+            if($totalWorkingHour > 8){
                 $totalWorkingHour = 8;
             }
-            if($clockInTime1->greaterThan($halfday_mark_time)){
-                $totalWorkingHour = 4;
-            }
         }
+
         if($clockInTime->isToday()){
             $now = Carbon::now();
             if($clockInTime->greaterThan($now)){
