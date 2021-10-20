@@ -144,7 +144,7 @@ class AttendanceExport implements FromView, WithCustomStartCell
             if($clockInTime->isToday()){
                 $clockOutTime = Carbon::now();
             }else{
-                $clockOutTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->office_end_time, $this->global->timezone);
+                $clockOutTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->office_end_time, $this->timezone);
             }
         }else{
             $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->timezone);
