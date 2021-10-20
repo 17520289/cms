@@ -914,8 +914,6 @@ class MemberAttendanceController extends MemberBaseController
             $now = Carbon::now();
             if($clockInTime->greaterThan($now)){
                 $totalWorkingHour = 0;
-            }else{
-                $totalWorkingHour = $now->floatDiffInHours($clockInTime);
             }
         }
       
