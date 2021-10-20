@@ -237,11 +237,9 @@ class MemberAttendanceController extends MemberBaseController
                     
                     $clockIn = Carbon::createFromFormat('Y-m-d ' . $this->global->time_format, $date . ' ' . $request->clock_in_time, $this->global->timezone);
                     $clockIn->setTimezone('UTC');
-                    $clockOut = Carbon::createFromFormat('Y-m-d ' . $this->global->time_format, $date . ' ' . $request->clock_out_time, $this->global->timezone);
-                    $clockOut->setTimezone('UTC');
     
                     $attendance->clock_in_time = $clockIn;
-                    $attendance->clock_out_time = $clockOut;
+                    
                 }else{
                     $attendance->clock_in_time = $now;
                 }
@@ -266,8 +264,9 @@ class MemberAttendanceController extends MemberBaseController
     
                 $attendance->save();
     
+
                 //update yesterday's work
-                $standupYesterday = Standup::where('id', $this->user->id)->orderBy('created_at', 'desc')->first();
+                $standupYesterday = Standup::where('user_id', $this->user->id)->orderBy('created_at', 'desc')->first();
                 if (!is_null($standupYesterday)) {
                     $standupYesterday->todays_Work = $request->yesterday;
                     $standupYesterday->save();
@@ -392,8 +391,25 @@ class MemberAttendanceController extends MemberBaseController
                     return Reply::error(__('messages.notAnValidLocation'));
                 }
             }
+            if($attendance->working_from == 'office'){
+                $attendance->clock_out_time = $now;
+            }else{
+                if ($request->clock_out_time != '') {
+                    $date = $now->format('Y-m-d');
+                    $clockIn =  Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone);
+                    $clockIn->setTimezone('UTC');
+                    $clockOut = Carbon::createFromFormat('Y-m-d ' . $this->global->time_format, $date . ' ' . $request->clock_out_time, $this->global->timezone);
+                    $clockOut->setTimezone('UTC');
+        
+                    if ($clockIn->gt($clockOut) && !is_null($clockOut)) {
+                        return Reply::error(__('messages.clockOutTimeError'));
+                    }
 
-            $attendance->clock_out_time = $now;
+                    $attendance->clock_out_time = $clockOut;
+                } else {
+                    return Reply::error(__('messages.clockOutTimeError'));
+                }
+            }
             $attendance->clock_out_ip = request()->ip();
             $attendance->save();
         }
@@ -855,10 +871,6 @@ class MemberAttendanceController extends MemberBaseController
         $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
         $halfday_mark_time = Carbon::createFromFormat( 'H:i:s', $this->attendanceSettings->halfday_mark_time);
 
-        //$lunchBreak = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->global->timezone)->subHour();
-        if($clockInTime1->lessThan($halfday_mark_time) && $clockInTime1->greaterThan($halfday_mark_time->subHour())){
-            $clockInTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->global->timezone);
-        }
         //set clock_out_time if null
         if($attendance->clock_out_time == null ){
             $clockOutTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->office_end_time, $this->global->timezone);
@@ -869,17 +881,31 @@ class MemberAttendanceController extends MemberBaseController
         //get total hours logged
         $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
         
-        $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
-        $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
-        if($totalWorkingHour > 5){
-            $totalWorkingHour -=1;
-            if($totalWorkingHour > 8 && $clockInTime1->lessThan($halfday_mark_time)){
+        //work from office
+        if($attendance->woking_from == 'office'){
+            if($clockInTime1->lessThan($halfday_mark_time) && $clockInTime1->greaterThan($halfday_mark_time->subHour())){
+                $clockInTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->global->timezone);
+            }
+            $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
+            $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
+            if($totalWorkingHour > 5){
+                $totalWorkingHour -=1;
+                if($totalWorkingHour > 8 && $clockInTime1->lessThan($halfday_mark_time->subHour())){
+                    $totalWorkingHour = 8;
+                }
+                if($clockInTime1->greaterThan($halfday_mark_time)){
+                    $totalWorkingHour = 4;
+                }
+            }
+        }else{ //work from home
+            if($attendance->lunch_break == 'yes'){
+                $totalWorkingHour -= 1;
+            }
+            if($totalWorkingHour > 8){
                 $totalWorkingHour = 8;
             }
-            if($clockInTime1->greaterThan($halfday_mark_time)){
-                $totalWorkingHour = 4;
-            }
         }
+
         if($clockInTime->isToday()){
             $now = Carbon::now();
             if($clockInTime->greaterThan($now)){

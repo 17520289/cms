@@ -1,6 +1,9 @@
 <?php
 
 return array (
+  'workFromHome'=>'Home',
+  'office' =>'Office',
+  'lunchBreak' => 'Lunch Break',
   'detail' => 'Detail',
   'addMore' => 'Add More',
   'exportData' => 'Export Data',
