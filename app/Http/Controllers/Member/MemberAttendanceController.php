@@ -886,7 +886,7 @@ class MemberAttendanceController extends MemberBaseController
         $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
         
         //work from office
-        if($attendance->woking_from == 'office'){
+        if($attendance->working_from == 'office'){
             if($clockInTime1->lessThan($halfday_mark_time) && $clockInTime1->greaterThan($halfday_mark_time->subHour())){
                 $clockInTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->global->timezone);
             }

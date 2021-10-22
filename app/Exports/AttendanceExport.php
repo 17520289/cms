@@ -134,6 +134,7 @@ class AttendanceExport implements FromView, WithCustomStartCell
     }
     public function totalHoursRound($attendance)
     { 
+        
         $clockInTime = Carbon::parse($attendance->clock_in_time)->timezone($this->timezone);
 
         $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
@@ -154,7 +155,7 @@ class AttendanceExport implements FromView, WithCustomStartCell
         $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
         
          //work from office
-         if($attendance->woking_from == 'office'){
+         if($attendance->working_from == 'office'){
             if($clockInTime1->lessThan($halfday_mark_time) && $clockInTime1->greaterThan($halfday_mark_time->subHour())){
                 $clockInTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->timezone);
             }

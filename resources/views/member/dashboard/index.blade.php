@@ -211,7 +211,7 @@
                                                 @if (is_null($currenntClockIn))
                                                     <select name="working_from" class="form-control" id="working_from">
                                                         <option value="office" selected>@lang('app.office')</option>
-                                                        <option value="work_from_home">@lang('app.workFromHome')</option>
+                                                        {{-- <option value="work_from_home">@lang('app.workFromHome')</option> --}}
                                                     </select>
                                                 @else
                                                     @if ($currenntClockIn->working_from == 'work_from_home')

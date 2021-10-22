@@ -114,7 +114,7 @@
                                                 <label class="control-label">@lang('modules.attendance.working_from')</label>
                                                 <select name="working_from" class="form-control" id="working_from">
                                                     <option value="office" @if ($row->working_from == 'office') selected @endif >@lang('app.office')</option>
-                                                    <option value="work_from_home" @if ($row->working_from == 'work_from_home') selected @endif >@lang('app.workFromHome')</option>
+                                                    {{-- <option value="work_from_home" @if ($row->working_from == 'work_from_home') selected @endif >@lang('app.workFromHome')</option> --}}
                                                 </select>
                                             </div>
                                         </div>
