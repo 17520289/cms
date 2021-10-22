@@ -57,7 +57,7 @@
                                         </div>
 
                                         @if($row->total_clock_in == 0)
-                                            <div class="col-md-4">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
                                                     <label class="control-label" >@lang('modules.attendance.late')</label>
                                                     <div class="switchery-demo">
@@ -66,6 +66,16 @@
                                                 </div>
                                             </div>
                                         @endif
+                                       @if ($row->working_from == 'work_from_home')
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">@lang('app.lunchBreak')</label>
+                                                    <div class="switchery-demo">
+                                                        <input type="checkbox" name="lunch_break" @if($row->lunch_break == "yes") checked @endif class="js-switch change-module-setting" data-color="#ed4040" id="lunch_break"  />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                       @endif
 
                                     </div>
 
@@ -102,8 +112,10 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="control-label">@lang('modules.attendance.working_from')</label>
-                                                <input type="text" name="working_from" id="working-from"
-                                                       class="form-control" value="{{ $row->working_from ?? 'office' }}">
+                                                <select name="working_from" class="form-control" id="working_from">
+                                                    <option value="office" @if ($row->working_from == 'office') selected @endif >@lang('app.office')</option>
+                                                    {{-- <option value="work_from_home" @if ($row->working_from == 'work_from_home') selected @endif >@lang('app.workFromHome')</option> --}}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>

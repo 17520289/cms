@@ -207,15 +207,18 @@
                                              @if (!is_null($currenntClockIn)) readonly @endif>@if (!is_null($currenntClockIn)){{ $currenntClockIn->standUp->todays_Work ?? null }}@endif </textarea>
                                             </div>
                                             <div class="col-xs-8 m-t-20 truncate">
-                                                <label for="">@lang('modules.attendance.working_from')</label>
+                                                <label for="">@lang('modules.attendance.working_from'):</label>
                                                 @if (is_null($currenntClockIn))
                                                     <select name="working_from" class="form-control" id="working_from">
-                                                        <option value="office" selected>Office</option>
-                                                        <option value="work_from_home">Work from home</option>
+                                                        <option value="office" selected>@lang('app.office')</option>
+                                                        {{-- <option value="work_from_home">@lang('app.workFromHome')</option> --}}
                                                     </select>
-                                                    {{-- <input type="text" class="form-control" id="working_from" name="working_from"> --}}
                                                 @else
-                                                    <br> {{ $currenntClockIn->working_from }}
+                                                    @if ($currenntClockIn->working_from == 'work_from_home')
+                                                        @lang('app.workFromHome')
+                                                    @else
+                                                        @lang('app.office')
+                                                    @endif
                                                 @endif
                                             </div>
                                             <div class="col-xs-8 m-t-20 " id="work-from-home" style="display: none">
@@ -245,17 +248,28 @@
                                                             id="clock-in-time" >
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="input-group bootstrap-timepicker timepicker">
-                                                        <label>@lang('modules.attendance.clock_out')</label>
-                                                        <input type="text" name="clock_out_time" id="clock-out-time"
-                                                            class="form-control b-timepicker" autocomplete="off" value="">
-                                                    </div>
-                                                </div>
+                                             
                                                </div>
 
                                             </div>
-
+                                            <div class="col-xs-8 m-t-20 ">
+                                                @if (!is_null($currenntClockIn) && is_null($currenntClockIn->clock_out_time))
+                                                @if ($currenntClockIn->working_from == 'work_from_home')
+                                                    <label for="">@lang('app.lunchBreak'):</label>
+                                                     @lang('app.'.$currenntClockIn->lunch_break)
+                                                    <br><br>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="input-group bootstrap-timepicker timepicker">
+                                                                <label>@lang('modules.attendance.clock_out')</label>
+                                                                <input type="text" name="clock_out_time" id="clock-out-time"
+                                                                        class="form-control b-timepicker" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endif    
+                                                @endif
+                                            </div>
                                             <div class="col-xs-4 m-t-20">
                                                 <label class="m-t-30">&nbsp;</label>
                                                 @if (is_null($currenntClockIn))
@@ -538,7 +552,7 @@
                 showMeridian: false,
             @endif
             minuteStep: 1,
-            defaultTime: false
+           
         });
         $("select[name=working_from]").click(function() {
             if ($(this).val() == 'work_from_home') {
@@ -555,7 +569,6 @@
             var currentLatitude = document.getElementById("current-latitude").value;
             var currentLongitude = document.getElementById("current-longitude").value;
             var clockInTime = $("#clock-in-time").val();
-            var clockOutTime =  $("#clock-out-time").val();
             var token = "{{ csrf_token() }}";
 
             $.easyAjax({
@@ -566,7 +579,6 @@
                     today: today,
                     yesterday: yesterday,
                     clock_in_time : clockInTime,
-                    clock_out_time : clockOutTime,
                     currentLatitude: currentLatitude,
                     currentLongitude: currentLongitude,
                     _token: token
@@ -585,13 +597,14 @@
             var token = "{{ csrf_token() }}";
             var currentLatitude = document.getElementById("current-latitude").value;
             var currentLongitude = document.getElementById("current-longitude").value;
-        
+            var clockOutTime =  $("#clock-out-time").val();
             $.easyAjax({
             url: '{{ route('member.attendances.update', $currenntClockIn->id) }}',
             type: "PUT",
             data: {
             currentLatitude: currentLatitude,
             currentLongitude: currentLongitude,
+            clock_out_time : clockOutTime,
             _token: token
             },
             success: function (response) {
