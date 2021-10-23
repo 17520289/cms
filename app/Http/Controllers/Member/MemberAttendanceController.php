@@ -8,12 +8,15 @@ use App\Helper\Reply;
 use App\Holiday;
 use App\Http\Requests\Attendance\StoreAttendance;
 use App\Leave;
+use App\Standup;
 use App\Team;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\SendNewStandup;
 
 class MemberAttendanceController extends MemberBaseController
 {
@@ -254,6 +257,20 @@ class MemberAttendanceController extends MemberBaseController
 
             $attendance->save();
 
+            //update yesterday's work
+            $standupYesterday = Standup::where('id', $this->user->id)->orderBy('created_at', 'desc')->first();
+            if(!is_null($standupYesterday)){
+                $standupYesterday->todays_Work = $request->yesterday;
+                $standupYesterday->save();
+            }
+           
+
+            $standup = new Standup();
+            $standup->user_id = $this->user->id;
+            $standup->attendance_id = $attendance->id;
+            $standup->todays_Work = $request->today;
+            $standup->save();
+            // Notification::send($this->user, new SendNewStandup());
             return Reply::successWithData(__('messages.attendanceSaveSuccess'), ['time' => $now->format('h:i A'), 'ip' => $attendance->clock_in_ip, 'working_from' => $attendance->working_from]);
         }
 

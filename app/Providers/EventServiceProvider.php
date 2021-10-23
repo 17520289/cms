@@ -44,6 +44,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\NewProposalEvent' => ['App\Listeners\NewProposalListener'],
         'App\Events\InvoiceReminderEvent' => ['App\Listeners\InvoiceReminderListener'],
         'App\Events\AttendanceReminderEvent' => ['App\Listeners\AttendanceReminderListener'],
+        'App\Events\NewStandup' => ['App\Listeners\StandupListener'],
     ];
 
     /**

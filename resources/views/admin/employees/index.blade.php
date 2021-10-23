@@ -59,7 +59,7 @@
                             <div class="form-group">
                                 <label class="control-label">@lang('app.skills')</label>
                                 <select class="select2 select2-multiple " multiple="multiple"
-                                        data-placeholder="Choose Skills" name="skill[]" id="skill" data-style="form-control">
+                                        data-placeholder="@lang('modules.client.all')" name="skill[]" id="skill" data-style="form-control">
                                     <option value="all">@lang('modules.client.all')</option>
                                     @forelse($skills as $skill)
                                         <option value="{{$skill->id}}">{{ ucfirst($skill->name) }}</option>

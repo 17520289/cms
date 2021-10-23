@@ -12,7 +12,7 @@
         @if($clock_in > 0)
             <label class="label label-success"><i class="fa fa-check"></i> @lang('modules.attendance.present')</label>
             <button type="button" title="Attendance Detail" id="viewAttendance" class="btn btn-info btn-sm btn-rounded view-attendance" data-attendance-id="{{$row->id}}">
-                <i class="fa fa-search"></i> Detail
+                <i class="fa fa-search"></i> @lang('app.detail')
             </button>
         @else
             <label class="label label-danger"><i class="fa fa-exclamation-circle"></i> @lang('modules.attendance.absent')</label>
