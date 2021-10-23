@@ -1,6 +1,9 @@
 <?php
 
 return array (
+  'workFromHome'=>'Nhà',
+  'office' =>'Văn phòng',
+  'lunchBreak' => 'Nghỉ Trưa',
   'detail' => 'Chi tiết',
   'addMore' => 'Thêm',
   'exportData' => 'Xuất Bảng Chấm Công',
@@ -274,8 +277,8 @@ return array (
   'days' => 'Ngày',
   'year' => 'Năm',
   'it' => 'It!',
-  'yes' => 'Yes',
-  'no' => 'No',
+  'yes' => 'Có',
+  'no' => 'Không',
   'day' => 'Ngày',
   'week' => 'Tuần',
   'submit' => 'Submit',

@@ -32,11 +32,38 @@ class AttendanceReportController extends AdminBaseController
         $this->employees = User::allEmployees();
         return $dataTable->render('admin.reports.attendance.index', $this->data);
     }
-
-    public function report(Request $request)
-    {
+    
+    
+    public function exportSummary(Request $request){
         $fileName = 'Tháng_'.$request->month.'_'.$request->year.'.xlsx';
         return Excel::download(new AttendanceExport($request, $this->global->timezone), $fileName);
+        
+    }
+    public function report(Request $request)
+    {
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $employee = $request->employeeID;
+        $this->attendanceSettings = AttendanceSetting::first();
+        $openDays = json_decode($this->attendanceSettings->office_open_days);
+        if ($startDate !== null && $request->startDate != '') {
+            $this->startDate = $startDate = Carbon::createFromFormat($this->global->date_format, $startDate);
+        }else{
+            $this->startDate =$startDate ='';
+        }
+        
+        $this->endDate = $endDate = Carbon::createFromFormat($this->global->date_format, $endDate);
+
+        $this->totalDays = $totalWorkingDays = $startDate->diffInDaysFiltered(function (Carbon $date) use ($openDays) {
+            foreach ($openDays as $day) {
+                if ($date->dayOfWeek == $day) {
+                    return $date;
+                }
+            }
+        }, $endDate);
+
+        return Reply::dataOnly(['status' => 'success', 'data' => $this->totalDays]);
+
     }
 
     public function reportExport($startDate = null, $endDate = null, $employee = null)

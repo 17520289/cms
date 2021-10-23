@@ -741,6 +741,7 @@ Route::group(['middleware' => 'auth'], function () {
                         Route::resource('leave-report', 'LeaveReportController');
 
                         Route::post('attendance-report/report', ['uses' => 'AttendanceReportController@report'])->name('attendance-report.report');
+                        Route::post('attendance-report/exportSummary', ['uses' => 'AttendanceReportController@exportSummary'])->name('attendance-report.exportSummary');
                         Route::get('attendance-report/export/{startDate}/{endDate}/{employee}', ['uses' => 'AttendanceReportController@reportExport'])->name('attendance-report.reportExport');
                         Route::resource('attendance-report', 'AttendanceReportController');
                         //endregion

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\SendNewStandup;
+use PhpParser\Node\Stmt\TryCatch;
 
 class MemberAttendanceController extends MemberBaseController
 {
@@ -224,43 +225,66 @@ class MemberAttendanceController extends MemberBaseController
             $checkTodayAttendance = Attendance::where('user_id', $this->user->id)
                 ->where(DB::raw('DATE(attendances.clock_in_time)'), '=', $now->format('Y-m-d'))->first();
 
-            $attendance = new Attendance();
-            $attendance->user_id = $this->user->id;
-            $attendance->clock_in_time = $now;
-            $attendance->clock_in_ip = request()->ip();
+            DB::beginTransaction();
+            try{
+                $attendance = new Attendance();
+                $attendance->user_id = $this->user->id;
+               
 
-            if (is_null($request->working_from)) {
-                $attendance->working_from = 'office';
-            } else {
-                $attendance->working_from = $request->working_from;
+                // Work from home
+                if($request->working_from == 'work_from_home'){
+                    $date = $now->format('Y-m-d');
+                    
+                    $clockIn = Carbon::createFromFormat('Y-m-d ' . $this->global->time_format, $date . ' ' . $request->clock_in_time, $this->global->timezone);
+                    $clockIn->setTimezone('UTC');
+    
+                    $attendance->clock_in_time = $clockIn;
+                    
+                }else{
+                    $attendance->clock_in_time = $now;
+                }
+                $attendance->clock_in_ip = request()->ip();
+    
+                if (is_null($request->working_from)) {
+                    $attendance->working_from = 'office';
+                } else {
+                    $attendance->working_from = $request->working_from;
+                }
+    
+                if ($now->gt($lateTime) && is_null($checkTodayAttendance)) {
+                    $attendance->late = 'yes';
+                }
+    
+                $attendance->half_day = 'no'; // default halfday
+    
+                // Check day's first record and half day time
+                if (!is_null($attendanceSetting->halfday_mark_time) && is_null($checkTodayAttendance) && $currentTimestamp > $halfDayTimestamp) {
+                    $attendance->half_day = 'yes';
+                }
+    
+                $attendance->save();
+    
+
+                //update yesterday's work
+                $standupYesterday = Standup::where('user_id', $this->user->id)->orderBy('created_at', 'desc')->first();
+                if (!is_null($standupYesterday)) {
+                    $standupYesterday->todays_Work = $request->yesterday;
+                    $standupYesterday->save();
+                }
+    
+    
+                $standup = new Standup();
+                $standup->user_id = $this->user->id;
+                $standup->attendance_id = $attendance->id;
+                $standup->todays_Work = $request->today;
+                $standup->save();
+                DB::commit();
+            } catch(\Exception $e){
+                DB::rollback();
+                return Reply::error(__('validation.today_is_required'));
             }
+           
 
-            if ($now->gt($lateTime) && is_null($checkTodayAttendance)) {
-                $attendance->late = 'yes';
-            }
-
-            $attendance->half_day = 'no'; // default halfday
-
-            // Check day's first record and half day time
-            if (!is_null($attendanceSetting->halfday_mark_time) && is_null($checkTodayAttendance) && $currentTimestamp > $halfDayTimestamp) {
-                $attendance->half_day = 'yes';
-            }
-
-            $attendance->save();
-
-            //update yesterday's work
-            $standupYesterday = Standup::where('id', $this->user->id)->orderBy('created_at', 'desc')->first();
-            if (!is_null($standupYesterday)) {
-                $standupYesterday->todays_Work = $request->yesterday;
-                $standupYesterday->save();
-            }
-
-
-            $standup = new Standup();
-            $standup->user_id = $this->user->id;
-            $standup->attendance_id = $attendance->id;
-            $standup->todays_Work = $request->today;
-            $standup->save();
             // Notification::send($this->user, new SendNewStandup());
             return Reply::successWithData(__('messages.attendanceSaveSuccess'), ['time' => $now->format('h:i A'), 'ip' => $attendance->clock_in_ip, 'working_from' => $attendance->working_from]);
         }
@@ -367,13 +391,30 @@ class MemberAttendanceController extends MemberBaseController
                     return Reply::error(__('messages.notAnValidLocation'));
                 }
             }
+            if($attendance->working_from == 'office'){
+                $attendance->clock_out_time = $now;
+            }else{
+                if ($request->clock_out_time != '') {
+                    $date = $now->format('Y-m-d');
+                    $clockIn =  Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone);
+                    $clockIn->setTimezone('UTC');
+                    $clockOut = Carbon::createFromFormat('Y-m-d ' . $this->global->time_format, $date . ' ' . $request->clock_out_time, $this->global->timezone);
+                    $clockOut->setTimezone('UTC');
+        
+                    if ($clockIn->gt($clockOut) && !is_null($clockOut)) {
+                        return Reply::error(__('messages.clockOutTimeError'));
+                    }
 
-            $attendance->clock_out_time = $now;
+                    $attendance->clock_out_time = $clockOut;
+                } else {
+                    return Reply::error(__('messages.clockOutTimeError'));
+                }
+            }
             $attendance->clock_out_ip = request()->ip();
             $attendance->save();
         }
 
-        return Reply::success(__('messages.attendanceSaveSuccess') . $totalWorkingHour);
+        return Reply::success(__('messages.attendanceSaveSuccess') );
     }
 
     /**
@@ -826,27 +867,57 @@ class MemberAttendanceController extends MemberBaseController
     public function totalHoursRound($attendance)
     {
         $clockInTime = Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone);
-        $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->global->timezone);
+
         $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
-        $halfday_mark_time = Carbon::createFromFormat('H:i:s', $this->attendanceSettings->halfday_mark_time);
-        if ($attendance->clock_out_time != null) {
-            $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
-            if ($totalWorkingHour > 9) {
-                $totalWorkingHour = 9;
+        $halfday_mark_time = Carbon::createFromFormat( 'H:i:s', $this->attendanceSettings->halfday_mark_time);
+
+        //set clock_out_time if null
+        if($attendance->clock_out_time == null ){
+            if($clockInTime->isToday()){
+                $clockOutTime = Carbon::now();
+            }else{
+                $clockOutTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->office_end_time, $this->global->timezone);
             }
-        } else {
-            if ($clockInTime->isToday()) {
-                $totalWorkingHour = Carbon::now()->floatDiffInHours($clockInTime);
-            } else {
-                // $attendanceSetting = AttendanceSetting::where('company_id', $this->global->id)->first();
-                if ($clockInTime1->greaterThan($halfday_mark_time)) {
-                    $totalWorkingHour = 4;
-                } else {
-                    $totalWorkingHour = 9;
+        }else{
+            $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->global->timezone);
+        }
+       
+        //get total hours logged
+        $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
+        
+        //work from office
+        if($attendance->working_from == 'office'){
+            if($clockInTime1->lessThan($halfday_mark_time) && $clockInTime1->greaterThanOrEqualTo($halfday_mark_time->subHour())){
+                $clockInTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->global->timezone);
+                $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
+            }
+            $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
+            $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
+            if($totalWorkingHour > 5){
+                $totalWorkingHour -=1;
+                if($totalWorkingHour > 8 && $clockInTime1->lessThan($halfday_mark_time->subHour())){
+                    $totalWorkingHour = 8;
                 }
+                if($clockInTime1->greaterThanOrEqualTo($halfday_mark_time)){
+                    $totalWorkingHour = 4;
+                }
+            }
+        }else{ //work from home
+            if($attendance->lunch_break == 'yes'){
+                $totalWorkingHour -= 1;
+            }
+            if($totalWorkingHour > 8){
+                $totalWorkingHour = 8;
             }
         }
 
+        if($clockInTime->isToday()){
+            $now = Carbon::now();
+            if($clockInTime->greaterThan($now)){
+                $totalWorkingHour = 0;
+            }
+        }
+      
         $whole = (int) $totalWorkingHour;
         $frac = $totalWorkingHour - $whole;
         if ($frac <= 0.25) {
@@ -858,10 +929,7 @@ class MemberAttendanceController extends MemberBaseController
                 $frac = ($frac <= 0.75) ? 0.5 : 1;
             }
         }
-        if (Carbon::parse($attendance->clock_in_time)->isToday()) {
-            return $whole + $frac;
-        } else {
-            return ($whole + $frac - 1) <= 4 ? 4 : ($whole + $frac - 1);
-        }
+        
+        return $whole + $frac;
     }
 }
