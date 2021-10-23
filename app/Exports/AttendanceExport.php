@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
-
+use App\AttendanceSetting;
 class AttendanceExport implements FromView, WithCustomStartCell
 {
     private $request;
@@ -20,6 +20,7 @@ class AttendanceExport implements FromView, WithCustomStartCell
     {
         $this->request = $request;
         $this->timezone = $timezone;
+        $this->attendanceSettings = AttendanceSetting::first();
     }
     /**
      * @return \Illuminate\Support\Collection
@@ -71,6 +72,7 @@ class AttendanceExport implements FromView, WithCustomStartCell
                     $dataFromTomorrow = array_fill($month->copy()->addDay()->format('d'), ($this->daysInMonth - $now->copy()->format('d')), 'Absent');
                 }
             }
+            
             $final[$employee->name] = array_replace($dataTillToday, $dataFromTomorrow);
 
             $totalPresent[$employee->name] = 0.0;
@@ -79,32 +81,26 @@ class AttendanceExport implements FromView, WithCustomStartCell
                 $d = Carbon::createFromFormat('Y-m-d H:i:s', $attendance->clock_in_time)->day;
 
                 $jd = gregoriantojd($request->month, $d, $request->year);
-                if ($attendance->half_day == 'no' || $attendance->half_day == '') {
-                    $totalPresent[$employee->name] += 1;
-                    $totalHours[$employee->name] += 8;
-                } else {
+
+                //get total working in day
+                $totalWorkingHour = $this->totalHoursRound($attendance);
+
+
+                if ($totalWorkingHour <= 4) {
                     $totalPresent[$employee->name] += 0.5;
-                    $totalHours[$employee->name] += 4;
-                }
-                if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday') {
-                    if ($attendance->half_day == 'yes') {
-                        //OT half day
-                        $final[$employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->timezone)->day] = '4';
-                    } else {
-                        //OT
-                        $final[$employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->timezone)->day] = '8';
-                    }
                 } else {
-                    if ($attendance->half_day == 'no' || $attendance->half_day == '') {
-                        // work full day
-                        $final[$employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->timezone)->day] = '8';
-                    } else {
-                        // work half day
-                        $final[$employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->timezone)->day] = '4';
-                    }
+                    $totalPresent[$employee->name] += 1;
+                }
+                $totalHours[$employee->name] += $totalWorkingHour;
+
+                if (jddayofweek($jd, 1) == 'Sunday' || jddayofweek($jd, 1) == 'Saturday') {
+                    $final[$employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->timezone)->day] = $totalWorkingHour . ' - OT';
+                } else {
+                    $final[$employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->timezone)->day] = $totalWorkingHour;
                 }
             }
 
+            $totalPresent[$employee->name] = round( $totalHours[$employee->name]/8 , 1);
             foreach ($this->holidays as $holiday) {
                 if ($final[$employee->name][$holiday->date->day] == 'Absent')
                     $final[$employee->name][$holiday->date->day] = 'Holiday';
@@ -143,5 +139,47 @@ class AttendanceExport implements FromView, WithCustomStartCell
     public function startCell(): string
     {
         return 'A8';
+    }
+    public function totalHoursRound($attendance)
+    { 
+        $clockInTime = Carbon::parse($attendance->clock_in_time)->timezone($this->timezone);
+        $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->timezone);
+        $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
+        $halfday_mark_time = Carbon::createFromFormat( 'H:i:s', $this->attendanceSettings->halfday_mark_time);
+        if ($attendance->clock_out_time != null) {
+            $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
+            if ($totalWorkingHour > 9) {
+                $totalWorkingHour = 9;
+            }
+        } else {
+            if($clockInTime->isToday()){
+                $totalWorkingHour = Carbon::now()->floatDiffInHours($clockInTime);
+            }else{
+               // $attendanceSetting = AttendanceSetting::where('company_id', $this->global->id)->first();
+                if($clockInTime1->greaterThan($halfday_mark_time)){
+                    $totalWorkingHour = 4 ;
+                }else{
+                    $totalWorkingHour = 9;
+                }
+                
+            }
+        }
+       
+        $whole = (int) $totalWorkingHour;
+        $frac = $totalWorkingHour - $whole;
+        if ($frac <= 0.25) {
+            $frac = 0;
+        } else {
+            if ($frac > 0.25 && $frac <= 0.5) {
+                $frac = 0.5;
+            } else {
+                $frac = ($frac <= 0.75) ? 0.5 : 1;
+            }
+        }
+        if(Carbon::parse($attendance->clock_in_time)->isToday()){
+            return $whole + $frac;
+        }else{
+            return ($whole + $frac - 1) <= 4 ? 4 : ($whole + $frac - 1);
+        }
     }
 }
