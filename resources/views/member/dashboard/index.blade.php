@@ -192,12 +192,12 @@
                                     <div class="col-xs-8 m-t-20 truncate">
                                         <label for="">Yesterday</label>
                                             <textarea class="form-control" name="yesterday"  id="yesterday" cols="50" rows="5"
-                                            @if(!is_null($currenntClockIn)) readonly @endif>@if(!is_null($yesterdayClockIn)){{$yesterdayClockIn->standUp->todays_Work}}@endif </textarea>
+                                            @if(!is_null($currenntClockIn)) readonly @endif> @if(!is_null($yesterdayClockIn)){{$yesterdayClockIn->standUp->todays_Work??null}}@endif </textarea>
                                     </div>
                                     <div class="col-xs-8 m-t-20 truncate">
                                         <label for="">Today</label>
                                          <textarea class="form-control" name="today" id="today" cols="50" rows="5"
-                                         @if(!is_null($currenntClockIn)) readonly @endif>@if(!is_null($currenntClockIn)){{$currenntClockIn->standUp->todays_Work}}@endif </textarea>
+                                         @if(!is_null($currenntClockIn)) readonly @endif>@if(!is_null($currenntClockIn)){{$currenntClockIn->standUp->todays_Work??null}}@endif </textarea>
                                     </div>
                                     <div class="col-xs-8 m-t-20 truncate">
                                         <label for="">@lang('modules.attendance.working_from')</label>
