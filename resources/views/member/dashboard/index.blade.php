@@ -211,7 +211,7 @@
                                                 @if (is_null($currenntClockIn))
                                                     <select name="working_from" class="form-control" id="working_from">
                                                         <option value="office" selected>@lang('app.office')</option>
-                                                        {{-- <option value="work_from_home">@lang('app.workFromHome')</option> --}}
+                                                        <option value="work_from_home">@lang('app.workFromHome')</option>
                                                     </select>
                                                 @else
                                                     @if ($currenntClockIn->working_from == 'work_from_home')
@@ -566,6 +566,7 @@
             var workingFrom = $('#working_from').val();
             var today = $('#today').val();
             var yesterday = $('#yesterday').val();
+            var lunchBreak = $("input:radio[name = 'lunch_break']:checked").val();
             var currentLatitude = document.getElementById("current-latitude").value;
             var currentLongitude = document.getElementById("current-longitude").value;
             var clockInTime = $("#clock-in-time").val();
@@ -578,6 +579,7 @@
                     working_from: workingFrom,
                     today: today,
                     yesterday: yesterday,
+                    lunch_break : lunchBreak,
                     clock_in_time : clockInTime,
                     currentLatitude: currentLatitude,
                     currentLongitude: currentLongitude,

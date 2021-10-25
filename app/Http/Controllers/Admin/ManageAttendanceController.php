@@ -125,6 +125,7 @@ class ManageAttendanceController extends AdminBaseController
                 'working_from' => $request->working_from,
                 'late' => ($request->has('late')) ? 'yes' : 'no',
                 'half_day' => ($request->has('half_day')) ? 'yes' : 'no',
+                'lunch_break' => ($request->has('lunch_break')) ? 'yes' : 'no',
             ]);
         } else {
 
@@ -138,7 +139,8 @@ class ManageAttendanceController extends AdminBaseController
                     'clock_out_ip' => $request->clock_out_ip,
                     'working_from' => $request->working_from,
                     'late' => ($request->has('late')) ? 'yes' : 'no',
-                    'half_day' => ($request->has('half_day')) ? 'yes' : 'no'
+                    'half_day' => ($request->has('half_day')) ? 'yes' : 'no',
+                    'lunch_break' => ($request->has('lunch_break')) ? 'yes' : 'no',
                 ]);
             } else {
                 return Reply::error(__('messages.maxColckIn'));
@@ -709,7 +711,8 @@ class ManageAttendanceController extends AdminBaseController
                 'clock_out_ip' => $request->clock_out_ip,
                 'working_from' => $request->working_from,
                 'late' => ($request->has('late')) ? 'yes' : 'no',
-                'half_day' => ($request->has('half_day')) ? 'yes' : 'no'
+                'half_day' => ($request->has('half_day')) ? 'yes' : 'no',
+                'lunch_break' => ($request->has('lunch_break')) ? 'yes' : 'no',
             ]);
         } else {
 
@@ -723,7 +726,8 @@ class ManageAttendanceController extends AdminBaseController
                     'clock_out_ip' => $request->clock_out_ip,
                     'working_from' => $request->working_from,
                     'late' => ($request->has('late')) ? 'yes' : 'no',
-                    'half_day' => ($request->has('half_day')) ? 'yes' : 'no'
+                    'half_day' => ($request->has('half_day')) ? 'yes' : 'no',
+                    'lunch_break' => ($request->has('lunch_break')) ? 'yes' : 'no',
                 ]);
             } else {
                 return Reply::error(__('messages.maxColckIn'));
