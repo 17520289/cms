@@ -239,17 +239,15 @@ class MemberAttendanceController extends MemberBaseController
                     $clockIn->setTimezone('UTC');
     
                     $attendance->clock_in_time = $clockIn;
+                    $attendance->lunch_break = $request->lunch_break;
                     
                 }else{
                     $attendance->clock_in_time = $now;
                 }
                 $attendance->clock_in_ip = request()->ip();
     
-                if (is_null($request->working_from)) {
-                    $attendance->working_from = 'office';
-                } else {
-                    $attendance->working_from = $request->working_from;
-                }
+                $attendance->working_from = $request->working_from;
+            
     
                 if ($now->gt($lateTime) && is_null($checkTodayAttendance)) {
                     $attendance->late = 'yes';

@@ -65,18 +65,16 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
-                                       @if ($row->working_from == 'work_from_home')
-                                            <div class="col-md-3">
+                                            <div class="col-md-2" id="work-from-home" style="display:  @if ($row->working_from != 'work_from_home') none @endif">
                                                 <div class="form-group">
-                                                    <label class="control-label">@lang('app.lunchBreak')</label>
+                                                    <label class="control-label" >@lang('app.lunchBreak')</label>
                                                     <div class="switchery-demo">
                                                         <input type="checkbox" name="lunch_break" @if($row->lunch_break == "yes") checked @endif class="js-switch change-module-setting" data-color="#ed4040" id="lunch_break"  />
                                                     </div>
                                                 </div>
                                             </div>
-                                       @endif
-
+                                        @endif
+                                      
                                     </div>
 
                                     <div class="row m-t-15">
@@ -114,7 +112,7 @@
                                                 <label class="control-label">@lang('modules.attendance.working_from')</label>
                                                 <select name="working_from" class="form-control" id="working_from">
                                                     <option value="office" @if ($row->working_from == 'office') selected @endif >@lang('app.office')</option>
-                                                    {{-- <option value="work_from_home" @if ($row->working_from == 'work_from_home') selected @endif >@lang('app.workFromHome')</option> --}}
+                                                    <option value="work_from_home" @if ($row->working_from == 'work_from_home') selected @endif >@lang('app.workFromHome')</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -146,6 +144,14 @@
 </div>
 
 <script>
+     $("select[name=working_from]").click(function() {
+            if ($(this).val() == 'work_from_home') {
+                $('#work-from-home').show();
+            } else {
+                $('#work-from-home').hide();
+            }
+
+        })
     $('.a-timepicker').timepicker({
         @if($global->time_format == 'H:i')
         showMeridian: false,
