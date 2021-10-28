@@ -18,7 +18,7 @@ class StandUpCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'standup:slack';
+    protected $signature = 'standup-slack';
 
     /**
      * The console command description.
