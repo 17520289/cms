@@ -48,7 +48,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('recurring-expenses-create')->daily();
         $schedule->command('send-invoice-reminder')->daily();
         $schedule->command('send-attendance-reminder')->everyMinute();
-        $schedule->command('standup-slack')->dailyAt('09:00')->days([1,5]);
+        $schedule->command('standup-slack')->dailyAt('08:50')->days([1,5]);
     }
 
     /**
