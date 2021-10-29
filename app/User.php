@@ -70,7 +70,8 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
     public function routeNotificationForSlack()
     {
         $slack = SlackSetting::first();
-        return $slack->slack_webhook;
+        $webhook = explode(',' , $slack->slack_webhook);
+        return $webhook[0];
     }
 
     public function getUnreadNotificationsAttribute()
