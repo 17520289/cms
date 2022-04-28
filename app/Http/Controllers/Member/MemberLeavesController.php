@@ -129,6 +129,7 @@ class MemberLeavesController extends MemberBaseController
         $leave->leave_type_id = $request->leave_type_id;
         $leave->group_leave_id = $GroupLeave;
         $leave->duration = $request->duration;
+        if($request->duration == 'half day') $leave->mor_or_aft = $request->mor_or_aft;
         $leave->leave_date = Carbon::createFromFormat($this->global->date_format, $date)->format('Y-m-d');
         $leave->reason = $request->reason;
         $leave->status = $request->status;
@@ -207,8 +208,11 @@ class MemberLeavesController extends MemberBaseController
             }
         } else {
             $leave->leave_type_id = $request->leave_type_id;
-            $leave->leave_date = Carbon::createFromFormat($this->global->date_format, $date)->format('Y-m-d');
+            $leave->leave_date = Carbon::createFromFormat($this->global->date_format, $request->leave_date)->format('Y-m-d');
             $leave->reason = $request->reason;
+            if($leave->duration == 'half day' && $leave->mor_or_aft != null){
+                $leave->mor_or_aft = $request->mor_or_aft;
+            }
             $leave->save();
         }
         DB::commit();
@@ -288,7 +292,7 @@ class MemberLeavesController extends MemberBaseController
                 if ($row->duration == 'date_range') {
                     return $leaveDate . ' >> ' . $row->endDate->format($this->global->date_format);
                 } elseif ($row->duration == 'half day') {
-                    return $leaveDate . ' <div class="label-inverse label">' . __('modules.leaves.halfDay') . '</div>';
+                    return $leaveDate . ' <div class="label-inverse label">' . __('modules.leaves.halfDay').' - '.$row->mor_or_aft.'  </div>';
                 } else {
                     return $leaveDate;
                 }

@@ -43,7 +43,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('check-paypal-plan')->everyThirtyMinutes();
         $schedule->command('hide-cron-message')->everyMinute();
         $schedule->command('send-project-reminder')->daily();
-        $schedule->command('free-licence-renew')->daily();
+        // $schedule->command('free-licence-renew')->daily();
         $schedule->command('recurring-invoice-create')->daily();
         $schedule->command('recurring-expenses-create')->daily();
         $schedule->command('send-invoice-reminder')->daily();

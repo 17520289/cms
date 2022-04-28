@@ -1039,6 +1039,8 @@ return array (
     'single' => 'Single',
     'multiple' => 'Multiple',
     'halfDay' => 'Half Day',
+    'morning' => 'Morning',
+    'afternoon' => 'Afternoon',
     'dateRange' => 'Date Range',
     'hours' => 'Hours',
     'selectDates' => 'Select Dates',

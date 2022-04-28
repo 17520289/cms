@@ -61,7 +61,7 @@
                                 @if ($pendingLeave->duration == 'date_range')
                                 {{ $pendingLeaveStartDate  }} >>  {{ $pendingLeave->endDate->format($global->date_format) }}
                                 @elseif ($pendingLeave->duration == 'half day')
-                                {{ $pendingLeaveStartDate }} ({{ $pendingLeave->leave_date->format('l') }})<div class="label-inverse label"> @lang('modules.leaves.halfDay') </div>
+                                {{ $pendingLeaveStartDate }} ({{ $pendingLeave->leave_date->format('l') }})<div class="label-inverse label"> @lang('modules.leaves.halfDay') - {{$pendingLeave->mor_or_aft}} </div>
                                 @else
                                 {{ $pendingLeaveStartDate }} ({{ $pendingLeave->leave_date->format('l') }})
                                 @endif
@@ -71,7 +71,12 @@
                                 </div>
 
                                 <div class="m-l-30 m-r-30 m-t-15">
-                                    {{ ($leavesRemaining) }} @lang('modules.leaves.remainingLeaves')
+                                    @if ($pendingLeave->user->employeeDetail->designation->name == "Interns")
+                                        <b><p>Interns</p></b>
+                                    @else
+                                        {{ ($leavesRemaining) }} @lang('modules.leaves.remainingLeaves')
+                                    @endif
+                                   
                                 </div>
                             </div>
 

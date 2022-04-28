@@ -104,8 +104,28 @@
                                     <label>@lang('app.date')</label>
                                     <div class="form-group">
                                         <input type="text" class="form-control" name="leave_date" id="single_date"
-                                            value="{{ Carbon\Carbon::today()->format($global->date_format) }}">
+                                            value="{{ Carbon\Carbon::today()->addDays(2)->format($global->date_format) }}">
                                     </div>
+                                    <div class="form-group" id="mor-or-aft" style="display: none">
+                                        <div class="radio-list">
+                                            <label class="radio-inline p-0">
+                                                <div class="radio radio-info">
+                                                    <input type="radio" name="mor_or_aft" id="morning" checked
+                                                    value="morning">
+                                                    <label for="duration_half_day">@lang('modules.leaves.morning')</label>
+                                                </div>
+                                            </label>
+                                            <label class="radio-inline p-0">
+                                                <div class="radio radio-info">
+                                                <input type="radio" name="mor_or_aft" id="afternoon" 
+                                                value="afternoon">
+                                                <label for="duration_half_day">@lang('modules.leaves.afternoon')</label>
+                                             </div>
+                                             </label>
+                                        </div>
+
+                                    </div>
+
                                 </div>
 
                                 <div class="col-md-6" id="multi-date" style="display: none">
@@ -113,7 +133,7 @@
                                         </h6></label>
                                     <div class="form-group">
                                         <input type="text" class="form-control" name="multi_date" id="multi_date"
-                                            value="{{ Carbon\Carbon::today()->format($global->date_format) }}">
+                                            value="{{ Carbon\Carbon::today()->addDays(2)->format($global->date_format) }}">
                                     </div>
                                 </div>
 
@@ -190,8 +210,8 @@
         var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
         $('.input-daterange-datepicker').daterangepicker({
             datesDisabled: disabledDates,
-            minDate: today,
-            startDate: Date.now(),
+            minDate: moment().subtract(-2, 'days'),
+            startDate: moment().subtract(+2, 'days'),
             endDate: @json($endDate->format('m-d-Y')),
             buttonClasses: ['btn', 'btn-sm'],
             cancelClass: 'btn-inverse',
@@ -249,8 +269,8 @@
             todayHighlight: true,
             weekStart: '{{ $global->week_start }}',
             format: '{{ $global->date_picker_format }}',
-            minDate: 0,
-            startDate: "-0m",
+            minDate: 2,
+            startDate: "+2d",
             endDate: "+1y",
             
         });
@@ -260,8 +280,8 @@
             autoclose: true,
             todayHighlight: true,
             datesDisabled: disabledDates,
-            minDate: 0,
-            startDate: "-0m",
+            minDate: 2,
+            startDate: "+2d",
             endDate: "+1y",
             weekStart: '{{ $global->week_start }}',
             format: '{{ $global->date_picker_format }}',
@@ -276,7 +296,13 @@
                 $('#multi-date').hide();
                 $('#single-date').hide();
                 $('#date-range').show();
+            }else if($(this).val() == 'half day'){
+                $('#multi-date').hide();
+                $('#date-range').hide();
+                $('#single-date').show();
+                $('#mor-or-aft').show();
             } else {
+                $('#mor-or-aft').hide();
                 $('#multi-date').hide();
                 $('#date-range').hide();
                 $('#single-date').show();

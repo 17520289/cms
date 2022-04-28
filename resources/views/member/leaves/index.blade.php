@@ -94,7 +94,7 @@
                                     @if ($pendingLeave->duration == 'date_range')
                                     {{ ($key+1) }}. <strong>{{ ucwords($pendingLeave->user->name) }}</strong> for {{ $startDate }} >> {{ $pendingLeave->endDate->format($global->date_format) }}
                                     @elseif ($pendingLeave->duration == 'half day')
-                                    {{ ($key+1) }}. <strong>{{ ucwords($pendingLeave->user->name) }}</strong> for {{  $startDate }} <div class="label-inverse label"> @lang('modules.leaves.halfDay') </div>
+                                    {{ ($key+1) }}. <strong>{{ ucwords($pendingLeave->user->name) }}</strong> for {{  $startDate }} <div class="label-inverse label"> @lang('modules.leaves.halfDay') - {{$pendingLeave->mor_or_aft}}</div>
                                     @else
                                     {{ ($key+1) }}. <strong>{{ ucwords($pendingLeave->user->name) }}</strong> for {{  $startDate  }}
                                     @endif

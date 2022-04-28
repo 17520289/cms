@@ -84,8 +84,13 @@ class StandupDaily extends Notification
             $messLeave .= '--------------------------------------------------------------'.PHP_EOL.PHP_EOL.
             '*Hôm nay đồng chí này off nè mọi người :smiling_face_with_tear:*:'.PHP_EOL;
             foreach ($leavesToday as $leave) {
-                $messLeaveDaily .= '* - Tên:* ' . $leave->user->name .PHP_EOL;
-                $messLeave = $messLeave . '* - Tên:* ' . $leave->user->name . '   |   *Lý do:* ' . $leave->reason . PHP_EOL;
+                $halfDay = '';
+                if($leave->duration == 'half day'){
+                    $halfDay = $leave->mor_or_aft == 'morning' ? '   |   Nghỉ buổi sáng.' : '   |   Nghỉ buổi chiều.';
+                }
+                $messLeaveDaily .= '* - Tên:* ' . $leave->user->name . $halfDay .PHP_EOL;
+                $messLeave = $messLeave . '* - Tên:* ' . $leave->user->name .  $halfDay .'   |   *Lý do:* ' . $leave->reason . PHP_EOL;
+                
             }
             $messLeave .= 'Đăng nhập vào hệ thống để xem chi tiết  <http://is.hlsolutions.jp/admin/leave/all-leaves | is.hlsolutions.jp >  :star-struck: :smile:';
         }

@@ -144,6 +144,7 @@ class ManageLeavesController extends AdminBaseController
         $leave->user_id = $request->user_id;
         $leave->leave_type_id = $request->leave_type_id;
         $leave->duration = $request->duration;
+        if($request->duration == 'half day') $leave->mor_or_aft = $request->mor_or_aft;
         $leave->leave_date = Carbon::createFromFormat($this->global->date_format, $date)->format('Y-m-d');
         $leave->group_leave_id = $GroupLeave;
         $leave->reason = $request->reason;
@@ -340,7 +341,7 @@ class ManageLeavesController extends AdminBaseController
             ->groupBy('leaves.group_leave_id')
             ->where('leaves.duration', 'date_range');
 
-        $leavesDaterange = Leave::select('leaves.id', 'leaves.user_id', 'users.name', 'leaves.leave_date', 'leaves.status', 'leave_types.type_name', 'leave_types.color', 'leaves.duration', 'leaves.group_leave_id')
+        $leavesDaterange = Leave::select('leaves.id', 'leaves.user_id', 'users.name', 'leaves.leave_date', 'leaves.status', 'leave_types.type_name', 'leave_types.color', 'leaves.duration', 'leaves.group_leave_id', 'leaves.mor_or_aft')
             ->where('leaves.status', '<>', 'rejected')
             ->whereRaw($startDt)
             ->whereRaw($endDt)
@@ -382,7 +383,7 @@ class ManageLeavesController extends AdminBaseController
                 $type = '<div class="label-' . $row->color . ' label">' . $row->type_name . '</div>';
 
                 if ($row->duration == 'half day') {
-                    $type .= ' <div class="label-inverse label">' . __('modules.leaves.halfDay') . '</div>';
+                    $type .= ' <div class="label-inverse label">' . __('modules.leaves.halfDay').' - '.$row->mor_or_aft.'  </div>';;
                 }
 
                 return $type;

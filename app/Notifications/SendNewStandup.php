@@ -63,17 +63,18 @@ class SendNewStandup extends Notification
 
         $slack = SlackSetting::first();
         return (new SlackMessage())
-            ->from(config('app.name'))
-            ->image($slack->slack_logo_url)
-            ->content('*' . ucwords($notifiable->name) . '* start')
-            ->attachment(function ($attachment) {
-                $attachment->title('Yesterday:')
-                    ->content($this->yesterday);
-            })
-            ->attachment(function ($attachment) {
-                $attachment->title('Today:')
-                    ->content($this->standup->todays_Work);
-            });;
+        ->from(config('app.name'))
+        ->image($slack->slack_logo_url)
+        ->content('*' . ucwords($notifiable->name) . '* start')
+        ->attachment(function ($attachment) {
+            $attachment->title('Yesterday:')
+                ->content($this->yesterday);
+        })
+        ->attachment(function ($attachment) {
+            $attachment->title('Today:')
+                ->content($this->standup->todays_Work);
+        });
+       
     }
     public function toArray($notifiable)
     {

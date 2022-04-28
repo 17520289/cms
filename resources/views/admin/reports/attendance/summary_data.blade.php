@@ -31,9 +31,12 @@
                 @for ($i = 1; $i <= count($daysInMonth); $i++)
                     <th>{{ $i }}</th>
                 @endfor
-                <th>Tổng giờ</th>
-                <th>Tổng ngày</th>
-                <th>Ghi chú</th>
+                <th rowspan="2">Giờ công thực tế</th>
+                <th  rowspan="2">Giờ nghỉ tính phép</th>
+                <th rowspan="2">Giờ nghỉ không tính phép</th>
+                <th rowspan="2">Giờ công tính lương</th>
+                <th rowspan="2">Số ngày nghỉ trong tháng</th>
+                <th rowspan="2">Số ngày nghỉ còn lại</th>
             </tr>
         </thead>
         <tbody>
@@ -62,18 +65,29 @@
                                             {{-- weekend --}}
                                         </td>
                                     @else
+                                        @php
+                                             $totalHoursNoPaid[$key]+= 8; 
+                                        @endphp
                                         <td>0</td>
                                     @endif
                                 @elseif($day == 'Holiday')
-                                    <td>holiday</td>
+                                    <td class="text-center" style="background:#f0e49f">8</td>
                                 @else
-                                <td>{{ $day }}</td>
+                                @if (strlen($day) > 5)
+                                    <td style="background:#f88282">{{ $day }}</td>
+                                @else
+                                    <td>{{ $day }}</td>
+                                @endif
+                               
                                 @endif
                         @endif
                     @endforeach
                     <td class="text-success">{{ $totalHours[$key] }}</td>
-                    <td class="text-success">{{ $totalPresent[$key]  }}</td>
-                    <td class="text-success"></td>
+                    <td class="text-success">{{ $totalHoursPaid[$key]  }}</td>
+                    <td class="text-success">{{ $totalHoursNoPaid[$key]  }}</td>
+                    <td class="text-success">{{ $totalHours[$key] +  $totalHoursPaid[$key] }}</td>
+                    <td class="text-success">{{ $leaveTaken[$key] }}</td>
+                    <td class="text-success">{{ $allowedLeaves -  $allLeaveTaken[$key] }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -92,13 +106,18 @@
           <td></td>
           <td>Chấm công theo 2 giá trị là 4 và 8 ( tiếng)</td>
       </tr>
-      <tr>
-        <td></td>
-        <td>4 = nửa ngày</td>
-    </tr>
+    
     <tr>
         <td></td>
         <td>8 = 1 ngày</td>
+    </tr>
+    <tr>
+        <td  style="background:#f88282"></td>
+        <td >Off</td>
+    </tr>
+    <tr>
+        <td style="background:#f0e49f"></td>
+        <td>Holiday</td>
     </tr>
     </tbody>
   </table>

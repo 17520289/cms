@@ -29,7 +29,7 @@
                             @endif
                             <label class="label label-{{ $leave->type->color }}">{{ ucwords($leave->type->type_name) }}</label>
                             @if($leave->duration == 'half day')
-                                <label class="label label-info">{{ ucwords($leave->duration) }}</label>
+                            <label class="label label-info">{{ ucwords($leave->duration). ' - '.ucwords($leave->mor_or_aft) }}  </label>
                             @endif
                         </p>
                     </div>

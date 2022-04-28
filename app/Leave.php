@@ -59,13 +59,13 @@ class Leave extends BaseModel
             return ($fullDay + ($halfDay / 2));
         } else {
             $fullDay = Leave::where('user_id', $userId)
-                ->where('leave_date', '<=', Carbon::today()->endOfYear()->format('Y-m-d'))
+                ->where('leave_date', '>=', Carbon::today()->startOfYear()->format('Y-m-d'))
                 ->where('status', 'approved')
                 ->where('duration', '<>', 'half day')
                 ->count();
 
             $halfDay = Leave::where('user_id', $userId)
-                ->where('leave_date', '<=', Carbon::today()->endOfYear()->format('Y-m-d'))
+                ->where('leave_date', '>=', Carbon::today()->startOfYear()->format('Y-m-d'))
                 ->where('status', 'approved')
                 ->where('duration', 'half day')
                 ->count();
@@ -87,7 +87,7 @@ class Leave extends BaseModel
                 ->get();
         } else {
             return Leave::where('user_id', $userId)
-                ->where('leave_date', '<=', Carbon::today()->endOfYear()->format('Y-m-d'))
+                ->where('leave_date', '>=', Carbon::today()->startOfYear()->format('Y-m-d'))
                 ->where('status', 'approved')
                 ->get();
         }
@@ -114,18 +114,19 @@ class Leave extends BaseModel
             return (count($fullDay) + (count($halfDay) / 2));
         } else {
             $fullDay = Leave::where('user_id', $userId)
-                ->where('leave_date', '<=', Carbon::today()->endOfYear()->format('Y-m-d'))
+                ->where('leave_date', '>=', Carbon::today()->startOfYear()->format('Y-m-d'))
                 ->where('status', 'approved')
                 ->where('duration', '<>', 'half day')
                 ->get();
 
             $halfDay = Leave::where('user_id', $userId)
-                ->where('leave_date', '<=', $user->employee[0]->joining_date->format((Carbon::now()->year + 1) . '-m-d'))
+                 ->where('leave_date', '>=', Carbon::today()->startOfYear()->format('Y-m-d'))
                 ->where('status', 'approved')
                 ->where('duration', 'half day')
                 ->get();
-
+            
             return (count($fullDay) + (count($halfDay) / 2));
         }
     }
+    
 }

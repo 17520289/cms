@@ -50,7 +50,33 @@
                     <div class="form-group">
                         <input type="text" class="form-control" name="leave_date" id="single_date"
                             value="{{ $leave->leave_date->format($global->date_format) }}">
+                        
                     </div>
+                    @if ($leave->duration == 'half day' && $leave->mor_or_aft != null)
+                        <div class="form-group" id="mor-or-aft" style="">
+                            <div class="radio-list">
+                                <label class="radio-inline p-0">
+                                    <div class="radio radio-info">
+                                        <input type="radio" name="mor_or_aft" id="morning" @if ($leave->mor_or_aft == 'morning')
+                                            checked
+                                        @endif
+                                        value="morning">
+                                        <label for="duration_half_day">@lang('modules.leaves.morning')</label>
+                                    </div>
+                                </label>
+                                <label class="radio-inline p-0">
+                                    <div class="radio radio-info">
+                                    <input type="radio" name="mor_or_aft" id="afternoon"  @if ($leave->mor_or_aft == 'afternoon')
+                                    checked
+                                   @endif
+                                    value="afternoon">
+                                    <label for="duration_half_day">@lang('modules.leaves.afternoon')</label>
+                                </div>
+                                </label>
+                            </div>
+
+                        </div>
+                    @endif
                 @endif
             </div>
 

@@ -69,20 +69,41 @@
                 </div>
             </div>
             <div class="row row-in">
+              
+               @if ((!is_null($employee->employeeDetail) && !is_null($employee->employeeDetail->designation)) ) 
+                @if (ucwords($employee->employeeDetail->designation->name) != 'Interns')
+                        <div class="col-md-6 row-in-br b-t">
+                            <div class="col-in row">
+                                    <h3 class="box-title">@lang('modules.leaves.leavesTaken')</h3>
+                                    <div class="col-xs-4"><i class="icon-logout text-warning"></i></div>
+                                    <div class="col-xs-8 text-right counter">{{ $leavesCount }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 row-in-br  b-r-none b-t">
+                            <div class="col-in row">
+                                    <h3 class="box-title">@lang('modules.leaves.remainingLeaves')</h3>
+                                <div class="col-xs-4"><i class="icon-logout text-danger"></i></div>
+                                <div class="col-xs-8 text-right counter">{{ ($allowedLeaves-$leavesCount) }}</div>
+                            </div>
+                        </div>
+                @endif
+                
+               @else
                 <div class="col-md-6 row-in-br b-t">
                     <div class="col-in row">
                             <h3 class="box-title">@lang('modules.leaves.leavesTaken')</h3>
                             <div class="col-xs-4"><i class="icon-logout text-warning"></i></div>
                             <div class="col-xs-8 text-right counter">{{ $leavesCount }}</div>
                     </div>
-                </div>
-                <div class="col-md-6 row-in-br  b-r-none b-t">
-                    <div class="col-in row">
-                            <h3 class="box-title">@lang('modules.leaves.remainingLeaves')</h3>
-                        <div class="col-xs-4"><i class="icon-logout text-danger"></i></div>
-                        <div class="col-xs-8 text-right counter">{{ ($allowedLeaves-count($leaves)) }}</div>
                     </div>
-                </div>
+                    <div class="col-md-6 row-in-br  b-r-none b-t">
+                        <div class="col-in row">
+                                <h3 class="box-title">@lang('modules.leaves.remainingLeaves')</h3>
+                            <div class="col-xs-4"><i class="icon-logout text-danger"></i></div>
+                            <div class="col-xs-8 text-right counter">{{ ($allowedLeaves-$leavesCount) }}</div>
+                        </div>
+                    </div>
+               @endif
             </div>
         </div>
     </div>

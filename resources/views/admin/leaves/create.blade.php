@@ -123,7 +123,26 @@
                                     <label>@lang('app.date')</label>
                                     <div class="form-group">
                                         <input type="text" class="form-control" name="leave_date" id="single_date"
-                                            value="{{ Carbon\Carbon::today()->format($global->date_format) }}">
+                                            value="{{ Carbon\Carbon::today()->addDays(2)->format($global->date_format) }}">
+                                    </div>
+                                    <div class="form-group" id="mor-or-aft" style="display: none">
+                                        <div class="radio-list">
+                                            <label class="radio-inline p-0">
+                                                <div class="radio radio-info">
+                                                    <input type="radio" name="mor_or_aft" id="morning" checked
+                                                    value="morning">
+                                                    <label for="duration_half_day">@lang('modules.leaves.morning')</label>
+                                                </div>
+                                            </label>
+                                            <label class="radio-inline p-0">
+                                                <div class="radio radio-info">
+                                                <input type="radio" name="mor_or_aft" id="afternoon" 
+                                                value="afternoon">
+                                                <label for="duration_half_day">@lang('modules.leaves.afternoon')</label>
+                                             </div>
+                                             </label>
+                                        </div>
+
                                     </div>
                                 </div>
 
@@ -301,7 +320,14 @@
                 $('#multi-date').hide();
                 $('#single-date').hide();
                 $('#date-range').show();
+                $('#mor-or-aft').hide();
+            }else if($(this).val() == 'half day'){
+                $('#multi-date').hide();
+                $('#date-range').hide();
+                $('#single-date').show();
+                $('#mor-or-aft').show();
             } else {
+                $('#mor-or-aft').hide();
                 $('#multi-date').hide();
                 $('#date-range').hide();
                 $('#single-date').show();

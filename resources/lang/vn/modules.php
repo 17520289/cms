@@ -1046,6 +1046,8 @@ return array(
             'halfDay' => 'Nửa Ngày',
             'dateRange' => 'Phạm Vi Ngày',
             'hours' => 'Hours',
+            'morning' => 'Buổi sáng',
+            'afternoon' => 'Buổi chiều',
             'selectDates' => 'Select Dates',
             'reason' => 'Lý Do Xin Nghỉ',
             'applicantName' => 'Tên',

@@ -97,6 +97,11 @@ class MemberAttendanceController extends MemberBaseController
         $this->userId = $this->user->id;
         $this->startDate = $request->startDate;
         $this->endDate = $request->endDate;
+        $this->startTime = Carbon::createFromFormat('H:i:s',  $this->attendanceSettings->office_start_time , $this->global->timezone);
+        $this->endTime = Carbon::createFromFormat('H:i:s',  $this->attendanceSettings->office_end_time , $this->global->timezone);
+        $this->halfday_mark_time = Carbon::createFromFormat( 'H:i:s', $this->attendanceSettings->halfday_mark_time, $this->global->timezone);
+        $this->lunchBreak = Carbon::createFromFormat('H:i:s' , $this->attendanceSettings->halfday_mark_time, $this->global->timezone)->subHour();
+        
         $this->holidays = Holiday::whereRaw('MONTH(holidays.date) = ?', [$request->month])->whereRaw('YEAR(holidays.date) = ?', [$request->year])->get();
         $this->daysInMonth = Carbon::parse('01-' . $request->month . '-' . $request->year)->daysInMonth;
         $attendances = Attendance::userAttendanceByDate($this->startDate,  $this->endDate, $this->userId);
@@ -188,7 +193,10 @@ class MemberAttendanceController extends MemberBaseController
                 return Reply::error(__('messages.notAnAuthorisedDevice'));
             }
         }
-
+        if($request->today == null){
+            return Reply::error(__('validation.today_is_required'));
+        }
+          
         // Check user by location
         if ($attendanceSetting->radius_check == 'yes') {
             $checkRadius  = $this->isWithinRadius($request);
@@ -278,8 +286,8 @@ class MemberAttendanceController extends MemberBaseController
                 $standup->save();
                 DB::commit();
             } catch(\Exception $e){
-                DB::rollback();
-                return Reply::error(__('validation.today_is_required'));
+                DB::rollback(); 
+                return Reply::error($e->getMessage());
             }
            
 
@@ -865,57 +873,58 @@ class MemberAttendanceController extends MemberBaseController
     public function totalHoursRound($attendance)
     {
         $clockInTime = Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone);
-
-        $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
-        $halfday_mark_time = Carbon::createFromFormat( 'H:i:s', $this->attendanceSettings->halfday_mark_time);
-
-        //set clock_out_time if null
-        if($attendance->clock_out_time == null ){
-            if($clockInTime->isToday()){
-                $clockOutTime = Carbon::now();
-            }else{
-                $clockOutTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->office_end_time, $this->global->timezone);
-            }
-        }else{
-            $clockOutTime = Carbon::parse($attendance->clock_out_time)->timezone($this->global->timezone);
-        }
-       
-        //get total hours logged
-        $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
         
-        //work from office
-        if($attendance->working_from == 'office'){
-            if($clockInTime1->lessThan($halfday_mark_time) && $clockInTime1->greaterThanOrEqualTo($halfday_mark_time->subHour())){
-                $clockInTime = Carbon::createFromFormat('Y-m-d H:i:s' , $clockInTime->format('Y-m-d').' '.$this->attendanceSettings->halfday_mark_time, $this->global->timezone);
-                $totalWorkingHour = $clockOutTime->floatDiffInHours($clockInTime);
+        $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'), $this->global->timezone);
+      
+        $clockOutTime =$clockInTime->isToday() ? Carbon::now() :  Carbon::parse($attendance->clock_out_time)->timezone($this->global->timezone);
+        $clockOutTime1 = Carbon::createFromFormat('H:i:s', $clockOutTime->format('H:i:s'), $this->global->timezone);
+
+        $leave = Leave::where('user_id', $attendance->user_id)
+                        ->where('leave_date',  $clockInTime->format('Y-m-d'))
+                        ->where('status' , 'approved')
+                        ->first();
+        if(@$leave && $leave->mor_or_aft == 'morning' ){
+            $startTime = $this->halfday_mark_time;
+            $maxHour = 5;
+                            
+        }else{
+            $startTime = $this->startTime;
+            $maxHour = ( @$leave && $leave->mor_or_aft == 'affternoon') ? 3 : 8;
+        }   
+
+        if($attendance->clock_out_time == null )
+        {
+            $totalWorkingHour = $clockInTime->isToday() && ! $clockInTime1->greaterThan($startTime) ? $clockOutTime->floatDiffInHours($clockInTime) : 0;
+        }
+        else
+        {
+            if($clockOutTime1->greaterThan($this->endTime->copy()->addMinutes($this->attendanceSettings->late_mark_duration))){
+                $clockOutTime = Carbon::createFromFormat('Y-m-d H:i:s' ,$clockOutTime->format('Y-m-d'). ' ' . $this->endTime->format('H'). ':'. $this->attendanceSettings->late_mark_duration.':00' , $this->global->timezone);
             }
-            $clockInTime1 = Carbon::createFromFormat('H:i:s', $clockInTime->format('H:i:s'));
-            $totalWorkingHour = (($totalWorkingHour <= 5) && ($totalWorkingHour >=4)) ? 4 : $totalWorkingHour;
-            if($totalWorkingHour > 5){
-                $totalWorkingHour -=1;
-                if($totalWorkingHour > 8 && $clockInTime1->lessThan($halfday_mark_time->subHour())){
-                    $totalWorkingHour = 8;
-                }
-                if($clockInTime1->greaterThanOrEqualTo($halfday_mark_time)){
-                    $totalWorkingHour = 4;
-                }
+            $totalWorkingHour =  $clockOutTime->floatDiffInHours($clockInTime);
+           
+            $totalWorkingHour = @$leave ? $totalWorkingHour : $totalWorkingHour-1;
+
+            if($clockInTime1->greaterThan( $startTime->copy()->addMinutes($this->attendanceSettings->late_mark_duration)) ){
+                $totalWorkingHour = 0;
             }
-        }else{ //work from home
-            if($attendance->lunch_break == 'yes'){
-                $totalWorkingHour -= 1;
+            
+            $totalWorkingHour = $totalWorkingHour > $maxHour ? $maxHour :  $totalWorkingHour;
+            
+        }
+        
+
+        if($attendance->working_from == 'work_from_home')
+        {
+         
+            if($attendance->lunch_break == 'no'){
+                $totalWorkingHour += 1;
             }
             if($totalWorkingHour > 8){
                 $totalWorkingHour = 8;
             }
         }
-
-        if($clockInTime->isToday()){
-            $now = Carbon::now();
-            if($clockInTime->greaterThan($now)){
-                $totalWorkingHour = 0;
-            }
-        }
-      
+        
         $whole = (int) $totalWorkingHour;
         $frac = $totalWorkingHour - $whole;
         if ($frac <= 0.25) {
@@ -927,7 +936,7 @@ class MemberAttendanceController extends MemberBaseController
                 $frac = ($frac <= 0.75) ? 0.5 : 1;
             }
         }
-        
+
         return $whole + $frac;
     }
 }
